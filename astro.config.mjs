@@ -39,6 +39,23 @@ const seriesSidebar = {
 	],
 };
 
+// Draft pages only exist in `astro dev`; linking them in a production build would fail.
+const isDev = process.argv.includes('dev');
+const architectureSidebar = {
+	label: 'Architecture',
+	collapsed: true,
+	badge: { text: 'draft', variant: 'caution' },
+	items: [
+		{ label: 'Framework engineering', slug: 'architecture/framework-engineering' },
+		{ label: 'Testing is architecture', slug: 'architecture/testing-is-architecture' },
+		{ label: 'API design', slug: 'architecture/api-design' },
+		{ label: 'Performance', slug: 'architecture/performance' },
+		{ label: 'ADR index', slug: 'architecture/adrs' },
+		{ label: 'ADR 001 · Conditional validation', slug: 'architecture/adrs/001-conditional-validation' },
+		{ label: 'ADR 002 · Infra/backend validators', slug: 'architecture/adrs/002-validator-sync-strategy' },
+	],
+};
+
 // https://astro.build/config
 export default defineConfig({
 	// User site: served from the root of https://renepeuser.github.io (no `base` needed).
@@ -112,19 +129,8 @@ export default defineConfig({
 						{ label: 'Developer experience', slug: 'projects/developer-experience' },
 					],
 				},
-				{
-					label: 'Architecture',
-					collapsed: true,
-					items: [
-						{ label: 'Framework engineering', slug: 'architecture/framework-engineering' },
-						{ label: 'Testing is architecture', slug: 'architecture/testing-is-architecture' },
-						{ label: 'API design', slug: 'architecture/api-design' },
-						{ label: 'Performance', slug: 'architecture/performance' },
-						{ label: 'ADR index', slug: 'architecture/adrs' },
-						{ label: 'ADR 001 · Conditional validation', slug: 'architecture/adrs/001-conditional-validation' },
-						{ label: 'ADR 002 · Infra/backend validators', slug: 'architecture/adrs/002-validator-sync-strategy' },
-					],
-				},
+				// The architecture pages are drafts (`draft: true`): visible in `astro dev` only.
+				...(isDev ? [architectureSidebar] : []),
 				{
 					label: 'Open Source',
 					collapsed: true,

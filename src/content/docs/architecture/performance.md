@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "Performance engineering"
 description: "Performance work begins with measurement. However, architecture should avoid known structural costs such as repeated reflection scans, unnecessary…"
 ---

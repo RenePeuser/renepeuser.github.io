@@ -31,4 +31,4 @@ The result: a **self-defending codebase** that guides both new team members and 
 
 - [AspNetCore.Simple.CodeRules](https://github.com/RenePeuser/AspNetCore.Simple.CodeRules)
 - [Roslyn & tooling](/expertise/roslyn-tooling/)
-- [Testing is architecture](/architecture/testing-is-architecture/)
+- [Testing is architecture](/blog/testing-is-architecture/)

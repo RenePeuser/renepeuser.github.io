@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "Testing is architecture"
 description: "Testing reveals the shape of a system."
 ---

@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "Framework engineering"
 description: "A framework is successful when it improves the economics and quality of many products."
 ---

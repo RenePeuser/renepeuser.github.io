@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "ADR-002: Validator synchronization strategy"
 description: "Open for team decision"
 ---

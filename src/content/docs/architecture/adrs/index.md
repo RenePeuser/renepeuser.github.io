@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "Architecture Decision Records"
 description: "These ADRs are public, generalized versions of engineering discussions. They intentionally omit confidential repository and domain details."
 ---

@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "ADR-001: Conditional property validation"
 description: "Proposed / evolving"
 ---
