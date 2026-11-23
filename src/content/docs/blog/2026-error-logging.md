@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, error-handling, observability]
 excerpt: The same exception logged four times on its way up, a 404 at Error level waking someone at night, and the one real failure buried in the noise. How to separate error logging from error handling, pick log levels by exception category and test that it works.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 Open the error log of an API that has grown without a logging strategy, and you'll see the same
 exception four times: once in the repository ("log and rethrow"), once in the service, once in the

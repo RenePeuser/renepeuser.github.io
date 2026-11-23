@@ -6,9 +6,6 @@ tags: [observability, azure]
 excerpt: Kusto looks like SQL, reads like LINQ and has a handful of rules that trip up everyone in the first week. The mental model, the syntax rules and the data model of Application Insights you need before writing your first useful query.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 Every team I've worked with that runs on Azure has the same moment. Production behaves strangely, someone
 opens Application Insights, clicks through the *Failures* blade for ten minutes, and then says: "Can

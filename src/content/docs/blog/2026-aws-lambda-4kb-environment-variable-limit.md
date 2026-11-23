@@ -7,9 +7,6 @@ tags: [aws, configuration, dotnet, aspnetcore]
 excerpt: Sixty environment variables with long names and ARNs, and the Lambda deployment fails because all of them together exceed 4 KB. Why the limit hits .NET apps early, how to move configuration to SSM Parameter Store without changing a single IOptions class, and how to keep the budget in check.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 .NET configuration maps environment variables so naturally that it's easy to put everything there.
 `ProjectSettings__Cognito__UserPoolId`, `ProjectSettings__Backend__ClientSecretArn`,

@@ -6,9 +6,6 @@ tags: [architecture, performance, dotnet, aspnetcore]
 excerpt: Every service in a flow loads the customer "just to be safe", and a single request ends up asking the same question four times. A pattern for gathering data once, validating it once and passing it along, plus the lesson of a codebase that had the pattern and still fetched everything twice.
 ---
 
-:::note[Series]
-Part of the series [*Architecture in practice*](/series/architecture-in-practice/).
-:::
 
 Most performance problems I've had to debug in backend services weren't slow algorithms. They were
 **the same data being loaded over and over** inside a single request. No single line of code looks

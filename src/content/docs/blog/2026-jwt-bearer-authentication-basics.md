@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, security]
 excerpt: One forgotten [Authorize] attribute and an endpoint is public. How JWT bearer validation works in ASP.NET Core, why I make authentication the fallback policy, how to check scopes properly, and how to test it all without a real identity provider.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 The most common authentication bug I find in reviews isn't a cryptographic one. It's a controller
 without `[Authorize]`. Someone added a new endpoint, copied the method but not the class attribute,

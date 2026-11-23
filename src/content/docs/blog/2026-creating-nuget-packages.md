@@ -6,9 +6,6 @@ tags: [dotnet, nuget, tooling]
 excerpt: A package with no description, no readme, version 1.0.0 and a dependency on your analyzers is just a zip file with extra steps. What a good internal NuGet package needs, how to set up feeds and pipelines so nobody pushes by hand, and how to make the build refuse a sloppy package.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 Sooner or later every organization with more than one .NET repository starts sharing code through NuGet
 packages. A common library, an HTTP client for an internal API, a test SDK. That's a good move. What I

@@ -6,9 +6,6 @@ tags: [dotnet, code-quality, devops]
 excerpt: Analyzers that only live in someone's Visual Studio extension don't protect anything. How to pick and configure .NET analyzers and Roslynator via NuGet and .editorconfig, roll them out in a legacy codebase without a thousand-warning wall, and make the same rules fail the build in CI.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 Ask a team whether they use analyzers, and you often get "yes, I have Roslynator installed". In Visual Studio.
 On their machine. With their own settings. The colleague next to them has a different set of extensions,

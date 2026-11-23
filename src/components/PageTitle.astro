@@ -1,0 +1,14 @@
+---
+// Starlight PageTitle override:
+// - blog index (/blog/, /blog/2/, …): intro block with stats and links to the series
+// - series posts: "Part X of Y · Series" banner below the title
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+import BlogIntro from './series/BlogIntro.astro';
+import SeriesNav from './series/SeriesNav.astro';
+
+const id = Astro.locals.starlightRoute.id;
+const isBlogIndex = id === 'blog' || /^blog\/\d+$/.test(id);
+---
+
+<Default />
+{isBlogIndex ? <BlogIntro /> : <SeriesNav position="top" />}

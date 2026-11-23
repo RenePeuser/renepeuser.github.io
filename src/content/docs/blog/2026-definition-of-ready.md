@@ -6,9 +6,6 @@ tags: [scrum]
 excerpt: Too many backend features started with a ticket that had a title and not much else. A concrete Definition of Ready checklist (route, request, realistic payloads, response, working SQL against staging, test data) and the one rule that hurts the most and helps the most.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 Most of this series is about a project with six Scrum teams. This post takes one practice from a
 different project, because it fills a gap the others leave open. Everyone talks about the Definition of

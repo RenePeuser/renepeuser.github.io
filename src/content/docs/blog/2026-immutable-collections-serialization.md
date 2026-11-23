@@ -6,9 +6,6 @@ tags: [dotnet, csharp, pitfalls]
 excerpt: System.Text.Json supports immutable collections, until it suddenly says it doesn't. The default ImmutableArray that crashes, the object values that come back as JsonElement, the frozen collections nobody tested, and how to choose read-only types for your contracts.
 ---
 
-:::note[Series]
-Part of the series [*.NET pitfalls*](/series/dotnet-pitfalls/).
-:::
 
 I like immutable data. Records, `init` properties and immutable collections remove a whole category of
 bugs: nobody changes a list you handed out, and a snapshot stays a snapshot. They also cross a boundary

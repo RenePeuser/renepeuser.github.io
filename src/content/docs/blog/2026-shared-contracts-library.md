@@ -6,9 +6,6 @@ tags: [architecture, nuget, api-design, dotnet]
 excerpt: The client had an enum with one value fewer than the API, and nobody noticed until deserialization failed. Why copying request and response types into a client project always drifts, how a small contracts package fixes it, what may and may not go into it, and how to stop breaking changes in CI.
 ---
 
-:::note[Series]
-Part of the series [*Architecture in practice*](/series/architecture-in-practice/).
-:::
 
 A .NET client for an internal API, built the way many teams build them: copy the request and response
 classes from the API project into the client project, adjust the namespaces, done. It works for months.

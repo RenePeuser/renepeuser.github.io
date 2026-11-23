@@ -7,9 +7,6 @@ tags: [containers, dotnet, aws]
 excerpt: ARM64 instances are cheaper and .NET runs great on them. The migration is mostly a Dockerfile change, but QEMU crashes, a misplaced --platform and credentials in build arguments make it harder than it should be. A Dockerfile that builds fast and actually produces an ARM64 image.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 Running .NET services on ARM64 is one of the few infrastructure changes that is close to free money.
 AWS Graviton, Azure's Ampere and Cobalt VMs, and Google's Axion instances are priced below comparable

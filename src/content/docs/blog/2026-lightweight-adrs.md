@@ -6,9 +6,6 @@ tags: [architecture, api-design, scrum]
 excerpt: Two years after a decision, nobody remembers why the team chose it, so the discussion starts again from zero. Architecture decision records fix that with one short Markdown file per decision. The format I use, when a decision deserves one, where to keep them, and a complete example.
 ---
 
-:::note[Series]
-Part of the series [*Architecture in practice*](/series/architecture-in-practice/).
-:::
 
 A new developer asks in a pull request: *"Why do we write all mappers by hand? AutoMapper would save us
 half of this code."* A fair question. The senior developer who made that decision left a year ago. Two

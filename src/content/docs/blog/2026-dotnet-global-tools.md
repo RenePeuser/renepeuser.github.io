@@ -6,9 +6,6 @@ tags: [dotnet, tooling, nuget]
 excerpt: Every team has a folder of PowerShell scripts and a wiki page explaining which one to run when. .NET tools turn that into versioned, installable, testable CLIs distributed through NuGet. How to build one with System.CommandLine, global vs. local tools, and the details that make a tool pleasant instead of painful.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 Most teams I work with have a `scripts/` folder. Something to seed a database, something to call an internal
 API with the right token, something to regenerate clients. Next to it there's a wiki page that explains which

@@ -6,9 +6,6 @@ tags: [dotnet, nuget, tooling]
 excerpt: You press F11 on a call into your team's shared package and land in decompiled code, or nowhere at all. How Source Link maps packaged binaries back to the exact commit, what changed with .NET 8, how to choose between embedded PDBs and symbol packages, and how to verify a package before anyone needs it at 2 a.m.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 Shared NuGet packages are great until something goes wrong inside one of them. You're debugging a
 service, the exception comes from `MyShop.Common.Http`, and you hit F11. One of three things happens:

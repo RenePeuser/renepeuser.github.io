@@ -6,9 +6,6 @@ tags: [architecture, aspnetcore, dotnet]
 excerpt: A bug report says "placing an order with a voucher fails", and you open five folders to find the code. Why I organize backends around use cases instead of technical layers, what it costs, and how to keep the slices from leaking into each other.
 ---
 
-:::note[Series]
-Part of the series [*Architecture in practice*](/series/architecture-in-practice/).
-:::
 
 A bug report comes in: *"Placing an order with a voucher returns 500."* In a classic layered
 backend, the path to the cause looks like this: open `Controllers/OrdersController.cs`, scroll past

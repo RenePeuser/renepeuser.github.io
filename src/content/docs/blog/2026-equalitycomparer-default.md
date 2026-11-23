@@ -6,9 +6,6 @@ tags: [dotnet, csharp, performance, pitfalls]
 excerpt: The == operator doesn't compile for an unconstrained T, object.Equals boxes, a.Equals(b) throws on null, and NaN isn't equal to itself. What EqualityComparer<T>.Default does better, where it belongs, and where a plain == is still the clearer choice.
 ---
 
-:::note[Series]
-Part of the series [*.NET pitfalls*](/series/dotnet-pitfalls/).
-:::
 
 "Are these two values equal?" sounds like the easiest question in programming. In C#, the answer depends
 on whether you write `==`, `Equals`, `object.Equals` or `ReferenceEquals`, on whether the type is a class,

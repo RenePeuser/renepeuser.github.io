@@ -7,9 +7,6 @@ tags: [devops, aws, testing]
 excerpt: Integration tests that need a private database don't run well on GitHub-hosted runners behind a VPN. How we moved a .NET pipeline to ephemeral AWS CodeBuild runners inside the VPC, what the runs-on label does, the 403 that means "network", and what actually made the test suite faster.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 GitHub-hosted runners are great until your tests need something that isn't on the internet. In one
 platform I worked on, a large .NET backend moved from another CI system to GitHub Actions. The build

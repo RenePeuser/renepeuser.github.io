@@ -6,9 +6,6 @@ tags: [dotnet, async, aspnetcore, performance]
 excerpt: Async streams are one of the nicest features in modern C#, and one of the easiest to use half-right. The cancellation token that never arrives, the stream that gets enumerated twice, the DbContext that's gone mid-stream, and when a plain Task<List<T>> is the better choice.
 ---
 
-:::note[Series]
-Part of the series [*.NET pitfalls*](/series/dotnet-pitfalls/).
-:::
 
 `IAsyncEnumerable<T>` lets you produce and consume a sequence one item at a time, asynchronously.
 For exports, imports, paging through APIs or streaming large query results, that's exactly what you

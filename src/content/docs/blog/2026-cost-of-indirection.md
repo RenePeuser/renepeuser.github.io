@@ -6,9 +6,6 @@ tags: [cqrs, performance, dotnet]
 excerpt: Every abstraction has a price, paid in navigation, debugging and CPU time. What a mediator really costs you, why F12 suddenly lands on a record, the file convention that fixes most of it, and how to measure the runtime overhead yourself with BenchmarkDotNet instead of trusting anyone's numbers.
 ---
 
-:::note[Series]
-Part of the series [*Architecture in practice*](/series/architecture-in-practice/).
-:::
 
 A new developer joins the team, picks a bug, finds the endpoint and presses F12 on the line that does
 the work:

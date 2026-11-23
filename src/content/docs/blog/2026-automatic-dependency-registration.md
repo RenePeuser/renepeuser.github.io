@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, dependency-injection, tooling]
 excerpt: Writing an Add extension for every service gets old, and scanning the assembly feels like magic until it registers the wrong thing. The options for automatic registration — reflection, Scrutor, graph walking, source generators — and the trade-offs that decide which one I use.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 In the [DI post](/blog/2026-di-lifetimes-and-service-registration/) of this series, I argued for one
 registration extension per service: explicit, navigable with F12, testable. I still think that's the

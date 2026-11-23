@@ -6,9 +6,6 @@ tags: [caching, code-quality, dotnet]
 excerpt: A Redis key is the only schema Redis has. Hierarchical names, deterministic parameter hashing, secondary index sets and generation counters make keys readable, collision-free and cheap to invalidate, without ever calling KEYS in production.
 ---
 
-:::note[Series]
-Part of the series [*Caching & data*](/series/caching-and-data/).
-:::
 
 Redis has no tables, no columns and no schema. The **key is the schema**. Whatever ends up in the
 key is everything you'll ever have to find, group, debug and invalidate an entry. And because every

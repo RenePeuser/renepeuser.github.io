@@ -6,9 +6,6 @@ tags: [cqrs, caching, validation]
 excerpt: Every query handler checks its input and every expensive query has the same five lines of cache code. Pipeline behaviors move both out of the handlers into one place. A validation behavior that reports all errors at once, a caching behavior built on HybridCache, and the ordering and key mistakes that will bite you.
 ---
 
-:::note[Series]
-Part of the series [*Architecture in practice*](/series/architecture-in-practice/).
-:::
 
 Open any ten query handlers in a typical codebase and you'll find the same two blocks at the top of
 most of them. First, input checks: `if (string.IsNullOrWhiteSpace(request.Name)) throw ...`. Second,

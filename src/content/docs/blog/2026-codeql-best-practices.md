@@ -6,9 +6,6 @@ tags: [security, devops, dotnet]
 excerpt: A CodeQL workflow that nobody looks at, findings nobody triages, and a scan that silently stopped working on self-hosted Windows runners. How to set up CodeQL for C# so it's fast, consistent across repositories, blocks merges on real findings, and keeps running.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 Turning on CodeQL in a GitHub repository takes about two minutes. That's both its biggest strength and its
 biggest problem. In many organizations I've seen, CodeQL is "enabled" in the sense that a workflow file exists.

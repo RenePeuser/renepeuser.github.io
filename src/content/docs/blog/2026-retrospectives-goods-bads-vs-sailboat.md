@@ -6,9 +6,6 @@ tags: [scrum]
 excerpt: The sailboat retro looks great on a board, but in our team it produced less talking than the plain "what was good, what was bad" format. A side-by-side comparison of both, with step-by-step templates and the small rules that make a retro actually interactive.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 There are dozens of retrospective formats, and every few months someone suggests a new one. Starfish,
 mad/sad/glad, speedboat, sailboat, 4Ls. The underlying assumption is that a fresher format leads to

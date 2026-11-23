@@ -6,9 +6,6 @@ tags: [observability, aspnetcore, architecture, dotnet]
 excerpt: OpenTelemetry in .NET means ILogger for logs, ActivitySource for traces and Meter for metrics, each with its own rules. A thin, generic facade that keeps the standard APIs underneath, but gives developers one dependency, stable metric definitions and guard rails against cardinality explosions.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 OpenTelemetry in .NET is well designed. Logs go through `ILogger<T>`, traces through `ActivitySource`
 and `Activity`, metrics through `Meter` and its instruments. Each API is the right tool for its signal.

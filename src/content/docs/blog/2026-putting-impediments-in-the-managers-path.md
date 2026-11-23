@@ -6,9 +6,6 @@ tags: [scrum]
 excerpt: Some impediments a team can fix itself, others need someone with more authority. We split them strictly, turned the first kind into backlog items and pinned the second kind to a board right on the manager's daily path. Why visibility beats escalation e-mails.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 Every team has a list of things that slow it down. A test environment that's never available. A
 permission that takes three weeks to get. A dependency on another department that nobody owns. These

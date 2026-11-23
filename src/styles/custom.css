@@ -39,3 +39,97 @@ pre.mermaid,
 	background: transparent;
 	margin-block: 1.5rem;
 }
+
+/* Blog · Series · Profile live in the header on large screens (src/components/SocialIcons.astro),
+   so the topic switcher at the top of the sidebar is only needed in the mobile menu. */
+@media (min-width: 50rem) {
+	.starlight-sidebar-topics,
+	.starlight-sidebar-topics + hr {
+		display: none;
+	}
+}
+
+/* ---------- Blog list: compact cards instead of full-size headings ---------- */
+/* starlight-blog hides the title panel of the blog index; bring it back for our intro block
+   (src/components/series/BlogIntro.astro) and keep the plain "Blog" heading for screen readers only. */
+.content-panel:first-of-type:has(.blog-intro) {
+	display: block !important;
+}
+.content-panel:has(.blog-intro) h1#_top {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+.content-panel:first-of-type:has(.blog-intro) + .content-panel {
+	border-top: none;
+}
+.sl-blog-posts {
+	display: grid;
+	gap: 1rem !important;
+	margin-top: 0 !important;
+}
+.sl-blog-posts .sl-blog-preview {
+	gap: 0.75rem !important;
+	padding: 1.25rem 1.5rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.75rem;
+	transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.sl-blog-posts .sl-blog-preview:hover {
+	border-color: var(--sl-color-accent);
+	transform: translateY(-1px);
+}
+.sl-blog-posts .sl-blog-preview .sl-blog-preview-link {
+	margin-bottom: 0 !important;
+}
+.sl-blog-posts .sl-blog-preview .sl-blog-metadata {
+	margin-top: 0.35rem;
+}
+.sl-blog-posts .sl-blog-preview .sl-blog-preview-title {
+	margin: 0 !important;
+	font-size: var(--sl-text-h4) !important;
+	line-height: 1.3;
+	color: var(--sl-color-white) !important;
+}
+.sl-blog-posts .sl-blog-preview .sl-blog-preview-link:hover .sl-blog-preview-title {
+	color: var(--sl-color-accent-high) !important;
+}
+/* Every post has the same author: show date and reading time only in the list. */
+.sl-blog-posts .sl-blog-metadata-authors {
+	display: none !important;
+}
+.sl-blog-posts .sl-blog-metadata {
+	font-size: var(--sl-text-xs);
+	color: var(--sl-color-gray-3);
+}
+.sl-blog-posts .sl-blog-preview-excerpt {
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-2);
+}
+.sl-blog-posts .sl-blog-preview-excerpt,
+.sl-blog-posts .sl-blog-preview-excerpt > *,
+.sl-blog-posts .sl-blog-preview-footer,
+.sl-blog-posts .sl-blog-preview-footer > * {
+	margin: 0 !important;
+}
+.sl-blog-posts .sl-blog-tags-label {
+	display: none;
+}
+
+/* Tags everywhere as small pills. */
+.sl-blog-tag {
+	border-radius: 999px !important;
+	font-size: var(--sl-text-xs) !important;
+	padding: 0.1rem 0.6rem !important;
+}
+
+/* Accent colors are tuned for dark mode; darken them for text and icons in light mode. */
+:root[data-theme='light'] .group-chip,
+:root[data-theme='light'] .series-banner svg,
+:root[data-theme='light'] .series-overview svg,
+:root[data-theme='light'] .chapters .number {
+	filter: brightness(0.7) saturate(1.3);
+}

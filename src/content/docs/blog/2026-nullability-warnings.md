@@ -6,9 +6,6 @@ tags: [dotnet, csharp, code-quality, pitfalls]
 excerpt: Nullable reference types only help if the warnings mean something. How a codebase ends up with hundreds of CS8602 warnings and a "!" on every other line, the design decision that removes most null checks, and how to get from warnings to a build that refuses nulls where they don't belong.
 ---
 
-:::note[Series]
-Part of the series [*.NET pitfalls*](/series/dotnet-pitfalls/).
-:::
 
 Nullable reference types have been around since C# 8, and every new project template turns them on.
 Still, when I open an existing solution, I usually find one of two states:

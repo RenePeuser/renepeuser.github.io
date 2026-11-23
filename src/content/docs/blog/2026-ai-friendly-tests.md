@@ -6,9 +6,6 @@ tags: [testing, ai, tooling, dotnet]
 excerpt: A bare Assert.IsTrue failure was always a bad failure message. Now that AI agents read test output and try to fix what broke, it's an expensive one. How to design failures that say what broke, why, where and how to fix it, and why one diagnostic model should render for both humans and machines.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 Watch a coding agent work on a codebase for an hour and you'll notice where it loses time. It's not
 writing code. It's the loop after a red test: read the output, guess what it means, open five files

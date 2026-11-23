@@ -6,9 +6,6 @@ tags: [dotnet, performance, devops, tooling]
 excerpt: Cold starts in serverless functions, slow first requests after every deployment, containers that take ages to become healthy. ReadyToRun precompiles your code at publish time. What it actually does, when it helps, how it compares to Native AOT, and how to measure whether it's worth it for you.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 Every .NET application pays a startup tax: before a method runs for the first time, the JIT compiler has
 to turn its IL into machine code. For a long-running web API that's a one-off cost nobody notices. For a

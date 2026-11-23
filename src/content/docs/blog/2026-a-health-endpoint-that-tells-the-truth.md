@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, observability, devops]
 excerpt: A /health endpoint that always returns Healthy is worse than none, and one that checks every dependency can restart your whole fleet when one database hiccups. Liveness vs. readiness, the built-in health checks, and what to check where.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 Here's a health endpoint I've seen in more than one codebase, nearly verbatim:
 

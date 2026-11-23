@@ -6,9 +6,6 @@ tags: [scrum, code-quality]
 excerpt: Open, In Progress, Done. That's all our Scrum board had. The simplicity only worked because "Done" was strict — tested, deployed to the target machines without manual workarounds, and accepted by the stakeholder. Why fewer columns and a harder Done beat a ten-column board.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 Scrum boards tend to grow. To Do, Analysis, In Development, Code Review, Ready
 for Test, In Test, Test Failed, Ready for Deployment, Deployed, Accepted, Done. Each column was added

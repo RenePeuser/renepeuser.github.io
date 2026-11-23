@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, openapi]
 excerpt: Swashbuckle gone from the templates, "Unable to render this definition", "No operations defined in spec" and transformers that stop compiling after the next upgrade. A practical guide to the built-in OpenAPI support since .NET 9, the usual errors and their real causes.
 ---
 
-:::note[Series]
-Part of the series [*REST & OpenAPI design*](/series/rest-and-openapi-design/).
-:::
 
 For years, OpenAPI in ASP.NET Core meant one thing: `AddSwaggerGen()`, `UseSwagger()`,
 `UseSwaggerUI()`, done. With .NET 9, the templates dropped Swashbuckle and switched to the new

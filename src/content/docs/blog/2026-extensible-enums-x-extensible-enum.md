@@ -6,9 +6,6 @@ tags: [openapi, api-design, aspnetcore, json]
 excerpt: You add `Refunded` to an order status enum, and a consumer's deserializer crashes on the first refunded order. Why closed enums are a hidden breaking-change trap, how `x-extensible-enum` documents open-ended value lists, and how to generate it and consume it safely in .NET.
 ---
 
-:::note[Series]
-Part of the series [*REST & OpenAPI design*](/series/rest-and-openapi-design/).
-:::
 
 Adding a value to an enum feels like the most harmless change there is. You're not removing
 anything, not renaming anything. Old values still mean what they meant.

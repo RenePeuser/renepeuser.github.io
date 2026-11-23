@@ -6,9 +6,6 @@ tags: [api-design, aspnetcore, architecture]
 excerpt: "\"`PATCH /orders/42 { status: Shipped }` is RESTful, so it must be right.\" Until shipping has to reserve a carrier, send an e-mail and is only allowed for paid orders. A simple rule for when a state change is a property update and when it's a business operation that deserves its own endpoint."
 ---
 
-:::note[Series]
-Part of the series [*REST & OpenAPI design*](/series/rest-and-openapi-design/).
-:::
 
 Every API that models something with a lifecycle hits this question sooner or later. Orders get
 paid, shipped and cancelled. Invoices get issued and voided. Deployments get started and completed.

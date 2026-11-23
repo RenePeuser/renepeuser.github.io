@@ -6,9 +6,6 @@ tags: [dotnet, async, data-access, pitfalls]
 excerpt: A TransactionScope that worked for years suddenly throws after a driver upgrade, or the ambient transaction quietly vanishes after the first await. Why TransactionScope and async don't mix by default, the one option that fixes it, and the other defaults (Serializable, one minute, distributed transactions) worth knowing.
 ---
 
-:::note[Series]
-Part of the series [*.NET pitfalls*](/series/dotnet-pitfalls/).
-:::
 
 This one usually arrives as a test failure that makes no sense:
 

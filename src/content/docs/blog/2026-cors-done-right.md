@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, security]
 excerpt: 'A wildcard origin plus AllowCredentials, a hand-written OPTIONS middleware and a platform CORS setting that silently overrides the app. What CORS actually protects, how preflight works, and the setup that avoids the usual traps.'
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 CORS is the topic where I've seen the most code written to solve a problem that the framework already
 solves. In one codebase, the team had built a custom middleware that answered every `OPTIONS` request

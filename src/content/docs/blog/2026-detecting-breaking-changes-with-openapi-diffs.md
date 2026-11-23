@@ -6,9 +6,6 @@ tags: [openapi, testing, api-design, devops]
 excerpt: A renamed property, a parameter that became required, an enum value too many. None of them fail a unit test, all of them break a client. How to turn your OpenAPI document into a contract test, from a simple snapshot to a semantic breaking-change check in the pipeline.
 ---
 
-:::note[Series]
-Part of the series [*REST & OpenAPI design*](/series/rest-and-openapi-design/).
-:::
 
 Here's a pull request that passes every check:
 

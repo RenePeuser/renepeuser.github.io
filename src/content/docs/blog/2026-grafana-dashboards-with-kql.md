@@ -6,9 +6,6 @@ tags: [observability, azure]
 excerpt: Grafana can query Azure Monitor Logs directly, so your KQL becomes a dashboard that support and product people can use without portal access. Macros, variables, filters that stay fast, and why the dashboard JSON and the queries belong in git.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 The Azure portal is a fine place for developers to investigate an incident. It's a terrible place for
 everyone else. Product owners, support engineers and the on-call person from another team don't want

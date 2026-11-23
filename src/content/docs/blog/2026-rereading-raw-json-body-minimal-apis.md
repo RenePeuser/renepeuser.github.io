@@ -6,9 +6,6 @@ tags: [aspnetcore, minimal-apis, json, dotnet]
 excerpt: You bound the body to a typed DTO and now you need the raw JSON too, for merge patch presence checks, signature validation or auditing. But the stream is already consumed. How request buffering works, how to switch it on only where needed, and why an endpoint filter is too late.
 ---
 
-:::note[Series]
-Part of the series [*REST & OpenAPI design*](/series/rest-and-openapi-design/).
-:::
 
 Here's a bug report that usually arrives right after someone implements their first
 [merge-patch endpoint](/blog/2026-patch-with-json-merge-patch/): "the raw JSON is always empty".

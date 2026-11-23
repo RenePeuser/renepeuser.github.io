@@ -6,9 +6,6 @@ tags: [observability, azure, terraform]
 excerpt: A query that works in the portal is not yet an alert. How to turn a KQL query into a log search alert rule with Terraform, route it to the right people from your C# code, and avoid the trailing semicolon that breaks everything without a useful error.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 A dashboard tells you something is wrong when you look at it. An alert tells you when you don't. Most
 teams I've worked with have the first and a vague intention to build the second. Then an incident

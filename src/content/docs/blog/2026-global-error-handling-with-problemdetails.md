@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, error-handling]
 excerpt: Five endpoints, five error formats, and a stack trace in production. How to set up IExceptionHandler and ProblemDetails so every error looks the same, exceptions map to the right status codes, and production responses don't help attackers.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 Ask the frontend team of a mature API how they handle errors and you'll often hear: "It depends on
 the endpoint." One returns `{ "error": "..." }`, another a plain string, a third a 200 with

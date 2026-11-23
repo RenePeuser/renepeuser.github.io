@@ -6,9 +6,6 @@ tags: [scrum]
 excerpt: Experienced developers reach roughly 65–75 % of their hours on sprint work, new team members start below 10 %. How we planned sprints with honest capacity numbers, two developers per story, and the Product Owner deciding what moves out.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 Here's a sprint planning I've seen in many places: the team has five developers, the sprint has ten
 days, so there are 400 hours. Stories get pulled in until the estimates add up to 400. Two weeks later

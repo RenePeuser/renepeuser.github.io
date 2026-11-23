@@ -6,9 +6,6 @@ tags: [scrum, observability]
 excerpt: Our burndown charts slowly turned from a mirror of the sprint into a picture for management. Once a chart is adjusted to look right, it stops being useful, so we dropped it and made the sprint visible in other ways.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 I spent about four years on a project with six Scrum teams working on the same product. Looking
 back, a lot of what we started with survived: the daily, the review, refinement, retrospectives.

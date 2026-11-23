@@ -6,9 +6,6 @@ tags: [code-quality, scrum, dotnet]
 excerpt: Most review checklists are a list of twenty generic questions nobody reads. Mine starts with why we review and what reviews are not for, hands everything mechanical to tooling, and keeps a short list of things only a human can judge, with the .NET-specific traps that slip through most often.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 Every team I've worked with had a code review checklist somewhere. Usually it was a wiki page with a dozen
 sections and fifty questions: "Are variable names descriptive?", "Is the code properly indented?", "Are edge

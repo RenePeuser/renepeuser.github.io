@@ -6,9 +6,6 @@ tags: [dotnet, tooling, performance]
 excerpt: An incremental Debug build of six projects that takes 44 seconds isn't a hardware problem. How publish-time settings leak into the inner loop, why antivirus and Dev Drive matter, what Build Acceleration does, and how to get fast Debug builds without weakening a single quality gate.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 If you've ever wanted to throw your laptop out of the window while Visual Studio shows "Build started..."
 for the third time in five minutes, you're not alone. Slow builds are the most expensive problem nobody

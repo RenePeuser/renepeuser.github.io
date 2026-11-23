@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, configuration]
 excerpt: Settings that are read with magic strings, validated nowhere and discovered missing on the first request that needs them. How configuration layering works, when to use IOptions, IOptionsSnapshot or IOptionsMonitor, and how ValidateOnStart turns typos into startup failures.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 The worst configuration bug is the one that doesn't fail. A typo in an environment variable name, a
 section that was renamed in `appsettings.json` but not in the pipeline, and the app starts happily

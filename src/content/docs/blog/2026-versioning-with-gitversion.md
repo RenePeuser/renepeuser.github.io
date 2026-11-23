@@ -6,9 +6,6 @@ tags: [dotnet, nuget, tooling]
 excerpt: A NuGet package whose version is 1.0.0 forever, or one that jumps whenever somebody remembers to edit the csproj, tells consumers nothing. How GitVersion derives semantic versions from your git history, how to configure it, and how to keep developers from forgetting the one thing it depends on.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 A version number is a promise. `2.4.1 → 2.4.2` says "safe to update, a bug was fixed".
 `2.4.1 → 3.0.0` says "read the release notes, something will break". If your version numbers don't keep

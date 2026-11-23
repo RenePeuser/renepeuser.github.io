@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, openapi, api-design]
 excerpt: Since .NET 9 the templates no longer ship Swashbuckle, and upgraded projects suddenly render "Unable to render this definition". What changed, how to set up the built-in OpenAPI generator with versioning, security and per-stage metadata, and when Swashbuckle is still the better fit.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 For years, "add Swagger" meant three lines: `AddSwaggerGen()`, `UseSwagger()`, `UseSwaggerUI()`.
 Then .NET 9 removed Swashbuckle from the Web API template, and a lot of teams found out during an

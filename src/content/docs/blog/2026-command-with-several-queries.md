@@ -6,9 +6,6 @@ tags: [architecture, cqrs, performance]
 excerpt: Placing an order needs the customer, the prices and the stock before anything is written. Should the command handler send queries through the mediator, inject them, or load everything itself? The options, how to run the reads in parallel without breaking your DbContext, and when the "command" is really a query in disguise.
 ---
 
-:::note[Series]
-Part of the series [*Architecture in practice*](/series/architecture-in-practice/).
-:::
 
 The CQRS samples always show a query that reads one thing and a command that writes one thing. Then
 you implement your first real feature and the command needs four reads before it can write anything.

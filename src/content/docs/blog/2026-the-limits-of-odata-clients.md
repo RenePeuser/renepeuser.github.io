@@ -6,9 +6,6 @@ tags: [data-access, dotnet, performance, architecture]
 excerpt: A fluent OData client makes a remote API feel like a DbContext, right up to the first query the server doesn't support. Lessons from integrating a CRM's OData API — server-side limits, client library bugs, a 10× performance gap and why plain HttpClient won.
 ---
 
-:::note[Series]
-Part of the series [*Caching & data*](/series/caching-and-data/).
-:::
 
 The first week with a fluent OData client library feels great. You write
 `client.For<Order>().Filter(o => o.Status == "Open").Expand(o => o.Lines)`, and it feels like

@@ -2,45 +2,26 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightBlog from 'starlight-blog';
+import starlightSidebarTopics from 'starlight-sidebar-topics';
 import mermaid from 'astro-mermaid';
-import { readFileSync } from 'node:fs';
-
-// The "Blog series" sidebar is built from the series pages: every <LinkCard href="/blog/..."> becomes
-// an entry, in the order the series page lists it. A new post only needs a LinkCard on its series page.
-// Keep every series page linked here published (no `draft: true`), or the production build fails.
-const blogSeries = [
-	['aspnetcore-from-the-ground-up', '1 · ASP.NET Core from the ground up'],
-	['architecture-in-practice', '2 · Architecture in practice'],
-	['dotnet-pitfalls', '3 · .NET pitfalls'],
-	['validation-and-error-handling', '4 · Validation & error handling'],
-	['rest-and-openapi-design', '5 · REST & OpenAPI design'],
-	['testing-in-practice', '6 · Testing in practice'],
-	['code-quality-and-tooling', '7 · Code quality & tooling'],
-	['caching-and-data', '8 · Caching & data'],
-	['cloud-devops-observability', '9 · Cloud, DevOps & observability'],
-	['scrum-in-the-real-world', '10 · Scrum in the real world'],
-];
-const linkCard = /<LinkCard\s+title=(["'])(.*?)\1\s+href="(\/blog\/[^"]+)"/g;
-/** @param {string} slug */
-const seriesPosts = (slug) => {
-	const source = readFileSync(new URL(`./src/content/docs/series/${slug}.mdx`, import.meta.url), 'utf8');
-	return [...source.matchAll(linkCard)].map((m) => ({ label: m[2], link: m[3] }));
-};
-const seriesSidebar = {
-	label: 'Blog series',
-	items: [
-		{ label: 'All series', slug: 'series' },
-		...blogSeries.map(([slug, label]) => ({
-			label,
-			collapsed: true,
-			items: [{ label: 'Series overview', slug: `series/${slug}` }, ...seriesPosts(slug)],
-		})),
-		{ label: 'From VB6 to self-defending codebases', slug: 'series/from-vb6-to-self-defending-codebases' },
-	],
-};
+import { series, seriesGroups } from './src/data/series.mjs';
 
 // Draft pages only exist in `astro dev`; linking them in a production build would fail.
 const isDev = process.argv.includes('dev');
+
+// "Series" topic: the series, grouped by theme. The series pages list their posts as chapters, and every
+// post shows its own series navigation, so the sidebar only needs the series themselves.
+// Series and groups come from src/data/series.mjs. Keep every series page published (no `draft: true`).
+const seriesSidebar = [
+	{ label: 'All series', slug: 'series' },
+	...seriesGroups.map((group) => ({
+		label: group.title,
+		items: series
+			.filter((s) => s.group === group.id)
+			.map((s) => ({ label: s.title, slug: `series/${s.slug}` })),
+	})),
+];
+
 const architectureSidebar = {
 	label: 'Architecture',
 	collapsed: true,
@@ -55,6 +36,95 @@ const architectureSidebar = {
 		{ label: 'ADR 002 · Infra/backend validators', slug: 'architecture/adrs/002-validator-sync-strategy' },
 	],
 };
+
+// "Profile" topic: everything about me — background, work, talks and resume.
+const profileSidebar = [
+	{
+		label: 'About',
+		items: [
+			{ label: 'Executive profile', slug: 'about/profile' },
+			{ label: 'Engineering philosophy', slug: 'about/engineering-philosophy' },
+			{ label: 'Principles', slug: 'about/principles' },
+			{ label: 'Technical identity', slug: 'about/technical-identity' },
+		],
+	},
+	{
+		label: 'Career',
+		collapsed: true,
+		items: [
+			{ label: 'Engineering journey', slug: 'career/timeline' },
+			{ label: 'Siemens', slug: 'career/siemens' },
+			{ label: 'SoftwareOne', slug: 'career/softwareone' },
+			{ label: 'TRUMPF', slug: 'career/trumpf' },
+			{ label: 'Earlier career', slug: 'career/earlier-career' },
+			{ label: 'Legacy project archive', slug: 'career/legacy-projects' },
+		],
+	},
+	{
+		label: 'Projects',
+		collapsed: true,
+		items: [
+			{ label: 'Portfolio overview', slug: 'projects' },
+			{ label: 'Capability meta-framework', slug: 'projects/capability-meta-framework' },
+			{ label: 'Minimal API platform', slug: 'projects/minimal-api-platform' },
+			{ label: 'Testing SDK', slug: 'projects/testing-sdk' },
+			{ label: 'Validation engine', slug: 'projects/validation-engine' },
+			{ label: 'OpenAPI infrastructure', slug: 'projects/openapi-infrastructure' },
+			{ label: 'Error handling', slug: 'projects/error-handling' },
+			{ label: 'Deployment & provider model', slug: 'projects/deployment-provider-model' },
+			{ label: 'Developer experience', slug: 'projects/developer-experience' },
+		],
+	},
+	// The architecture pages are drafts (`draft: true`): visible in `astro dev` only.
+	...(isDev ? [architectureSidebar] : []),
+	{
+		label: 'Open Source',
+		collapsed: true,
+		items: [
+			{ label: 'Overview', slug: 'open-source' },
+			{ label: 'NuGet portfolio', slug: 'open-source/nuget' },
+			{ label: 'GitHub & Azure DevOps', slug: 'open-source/repositories' },
+		],
+	},
+	{
+		label: 'Expertise',
+		collapsed: true,
+		items: [
+			{ label: 'Technology map', slug: 'expertise/technology-map' },
+			{ label: '.NET & C#', slug: 'expertise/dotnet' },
+			{ label: 'Cloud', slug: 'expertise/cloud' },
+			{ label: 'Testing', slug: 'expertise/testing' },
+			{ label: 'Roslyn & tooling', slug: 'expertise/roslyn-tooling' },
+		],
+	},
+	{
+		label: 'Speaking',
+		collapsed: true,
+		items: [
+			{ label: 'BASTA!', slug: 'talks/basta' },
+			{ label: 'My Coding Zone', slug: 'talks/my-coding-zone' },
+			{ label: 'Speaker kit', slug: 'talks/speaker-kit' },
+		],
+	},
+	{
+		label: 'Resume',
+		collapsed: true,
+		items: [
+			{ label: 'Short resume', slug: 'resume/resume-short' },
+			{ label: 'Full resume', slug: 'resume/resume-full' },
+			{ label: 'Project profile', slug: 'resume/project-profile' },
+		],
+	},
+	{
+		label: 'Elsewhere',
+		collapsed: true,
+		items: [
+			{ label: 'NuGet profile', link: 'https://www.nuget.org/profiles/Rene.Peuser', attrs: { target: '_blank' } },
+			{ label: 'BASTA! speaker profile', link: 'https://basta.net/speaker/rene-peuser/', attrs: { target: '_blank' } },
+			{ label: 'Source & confidentiality policy', slug: 'portfolio/source-policy' },
+		],
+	},
+];
 
 // https://astro.build/config
 export default defineConfig({
@@ -72,11 +142,16 @@ export default defineConfig({
 			customCss: ['./src/styles/custom.css'],
 			components: {
 				Pagination: './src/components/Pagination.astro',
+				PageTitle: './src/components/PageTitle.astro',
+				SocialIcons: './src/components/SocialIcons.astro',
 			},
 			plugins: [
 				starlightBlog({
 					title: 'Blog',
+					// The header navigation (Blog · Series · Profile) comes from src/components/SocialIcons.astro.
+					navigation: 'none',
 					metrics: { readingTime: true },
+					postCount: 12,
 					authors: {
 						rene: {
 							name: 'Rene Peuser',
@@ -86,98 +161,20 @@ export default defineConfig({
 						},
 					},
 				}),
+				// Three areas with their own sidebar, linked from the header: blog, series and profile.
+				// The blog sidebar itself (all posts, recent posts, tags) is generated by starlight-blog.
+				starlightSidebarTopics(
+					[
+						{ id: 'blog', label: 'Blog', link: '/blog/', icon: 'document', items: [{ label: 'All posts', link: '/blog/' }] },
+						{ id: 'series', label: 'Series', link: '/series/', icon: 'open-book', items: seriesSidebar },
+						{ id: 'profile', label: 'Profile', link: '/about/profile/', icon: 'information', items: profileSidebar },
+					],
+					{ topics: { blog: ['/blog', '/blog/**/*'] } },
+				),
 			],
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/RenePeuser' },
 				{ icon: 'rss', label: 'RSS', href: 'https://renepeuser.github.io/blog/rss.xml' },
-			],
-			sidebar: [
-				seriesSidebar,
-				{
-					label: 'About',
-					items: [
-						{ label: 'Executive profile', slug: 'about/profile' },
-						{ label: 'Engineering philosophy', slug: 'about/engineering-philosophy' },
-						{ label: 'Principles', slug: 'about/principles' },
-						{ label: 'Technical identity', slug: 'about/technical-identity' },
-					],
-				},
-				{
-					label: 'Career',
-					collapsed: true,
-					items: [
-						{ label: 'Engineering journey', slug: 'career/timeline' },
-						{ label: 'Siemens', slug: 'career/siemens' },
-						{ label: 'SoftwareOne', slug: 'career/softwareone' },
-						{ label: 'TRUMPF', slug: 'career/trumpf' },
-						{ label: 'Earlier career', slug: 'career/earlier-career' },
-						{ label: 'Legacy project archive', slug: 'career/legacy-projects' },
-					],
-				},
-				{
-					label: 'Projects',
-					collapsed: true,
-					items: [
-						{ label: 'Portfolio overview', slug: 'projects' },
-						{ label: 'Capability meta-framework', slug: 'projects/capability-meta-framework' },
-						{ label: 'Minimal API platform', slug: 'projects/minimal-api-platform' },
-						{ label: 'Testing SDK', slug: 'projects/testing-sdk' },
-						{ label: 'Validation engine', slug: 'projects/validation-engine' },
-						{ label: 'OpenAPI infrastructure', slug: 'projects/openapi-infrastructure' },
-						{ label: 'Error handling', slug: 'projects/error-handling' },
-						{ label: 'Deployment & provider model', slug: 'projects/deployment-provider-model' },
-						{ label: 'Developer experience', slug: 'projects/developer-experience' },
-					],
-				},
-				// The architecture pages are drafts (`draft: true`): visible in `astro dev` only.
-				...(isDev ? [architectureSidebar] : []),
-				{
-					label: 'Open Source',
-					collapsed: true,
-					items: [
-						{ label: 'Overview', slug: 'open-source' },
-						{ label: 'NuGet portfolio', slug: 'open-source/nuget' },
-						{ label: 'GitHub & Azure DevOps', slug: 'open-source/repositories' },
-					],
-				},
-				{
-					label: 'Expertise',
-					collapsed: true,
-					items: [
-						{ label: 'Technology map', slug: 'expertise/technology-map' },
-						{ label: '.NET & C#', slug: 'expertise/dotnet' },
-						{ label: 'Cloud', slug: 'expertise/cloud' },
-						{ label: 'Testing', slug: 'expertise/testing' },
-						{ label: 'Roslyn & tooling', slug: 'expertise/roslyn-tooling' },
-					],
-				},
-				{
-					label: 'Speaking',
-					collapsed: true,
-					items: [
-						{ label: 'BASTA!', slug: 'talks/basta' },
-						{ label: 'My Coding Zone', slug: 'talks/my-coding-zone' },
-						{ label: 'Speaker kit', slug: 'talks/speaker-kit' },
-					],
-				},
-				{
-					label: 'Resume',
-					collapsed: true,
-					items: [
-						{ label: 'Short resume', slug: 'resume/resume-short' },
-						{ label: 'Full resume', slug: 'resume/resume-full' },
-						{ label: 'Project profile', slug: 'resume/project-profile' },
-					],
-				},
-				{
-					label: 'Elsewhere',
-					collapsed: true,
-					items: [
-						{ label: 'NuGet profile', link: 'https://www.nuget.org/profiles/Rene.Peuser', attrs: { target: '_blank' } },
-						{ label: 'BASTA! speaker profile', link: 'https://basta.net/speaker/rene-peuser/', attrs: { target: '_blank' } },
-						{ label: 'Source & confidentiality policy', slug: 'portfolio/source-policy' },
-					],
-				},
 			],
 		}),
 	],

@@ -6,9 +6,6 @@ tags: [dotnet, data-access]
 excerpt: When database experts hand you hand-tuned SQL, translating it to LINQ and back is pure overhead. Why some teams pick Dapper over EF Core, how to use it properly in modern C#, and the four mistakes that show up again and again (materialization errors, IN lists, TransactionScope and missing cancellation).
 ---
 
-:::note[Series]
-Part of the series [*Caching & data*](/series/caching-and-data/).
-:::
 
 "Here's the query, it runs in 80 ms on the production data. Can you put it behind the endpoint?"
 

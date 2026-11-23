@@ -6,9 +6,6 @@ tags: [scrum]
 excerpt: Our Scrum Master started as an active facilitator who built tools and ran every meeting, then stepped back sprint by sprint until the team ran itself and the team architect guided the daily. Why that's the best outcome the role can have, and how to get there without a collapse.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 The best Scrum Master I've worked with ended up with almost nothing to do. By the end of the project,
 there was no Scrum Master in our dailies at all. The team architect guided them, the team planned its

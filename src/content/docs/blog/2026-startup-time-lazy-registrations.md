@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, performance, dependency-injection]
 excerpt: A large ASP.NET Core monolith needed five to seven seconds to start, and registering only the endpoints a request needs made it three to four times faster. Where startup time really goes, why the endpoint isn't the real target, and the Lazy<T> registration that looks lazy but resolves everything eagerly.
 ---
 
-:::note[Series]
-Part of the series [*.NET pitfalls*](/series/dotnet-pitfalls/).
-:::
 
 Startup time doesn't matter much for a service that starts once a week. It matters a lot when instances
 come and go: autoscaling, scale-to-zero container platforms, serverless hosting, and every developer who

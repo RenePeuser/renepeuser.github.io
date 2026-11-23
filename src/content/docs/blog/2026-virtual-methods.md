@@ -6,9 +6,6 @@ tags: [dotnet, csharp, api-design, performance]
 excerpt: Every virtual method is a promise you'll have to keep, and every override that skips base is a behaviour change, whether anyone meant it or not. Why I seal classes by default, when a virtual method is the right extension point, and the review rule for overrides.
 ---
 
-:::note[Series]
-Part of the series [*.NET pitfalls*](/series/dotnet-pitfalls/).
-:::
 
 `virtual` is one keyword, and it's easy to add "just in case". Someone might want to override this
 later, right? And when you override a method, leaving out the `base` call looks like a harmless

@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, architecture]
 excerpt: WebApplication.CreateBuilder sets up configuration, logging, DI and Kestrel before your first line of code runs. What it does for you, what changed since Startup.cs, and how to keep Program.cs readable when the API grows.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 Every ASP.NET Core project starts with the same handful of lines in `Program.cs`. Most people never
 look at them again, until the file has grown to 400 lines of registrations, nobody dares to touch the

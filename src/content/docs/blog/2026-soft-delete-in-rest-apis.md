@@ -6,9 +6,6 @@ tags: [api-design, aspnetcore, data-access]
 excerpt: "\"We only set a flag, so it's not really a delete, so it should be a POST.\" A common line of reasoning that leaks a storage detail into the public contract. Why soft delete belongs behind DELETE, how to model hard delete and restore, and how to implement it cleanly with EF Core."
 ---
 
-:::note[Series]
-Part of the series [*REST & OpenAPI design*](/series/rest-and-openapi-design/).
-:::
 
 A discussion I've had in more than one API review goes like this. The team needs a way to delete
 products. The backend won't actually remove the row, it'll set `IsDeleted = true`, so someone

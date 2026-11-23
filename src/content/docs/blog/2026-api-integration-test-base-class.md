@@ -6,9 +6,6 @@ tags: [testing, aspnetcore, dotnet]
 excerpt: Most integration test base classes start as "host the API" and end as a 2,000-line junk drawer of test data helpers. A WebApplicationFactory-based base class that starts the API once, hands out clients and does nothing else.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 Every API test suite I've joined had a base class. And almost every one of them had the same
 history: it started with ten lines that host the API, and two years later it contained

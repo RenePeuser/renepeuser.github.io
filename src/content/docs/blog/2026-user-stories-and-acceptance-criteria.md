@@ -6,9 +6,6 @@ tags: [scrum]
 excerpt: A story that asks for a search field describes a solution, not a problem. How we wrote user stories that describe the problem, an extended template for performance and deadlines, and acceptance criteria that are testable, scoped and free of implementation details.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 Most bad sprints I've seen didn't fail in development. They failed in the story. The story described a
 solution instead of a problem, the acceptance criteria were vague or quietly doubled the scope, and the

@@ -6,9 +6,6 @@ tags: [dotnet, async, pitfalls, performance]
 excerpt: async void, .Result, fire-and-forget, Task.WhenAll that hides exceptions and ValueTask awaited twice. Six async mistakes that look harmless, why they hurt, and the analyzers that catch them before production does.
 ---
 
-:::note[Series]
-Part of the series [*.NET pitfalls*](/series/dotnet-pitfalls/).
-:::
 
 `async`/`await` is more than ten years old, and it's still the area where I find the most bugs in
 code reviews. Not because people don't know the keywords. Because the broken version **compiles,

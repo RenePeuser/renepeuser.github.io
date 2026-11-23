@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, performance, pitfalls]
 excerpt: Socket exhaustion, DNS changes that never arrive and typed clients captured by singletons. Four HttpClient mistakes that still show up in code reviews, why they hurt, and the setup that avoids them in web apps and CLI tools.
 ---
 
-:::note[Series]
-Part of the series [*.NET pitfalls*](/series/dotnet-pitfalls/).
-:::
 
 `HttpClient` is probably the most misused class in .NET. It implements `IDisposable`, so everyone
 wraps it in `using`. It looks like a lightweight object, so everyone creates a new one per call. Both

@@ -6,9 +6,6 @@ tags: [caching, dotnet, aspnetcore, performance]
 excerpt: Four caching interfaces that grew over the years, copy-pasted cache-aside code and a cache stampede waiting to happen. Why IMemoryCache and IDistributedCache aren't enough on their own, what .NET 9's HybridCache fixes, and the thin abstraction I put on top.
 ---
 
-:::note[Series]
-Part of the series [*Caching & data*](/series/caching-and-data/).
-:::
 
 In one codebase I worked on, a code review uncovered **four different caching interfaces**: one for
 "secondary" caching, a generic Redis cache, a request cache and a caching service. None of them was

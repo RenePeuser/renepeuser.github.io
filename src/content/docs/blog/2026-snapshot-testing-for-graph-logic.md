@@ -6,9 +6,6 @@ tags: [testing, architecture, dotnet]
 excerpt: When deleting one entity cascades through a graph of relations, classic assertions miss exactly the bugs that hurt most — the relation that wasn't deleted and the neighbour that was. Why snapshotting the whole graph, plus a generated visual diff, works better.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 Most business objects can be tested in isolation. An invoice is an invoice; you create one, change
 it, check it. But some domains are **graphs**: entities connected by relations, where one operation

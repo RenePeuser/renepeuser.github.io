@@ -6,9 +6,6 @@ tags: [testing, security, aspnetcore]
 excerpt: A bug only happens for one kind of user, so someone pastes a bearer token into a test and swaps the header on the shared client. How to run API tests as specific users, in-process and against deployed environments, without leaking tokens or breaking unrelated tests.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 Sooner or later every API team gets a bug that only happens for certain users. A sales rep sees
 orders they shouldn't see. A customer admin can't delete an address. The reflex is understandable:

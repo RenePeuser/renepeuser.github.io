@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, error-handling, code-quality]
 excerpt: Every endpoint wrapped in try/catch, every catch returning BadRequest with a different body. Why that pattern hurts, what replaces it, the few places where try/catch is still right, and how to make the rule something the build checks.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 This is one of the first things I look for in a code review of an API, and one of the most common
 findings:

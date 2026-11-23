@@ -7,9 +7,6 @@ tags: [aws, containers, devops, tooling]
 excerpt: The pipeline is green, the fix doesn't work, and everyone suspects the deployment. How to find out which image an ECS service is actually running, pull it from ECR, look inside without starting it, and make the answer a one-liner next time.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 Every team has had this conversation. The bug fix is merged, the pipeline is green, the deployment says
 "succeeded", and the bug is still there. Is the fix wrong? Did the deployment pick up an old image? Is

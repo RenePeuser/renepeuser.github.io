@@ -1,10 +1,16 @@
 ---
 // Starlight Pagination override: adds Giscus comments (GitHub Discussions) below blog posts only.
+// Posts that belong to a series get the series navigation instead of the chronological prev/next links.
 import Default from '@astrojs/starlight/components/Pagination.astro';
+import SeriesNav from './series/SeriesNav.astro';
+import { findSeriesForPost } from '../data/series.mjs';
 
 const route = Astro.locals.starlightRoute;
 const isBlogPost = route.id.startsWith('blog/') && 'date' in route.entry.data && route.entry.data.date;
+const inSeries = isBlogPost && Boolean(findSeriesForPost(route.id.slice('blog/'.length)));
 ---
+
+{inSeries && <SeriesNav position="bottom" />}
 
 {
 	isBlogPost && (
@@ -44,7 +50,7 @@ const isBlogPost = route.id.startsWith('blog/') && 'date' in route.entry.data &&
 		</section>
 	)
 }
-<Default />
+{!inSeries && <Default />}
 
 <style>
 	.comments {

@@ -6,9 +6,6 @@ tags: [testing, aspnetcore, api-design]
 excerpt: Test-first for APIs isn't about red-green ceremony. It forces you to be the first consumer of your own endpoint, to think about security before data, and to build the endpoints your tests need. A step-by-step walk-through with a minimal API.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 "We'll add the tests once the endpoint works." I've heard that sentence in every team I've worked
 with, and I've said it myself. What usually follows is an endpoint that works, a test that was

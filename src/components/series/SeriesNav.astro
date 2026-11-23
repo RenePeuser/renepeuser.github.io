@@ -1,0 +1,174 @@
+---
+// In-post series navigation. `top`: "Part 3 of 11 · Series" banner below the title.
+// `bottom`: previous/next post in the series plus the full chapter list.
+import { Icon } from '@astrojs/starlight/components';
+import type { StarlightIcon } from '@astrojs/starlight/types';
+import { findGroup, findSeriesForPost } from '../../data/series.mjs';
+import { getSeriesPosts } from './posts';
+
+interface Props {
+	position: 'top' | 'bottom';
+}
+
+const route = Astro.locals.starlightRoute;
+const slug = route.id.startsWith('blog/') ? route.id.slice('blog/'.length) : undefined;
+const s = slug ? findSeriesForPost(slug) : undefined;
+const posts = s ? await getSeriesPosts(s) : [];
+const index = posts.findIndex((p) => p.slug === slug);
+const prev = index > 0 ? posts[index - 1] : undefined;
+const next = index >= 0 && index < posts.length - 1 ? posts[index + 1] : undefined;
+const { position } = Astro.props;
+const accent = `--accent: ${(s && findGroup(s.group)?.accent) ?? 'var(--sl-color-accent)'}`;
+---
+
+{
+	s && index >= 0 && position === 'top' && (
+		<a class="series-banner not-content" href={`/series/${s.slug}/`} style={accent}>
+			<Icon name={s.icon as StarlightIcon} size="1rem" />
+			<span>
+				Part {index + 1} of {posts.length} · <strong>{s.title}</strong>
+			</span>
+		</a>
+	)
+}
+
+{
+	s && index >= 0 && position === 'bottom' && (
+		<nav class="series-nav not-content" aria-label={`More from the series ${s.title}`} style={accent}>
+			<p class="label">
+				Series: <a href={`/series/${s.slug}/`}>{s.title}</a> · part {index + 1} of {posts.length}
+			</p>
+			<div class="prev-next">
+				{prev ? (
+					<a class="step prev" href={prev.href} rel="prev">
+						<span class="dir">← Previous</span>
+						<span class="title">{prev.title}</span>
+					</a>
+				) : (
+					<span />
+				)}
+				{next ? (
+					<a class="step next" href={next.href} rel="next">
+						<span class="dir">Next →</span>
+						<span class="title">{next.title}</span>
+					</a>
+				) : (
+					<a class="step next" href={`/series/${s.slug}/`}>
+						<span class="dir">Series complete ✓</span>
+						<span class="title">Back to the overview</span>
+					</a>
+				)}
+			</div>
+			<details>
+				<summary>All {posts.length} parts of this series</summary>
+				<ol>
+					{posts.map((p, i) => (
+						<li>
+							{i === index ? (
+								<span aria-current="page">{p.title}</span>
+							) : (
+								<a href={p.href}>{p.title}</a>
+							)}
+						</li>
+					))}
+				</ol>
+			</details>
+		</nav>
+	)
+}
+
+<style>
+	.series-banner {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-top: 1rem;
+		padding: 0.35rem 0.85rem;
+		border: 1px solid var(--accent);
+		border-radius: 999px;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-white);
+		text-decoration: none;
+		background: color-mix(in srgb, var(--accent) 14%, transparent);
+	}
+	.series-banner :global(svg) {
+		color: var(--accent);
+	}
+	.series-banner:hover {
+		background: color-mix(in srgb, var(--accent) 24%, transparent);
+	}
+	.series-banner strong {
+		font-weight: 600;
+	}
+	.series-nav {
+		margin-top: 3rem;
+		padding: 1.25rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-top: 3px solid var(--accent);
+		border-radius: 0.75rem;
+		background: var(--sl-color-gray-7, var(--sl-color-gray-6));
+	}
+	.label {
+		margin: 0 0 1rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+	.label a {
+		color: var(--sl-color-accent-high);
+	}
+	.prev-next {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+		gap: 0.75rem;
+	}
+	.step {
+		display: grid;
+		gap: 0.25rem;
+		padding: 0.85rem 1rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		text-decoration: none;
+		color: inherit;
+		background: var(--sl-color-bg);
+	}
+	.step:hover,
+	.step:focus-visible {
+		border-color: var(--accent);
+	}
+	.step.next {
+		text-align: end;
+	}
+	.dir {
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	.step .title {
+		font-weight: 600;
+		color: var(--sl-color-white);
+		line-height: 1.4;
+	}
+	details {
+		margin-top: 1rem;
+		font-size: var(--sl-text-sm);
+	}
+	summary {
+		cursor: pointer;
+		color: var(--sl-color-gray-2);
+	}
+	details ol {
+		margin: 0.75rem 0 0;
+		padding-inline-start: 1.5rem;
+		display: grid;
+		gap: 0.3rem;
+	}
+	details a {
+		color: var(--sl-color-gray-2);
+	}
+	details a:hover {
+		color: var(--sl-color-accent-high);
+	}
+	[aria-current='page'] {
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+</style>

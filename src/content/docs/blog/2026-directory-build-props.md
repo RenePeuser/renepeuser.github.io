@@ -6,9 +6,6 @@ tags: [dotnet, tooling, code-quality]
 excerpt: Thirty project files, each with its own idea of the target framework, nullable setting and warning level. How Directory.Build.props gives a solution one baseline, what belongs in it, what belongs in Directory.Build.targets, and the traps that make settings silently not apply.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 Here's a quick test for any solution: open five random `.csproj` files side by side. Do they agree on
 the target framework? On `Nullable`? On whether warnings fail the build? In most codebases I've

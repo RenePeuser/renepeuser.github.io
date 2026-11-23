@@ -6,9 +6,6 @@ tags: [terraform, azure, devops]
 excerpt: A missing state container, a stuck state lock, a provider update that broke a pipeline nobody touched, and a date setting that changes on every run. Eight Terraform problems from real Azure pipelines, what causes them and how to get out.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 Terraform is great until the pipeline goes red on a Monday morning with an error message that reads
 like it was written for the provider authors, not for you. Most of those errors aren't really

@@ -1,0 +1,135 @@
+---
+// Intro block at the top of the blog index (/blog/ and its pagination pages).
+import { Icon } from '@astrojs/starlight/components';
+import type { StarlightIcon } from '@astrojs/starlight/types';
+import { getCollection } from 'astro:content';
+import { getPosts, series, seriesGroups } from './posts';
+
+const posts = await getPosts();
+const entries = await getCollection('docs', (e) => e.id.startsWith('blog/') && !(import.meta.env.PROD && e.data.draft));
+const tags = new Set(entries.flatMap((e) => (Array.isArray(e.data.tags) ? e.data.tags : [])));
+---
+
+<section class="blog-intro not-content">
+	<p class="eyebrow">Blog</p>
+	<p class="headline">Notes from more than two decades of .NET engineering</p>
+	<p class="lead">
+		APIs, architecture, testing, tooling and teamwork: practical lessons from real projects, with code you can use.
+		Read the latest posts below or browse by series.
+	</p>
+	<div class="stats">
+		<span><strong>{posts.size}</strong> posts</span>
+		<span><strong>{series.length}</strong> series</span>
+		<span><strong>{tags.size}</strong> tags</span>
+	</div>
+	<div class="actions">
+		<a class="primary" href="/series/">Browse by series →</a>
+		<a class="secondary" href="/blog/rss.xml">RSS feed</a>
+	</div>
+	<ul class="topics">
+		{
+			seriesGroups.map((g) => (
+				<li>
+					<a href="/series/" style={`--accent: ${g.accent}`}>
+						<Icon name={g.icon as StarlightIcon} size="0.9rem" />
+						{g.title}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.blog-intro {
+		margin-top: 0.5rem;
+		padding: 1.75rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.75rem;
+		background:
+			radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--sl-color-accent) 22%, transparent), transparent 55%),
+			var(--sl-color-bg);
+	}
+	.eyebrow {
+		margin: 0;
+		font-size: var(--sl-text-xs);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--sl-color-accent-high);
+	}
+	.headline {
+		margin: 0.4rem 0 0;
+		font-size: var(--sl-text-h2);
+		font-weight: 600;
+		line-height: 1.2;
+		color: var(--sl-color-white);
+	}
+	.lead {
+		margin: 0.75rem 0 0;
+		max-width: 60ch;
+		color: var(--sl-color-gray-2);
+	}
+	.stats {
+		display: flex;
+		gap: 1.5rem;
+		margin-top: 1.25rem;
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+	}
+	.stats strong {
+		color: var(--sl-color-white);
+		font-size: var(--sl-text-lg);
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.25rem;
+	}
+	.actions a {
+		padding: 0.5rem 1.1rem;
+		border-radius: 999px;
+		font-size: var(--sl-text-sm);
+		font-weight: 600;
+		text-decoration: none;
+	}
+	.primary {
+		color: var(--sl-color-text-invert);
+		background: var(--sl-color-accent);
+	}
+	.secondary {
+		color: var(--sl-color-white);
+		border: 1px solid var(--sl-color-gray-4);
+	}
+	.primary:hover,
+	.secondary:hover {
+		filter: brightness(1.1);
+	}
+	.topics {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		list-style: none;
+		padding: 0;
+		margin: 1.5rem 0 0;
+	}
+	.topics a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.2rem 0.7rem;
+		border-radius: 999px;
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+		border: 1px solid var(--sl-color-gray-5);
+		text-decoration: none;
+	}
+	.topics a :global(svg) {
+		color: var(--accent);
+	}
+	.topics a:hover {
+		border-color: var(--accent);
+		color: var(--sl-color-white);
+	}
+</style>

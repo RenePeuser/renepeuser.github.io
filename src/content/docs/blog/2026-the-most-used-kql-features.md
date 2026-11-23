@@ -6,9 +6,6 @@ tags: [observability, azure]
 excerpt: KQL has hundreds of operators and functions. A dozen of them cover almost every incident. The operators, functions and let tricks I reach for most, plus a complete health-check query and the integer-division bug hiding in it.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 The KQL reference lists hundreds of operators and functions. In practice, I use about a dozen of them
 in almost every query, and a few more every couple of weeks. When one team I worked with wrote their

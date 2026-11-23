@@ -6,9 +6,6 @@ tags: [dotnet, nuget, tooling]
 excerpt: Forty projects, three versions of the same logging package and a downgrade warning nobody can explain. How Central Package Management with Directory.Packages.props fixes version drift, how to migrate, and which tools quietly break when you do.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 Open any solution that has grown for a few years and search for one popular package across all
 `.csproj` files. Chances are you'll find it in three different versions. One project was updated

@@ -6,9 +6,6 @@ tags: [testing, devops, dotnet]
 excerpt: The production pipeline that runs its tests against staging, the tenant-specific tests that are commented out before every commit, and three developers deleting each other's test data on QA. How to run the same integration tests against several environments without copying them.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 In one codebase I worked on, the pipelines looked healthy: develop ran its tests against the
 develop environment, staging against staging, and production... also against staging. Nobody had

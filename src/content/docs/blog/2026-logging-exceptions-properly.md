@@ -6,9 +6,6 @@ tags: [dotnet, error-handling, observability]
 excerpt: The same exception logged three times, a message without a stack trace and no way to find the request it belonged to. How to log exceptions so the person on support duty can actually use the logs, with structured logging, scopes and correlation IDs.
 ---
 
-:::note[Series]
-Part of the series [*Validation & error handling*](/series/validation-and-error-handling/).
-:::
 
 Here's a situation I've been in more than once. A user reports that saving an order failed. You open
 the log search, filter for the time window, and find this:

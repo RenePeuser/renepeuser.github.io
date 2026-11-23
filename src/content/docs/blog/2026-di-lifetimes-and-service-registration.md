@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, dependency-injection, architecture]
 excerpt: Singleton, scoped, transient, captive dependencies, and a Program.cs with 150 AddScoped lines nobody understands. How I structure registrations per feature, and how to let the container catch lifetime bugs before production does.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 At some point every growing API reaches the same state: a startup method with a hundred and fifty
 `services.AddScoped<...>()` lines, sorted by nothing in particular. You add a new service, it fails at

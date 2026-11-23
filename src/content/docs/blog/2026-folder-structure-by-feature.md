@@ -6,9 +6,6 @@ tags: [architecture, aspnetcore, dotnet]
 excerpt: Four ways to lay out the folders of an ASP.NET Core API, what each one optimizes for and where each one breaks. Plus the structure I recommend today, the namespace trick that keeps it readable, and how registration flows from Program.cs down to a single endpoint.
 ---
 
-:::note[Series]
-Part of the series [*Architecture in practice*](/series/architecture-in-practice/).
-:::
 
 Folder structure is the one architecture decision every developer on the team sees every day. It's
 also the one that's hardest to change later, because moving 400 files breaks every open pull

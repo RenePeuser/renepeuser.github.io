@@ -1,0 +1,55 @@
+---
+// Starlight SocialIcons override: puts the main site navigation (Blog · Series · Profile) into the
+// header, right before the social icons. On small screens the header group is hidden and the same
+// three areas are available as topics at the top of the mobile menu instead.
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+
+const id = Astro.locals.starlightRoute.id;
+const area = id === 'blog' || id.startsWith('blog/') ? 'blog' : id === 'series' || id.startsWith('series/') ? 'series' : id === '' || id === 'index' ? undefined : 'profile';
+
+const links = [
+	{ key: 'blog', label: 'Blog', href: '/blog/' },
+	{ key: 'series', label: 'Series', href: '/series/' },
+	{ key: 'profile', label: 'Profile', href: '/about/profile/' },
+];
+---
+
+<nav class="site-nav" aria-label="Main">
+	{
+		links.map((l) => (
+			<a href={l.href} aria-current={area === l.key ? 'page' : undefined}>
+				{l.label}
+			</a>
+		))
+	}
+</nav>
+<Default />
+
+<style>
+	.site-nav {
+		display: flex;
+		gap: 0.25rem;
+		align-items: center;
+		margin-inline-end: 0.5rem;
+	}
+	.site-nav a {
+		padding: 0.3rem 0.75rem;
+		border-radius: 999px;
+		font-size: var(--sl-text-sm);
+		font-weight: 500;
+		color: var(--sl-color-gray-2);
+		text-decoration: none;
+	}
+	.site-nav a:hover {
+		color: var(--sl-color-white);
+		background: var(--sl-color-gray-6);
+	}
+	.site-nav a[aria-current='page'] {
+		color: var(--sl-color-text-invert);
+		background: var(--sl-color-accent);
+	}
+	/* The mobile menu footer renders SocialIcons too; there the topic list already covers navigation. */
+	:global(.mobile-preferences) .site-nav {
+		display: none;
+	}
+</style>

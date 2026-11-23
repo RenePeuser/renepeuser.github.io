@@ -1,0 +1,163 @@
+---
+// Numbered chapter list of one series: title, short description and reading time per post.
+import { Badge, Icon } from '@astrojs/starlight/components';
+import type { StarlightIcon } from '@astrojs/starlight/types';
+import { findGroup } from '../../data/series.mjs';
+import { formatMinutes, getSeriesPosts, series } from './posts';
+
+interface Props {
+	slug: string;
+}
+
+const s = series.find((x) => x.slug === Astro.props.slug);
+if (!s) throw new Error(`Unknown series "${Astro.props.slug}" in SeriesChapters`);
+const group = findGroup(s.group);
+const posts = await getSeriesPosts(s);
+const total = posts.reduce((sum, p) => sum + p.minutes, 0);
+---
+
+<div class="series-head not-content" style={`--accent: ${group?.accent ?? 'var(--sl-color-accent)'}`}>
+	{
+		group && (
+			<a class="group-chip" href="/series/">
+				<Icon name={group.icon as StarlightIcon} size="0.9rem" />
+				{group.title}
+			</a>
+		)
+	}
+	<div class="stats">
+		<span><strong>{posts.length}</strong> {posts.length === 1 ? 'post' : 'posts'}</span>
+		<span><strong>{formatMinutes(total)}</strong> reading time</span>
+	</div>
+	{
+		posts[0] && (
+			<a class="start" href={posts[0].href}>
+				Start with part 1 →
+			</a>
+		)
+	}
+</div>
+
+<ol class="chapters not-content" style={`--accent: ${group?.accent ?? 'var(--sl-color-accent)'}`}>
+	{
+		posts.map((post, index) => (
+			<li>
+				<a href={post.href} class="chapter">
+					<span class="number" aria-hidden="true">
+						{String(index + 1).padStart(2, '0')}
+					</span>
+					<span class="body">
+						<span class="title">
+							{post.title}
+							{post.draft && <Badge text="draft" variant="caution" />}
+						</span>
+						{post.excerpt && <span class="excerpt">{post.excerpt}</span>}
+						<span class="meta">{formatMinutes(post.minutes)} read</span>
+					</span>
+				</a>
+			</li>
+		))
+	}
+</ol>
+
+<style>
+	.series-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem 1.5rem;
+		margin-top: 1.5rem;
+		padding: 1rem 1.25rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-inline-start: 4px solid var(--accent);
+		border-radius: 0.5rem;
+	}
+	.group-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.2rem 0.7rem;
+		border-radius: 999px;
+		font-size: var(--sl-text-xs);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--accent);
+		border: 1px solid var(--accent);
+		text-decoration: none;
+	}
+	.stats {
+		display: flex;
+		gap: 1.25rem;
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+	}
+	.stats strong {
+		color: var(--sl-color-white);
+	}
+	.start {
+		margin-inline-start: auto;
+		padding: 0.45rem 1rem;
+		border-radius: 999px;
+		font-size: var(--sl-text-sm);
+		font-weight: 600;
+		text-decoration: none;
+		color: var(--sl-color-text-invert);
+		background: var(--sl-color-accent);
+	}
+	.start:hover {
+		filter: brightness(1.1);
+	}
+	.chapters {
+		list-style: none;
+		padding: 0;
+		margin: 1.5rem 0 0;
+		display: grid;
+		gap: 0.75rem;
+	}
+	.chapter {
+		display: flex;
+		gap: 1rem;
+		align-items: flex-start;
+		padding: 1rem 1.25rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		text-decoration: none;
+		color: inherit;
+		transition:
+			border-color 0.15s ease,
+			background-color 0.15s ease;
+	}
+	.chapter:hover,
+	.chapter:focus-visible {
+		border-color: var(--accent);
+		background-color: var(--sl-color-gray-7, var(--sl-color-gray-6));
+	}
+	.number {
+		flex: none;
+		font-family: var(--sl-font-mono);
+		font-size: var(--sl-text-lg);
+		font-weight: 600;
+		color: var(--accent);
+		min-width: 2ch;
+		line-height: 1.4;
+	}
+	.body {
+		display: grid;
+		gap: 0.25rem;
+	}
+	.title {
+		font-weight: 600;
+		color: var(--sl-color-white);
+		line-height: 1.4;
+	}
+	.excerpt {
+		color: var(--sl-color-gray-2);
+		font-size: var(--sl-text-sm);
+		line-height: 1.5;
+	}
+	.meta {
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-xs);
+	}
+</style>

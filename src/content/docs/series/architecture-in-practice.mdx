@@ -1,22 +1,13 @@
 ---
 title: Architecture in practice
 description: Patterns for structuring .NET backends that hold up in real projects — vertical slices, CQRS, context objects, contracts and the lessons from applying them at scale.
+tableOfContents: false
 ---
 
-import { LinkCard } from '@astrojs/starlight/components';
+import SeriesChapters from '../../../components/series/SeriesChapters.astro';
 
 Architecture diagrams are easy. Keeping a backend structured after years of features, several teams
 and a few rewrites is the hard part. This series collects the patterns I keep coming back to,
 including the lessons from places where they didn't work out.
 
-<LinkCard title="Stop fetching the same data five times — the Request Context Builder" href="/blog/2026-request-context-builder/" />
-<LinkCard title="Vertical slices — why I cut the code by feature, not by layer" href="/blog/2026-vertical-slices/" />
-<LinkCard title="Folder structure: by technology, by domain, by feature or by feature and action?" href="/blog/2026-folder-structure-by-feature/" />
-<LinkCard title="Anatomy of a minimal endpoint" href="/blog/2026-anatomy-of-a-minimal-endpoint/" />
-<LinkCard title="Mapping as an anti-corruption layer" href="/blog/2026-mapping-as-anti-corruption-layer/" />
-<LinkCard title="CQRS with MediatR, without the ceremony" href="/blog/2026-cqrs-with-mediatr-without-ceremony/" />
-<LinkCard title="MediatR pipeline behaviors: validation and caching without touching a handler" href="/blog/2026-mediatr-pipeline-behaviors/" />
-<LinkCard title="A command that needs several queries" href="/blog/2026-command-with-several-queries/" />
-<LinkCard title="The cost of indirection: F12 debugging and benchmarking MediatR against direct calls" href="/blog/2026-cost-of-indirection/" />
-<LinkCard title="A shared contracts library between API and clients" href="/blog/2026-shared-contracts-library/" />
-<LinkCard title="Lightweight ADRs: write down why, not just what" href="/blog/2026-lightweight-adrs/" />
+<SeriesChapters slug="architecture-in-practice" />

@@ -6,9 +6,6 @@ tags: [testing, aspnetcore, api-design]
 excerpt: Most API test suites test the happy path of GET and call it a day. A repeatable checklist per HTTP verb, from the 401 to the "deleted means gone" check, plus the setup and cleanup rules that keep those tests independent of each other and of the system state.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 When I review an API test suite, I don't read the tests first. I list the endpoints and ask, for
 each one: *where's the 401 test? Where's the 404 for a missing parent? What proves that a DELETE

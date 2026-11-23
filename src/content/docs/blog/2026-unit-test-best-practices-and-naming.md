@@ -6,9 +6,6 @@ tags: [testing, dotnet, code-quality]
 excerpt: A test called CalculateSomething with five asserts tells you one thing when it fails, and you have to run it five times to learn the rest. Naming conventions, test class structure and assertion habits that make a failing unit test explain itself.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 I can usually tell how a team feels about its unit tests by reading the test explorer, without opening
 a single file. `Test1`, `CalculateTest`, `PriceCalculatorTests.Works`, `Bug4711`. When test names look

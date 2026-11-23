@@ -6,9 +6,6 @@ tags: [caching, dotnet, performance, devops]
 excerpt: A Redis "timeout awaiting response" almost never means Redis is slow. The StackExchange.Redis timeout message contains everything you need to tell thread pool starvation, large values and an overloaded server apart, if you know how to read it.
 ---
 
-:::note[Series]
-Part of the series [*Caching & data*](/series/caching-and-data/).
-:::
 
 The integration tests ran fine on every developer machine. They ran fine against the dev
 environment. In the CI pipeline, every now and then, they failed with this:

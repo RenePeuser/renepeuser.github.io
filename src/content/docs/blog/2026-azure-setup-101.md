@@ -6,9 +6,6 @@ tags: [azure, terraform, configuration, security, aspnetcore]
 excerpt: The checklist I wish every new service started with. A separate storage account for Terraform state, Key Vault with RBAC and managed identities, App Configuration with Key Vault references, and an "infra first" walking skeleton, all without a single secret in a pipeline variable.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 The first week of a new service decides a lot. If secrets end up in pipeline variables, they stay there
 for years. If the Terraform state shares a storage account with application data, someone will delete

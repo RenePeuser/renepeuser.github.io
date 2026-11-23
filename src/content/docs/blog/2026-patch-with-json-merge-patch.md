@@ -6,9 +6,6 @@ tags: [api-design, aspnetcore, json]
 excerpt: A C# DTO can't tell you whether the client sent a description set to null or didn't send the description at all. That's the whole difficulty of PATCH. How JSON Merge Patch defines the semantics, how to detect property presence in minimal APIs, and how to get a usable OpenAPI schema out of it.
 ---
 
-:::note[Series]
-Part of the series [*REST & OpenAPI design*](/series/rest-and-openapi-design/).
-:::
 
 Sooner or later every API gets a `PATCH` endpoint, and the first version almost always looks like
 this:

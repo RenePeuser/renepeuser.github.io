@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, minimal-apis, architecture]
 excerpt: Minimal APIs were rejected as "unmaintainable for large projects", and later a similar team built their whole endpoint structure on them. What actually differs between controllers and minimal APIs in 2026, and the per-feature structure that makes either one scale.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 When minimal APIs came out with .NET 6, a backend guideline I worked with contained a clear
 decision: *we will not use minimal APIs, because they don't scale to large projects.

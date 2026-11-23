@@ -6,9 +6,6 @@ tags: [testing, containers]
 excerpt: The in-memory database that happily accepts what PostgreSQL would reject, and the shared dev database that three test runs fight over. How Testcontainers gives every test run its own real database and cache, wired into a WebApplicationFactory, and what it costs.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 Integration tests need the things your API talks to: a database, a cache, maybe a message broker.
 Most teams pick one of two options, and both have a catch. Either the tests use a fake (the EF Core

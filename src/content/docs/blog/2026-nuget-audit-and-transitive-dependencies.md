@@ -6,9 +6,6 @@ tags: [dotnet, nuget, security, tooling]
 excerpt: dotnet build is green, dotnet publish fails with NU1903 for a package nobody in the team has ever heard of. How NuGet audit works, why the restore graph of publish differs from build, how to find out who pulls in a transitive dependency, and how to fix or suppress findings without switching the whole check off.
 ---
 
-:::note[Series]
-Part of the series [*Code quality & tooling*](/series/code-quality-and-tooling/).
-:::
 
 Here's a situation I ran into in one codebase: `dotnet restore` succeeds, `dotnet build` succeeds, all tests
 pass. Then the release pipeline runs `dotnet publish` for a Linux deployment and fails:

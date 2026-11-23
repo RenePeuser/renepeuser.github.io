@@ -6,9 +6,6 @@ tags: [scrum]
 excerpt: We started with planning poker and spent too much time arguing whether something was a 3 or a 5. T-shirt sizes with one developer presenting each story worked much better. Plus why a hello-world reference story is useless and what a realistic one looks like.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 Estimation is the Scrum practice people argue about the most, and often the one where teams spend the
 most time for the least value. Few things in a refinement are less useful than a long debate about

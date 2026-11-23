@@ -6,9 +6,6 @@ tags: [caching, dotnet, performance]
 excerpt: Most .NET codebases use Redis as a big dictionary of serialized JSON. That works until you need to change one field, count something or answer "is X in Y?". A practical tour of strings, lists, sets, sorted sets and hashes with StackExchange.Redis, and when to use which.
 ---
 
-:::note[Series]
-Part of the series [*Caching & data*](/series/caching-and-data/).
-:::
 
 Open almost any .NET codebase that uses Redis and you'll find the same thing: an `ICache` with
 `GetAsync<T>` and `SetAsync<T>`, and underneath it a `JsonSerializer.Serialize` followed by

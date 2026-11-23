@@ -6,9 +6,6 @@ tags: [devops, tooling]
 excerpt: A rebase that went wrong, a hard reset on the wrong branch, a deleted branch with a week of work. In almost every case the commits are still there, and git reflog tells you where. How to read it, how to recover safely, and the few cases where even the reflog can't help.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 Sooner or later, everyone has the moment. You rebased a long-running branch, resolved fifteen conflicts,
 pushed with `--force`, and then notice that half of a feature is gone. Or you ran `git reset --hard` on

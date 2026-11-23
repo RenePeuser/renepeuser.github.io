@@ -1,0 +1,138 @@
+---
+// All series, grouped by theme. Each card shows icon, description, post count and reading time.
+import { Icon } from '@astrojs/starlight/components';
+import type { StarlightIcon } from '@astrojs/starlight/types';
+import { formatMinutes, getSeriesPosts, series, seriesGroups } from './posts';
+
+const groups = await Promise.all(
+	seriesGroups.map(async (group) => ({
+		...group,
+		items: await Promise.all(
+			series
+				.filter((s) => s.group === group.id)
+				.map(async (s) => {
+					const posts = await getSeriesPosts(s);
+					return { ...s, count: posts.length, minutes: posts.reduce((sum, p) => sum + p.minutes, 0) };
+				}),
+		),
+	})),
+);
+---
+
+<div class="series-overview not-content">
+	{
+		groups
+			.filter((g) => g.items.length > 0)
+			.map((group) => (
+				<section class="group" style={`--accent: ${group.accent}`}>
+					<header>
+						<Icon name={group.icon as StarlightIcon} size="1.5rem" class="group-icon" />
+						<div>
+							<h2>{group.title}</h2>
+							<p>{group.description}</p>
+						</div>
+					</header>
+					<div class="cards">
+						{group.items.map((s) => (
+							<a class="card" href={`/series/${s.slug}/`}>
+								<Icon name={s.icon as StarlightIcon} size="1.25rem" class="card-icon" />
+								<span class="card-title">{s.title}</span>
+								<span class="card-description">{s.description}</span>
+								<span class="card-meta">
+									{s.count} posts · {formatMinutes(s.minutes)}
+								</span>
+							</a>
+						))}
+					</div>
+				</section>
+			))
+	}
+</div>
+
+<style>
+	.series-overview {
+		display: grid;
+		gap: 2.5rem;
+		margin-top: 2rem;
+	}
+	.group header {
+		display: flex;
+		gap: 0.75rem;
+		align-items: flex-start;
+		margin-bottom: 1rem;
+	}
+	.group h2 {
+		font-size: var(--sl-text-h4);
+		margin: 0;
+		color: var(--sl-color-white);
+	}
+	.group header p {
+		margin: 0.25rem 0 0;
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-sm);
+	}
+	:global(.group-icon) {
+		color: var(--accent);
+		margin-top: 0.15rem;
+		flex: none;
+	}
+	.cards {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+	}
+	.card {
+		position: relative;
+		overflow: hidden;
+		display: grid;
+		gap: 0.4rem;
+		align-content: start;
+		padding: 1.1rem 1.25rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		text-decoration: none;
+		color: inherit;
+		transition:
+			border-color 0.15s ease,
+			transform 0.15s ease;
+	}
+	/* Accent stripe in the color of the series group. */
+	.card::before {
+		content: '';
+		position: absolute;
+		inset: 0 0 auto;
+		height: 3px;
+		background: var(--accent);
+	}
+	.card:hover,
+	.card:focus-visible {
+		border-color: var(--accent);
+		transform: translateY(-2px);
+		box-shadow: 0 12px 30px -18px var(--accent);
+	}
+	:global(.card-icon) {
+		color: var(--accent);
+	}
+	.card-title {
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	.card-description {
+		color: var(--sl-color-gray-2);
+		font-size: var(--sl-text-sm);
+		line-height: 1.5;
+	}
+	.card-meta {
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-xs);
+		margin-top: 0.25rem;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.card {
+			transition: none;
+		}
+		.card:hover {
+			transform: none;
+		}
+	}
+</style>

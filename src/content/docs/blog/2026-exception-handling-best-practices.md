@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, error-handling]
 excerpt: Swallowed exceptions, `throw ex`, catch blocks that only rethrow and a try/catch around every method. The habits that make failures hard to find, and a setup where you throw a meaningful exception and one central handler does the rest.
 ---
 
-:::note[Series]
-Part of the series [*Validation & error handling*](/series/validation-and-error-handling/).
-:::
 
 Almost every codebase I review has the same two kinds of exception handling. Half the methods have
 a `try`/`catch` that logs "Something went wrong" and carries on. The other half have no handling at

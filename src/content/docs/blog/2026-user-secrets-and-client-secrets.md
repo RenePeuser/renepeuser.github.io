@@ -6,9 +6,6 @@ tags: [dotnet, aspnetcore, security, configuration]
 excerpt: User secrets are not encrypted, client secrets expire on a Friday, and the appsettings.json in your Git history still contains last year's password. Where secrets should live during development and in production, and how to stop needing most of them.
 ---
 
-:::note[Series]
-Part of the series [*ASP.NET Core from the ground up*](/series/aspnetcore-from-the-ground-up/).
-:::
 
 Search any company's Git history for `ClientSecret` and you'll find something. Usually it's a
 placeholder like `"I am a secret"`. Sometimes it's a real value that was committed "just for a quick

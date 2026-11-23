@@ -6,9 +6,6 @@ tags: [observability, aspnetcore]
 excerpt: An API with no users produced thousands of telemetry items in a few days, all health checks and Always On pings. How to filter that noise with telemetry processors or OpenTelemetry, why "Contains" is the wrong match, and how to test that your filter drops only what it should.
 ---
 
-:::note[Series]
-Part of the series [*Cloud, DevOps & observability*](/series/cloud-devops-observability/).
-:::
 
 In one project I worked on, a freshly deployed API had collected about **16,000 telemetry items in
 three days**. Not a single real user had called it yet. Everything was noise: health checks, the

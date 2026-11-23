@@ -6,9 +6,6 @@ tags: [testing, aspnetcore]
 excerpt: A bug report arrives as a Postman request, a consuming team asks how to call your API, and your tests are written in object initializers nobody else can use. How to keep test data in the format that travels, turn every test call into a curl command, and turn real requests into tests.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 Two messages I get in some form almost every week:
 

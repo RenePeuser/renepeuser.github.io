@@ -6,9 +6,6 @@ tags: [scrum]
 excerpt: When six Scrum teams had to be reshuffled for new challenges, we used a simple 0/1/2 competence matrix, explicitly for growth and not for blame, and took social dynamics as seriously as skills. A template and the rules that made it work.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 Team composition is usually decided in a meeting room the developers never enter. Someone looks at an
 org chart, moves a few names around, and the next Monday people find out which team they're in. Then

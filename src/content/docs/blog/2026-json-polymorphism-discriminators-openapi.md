@@ -6,9 +6,6 @@ tags: [aspnetcore, openapi, json, api-design]
 excerpt: One endpoint, many request shapes. `[JsonPolymorphic]` handles three payment methods nicely and turns into a merge-conflict magnet at thirty. Static attributes, runtime contract customization and schema transformers compared, with the pitfalls of each.
 ---
 
-:::note[Series]
-Part of the series [*REST & OpenAPI design*](/series/rest-and-openapi-design/).
-:::
 
 Most request bodies have one shape. Some don't. A customer adds a payment method, and depending on
 what they choose, the body looks completely different:

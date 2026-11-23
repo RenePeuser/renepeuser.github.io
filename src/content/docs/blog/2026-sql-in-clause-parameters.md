@@ -6,9 +6,6 @@ tags: [dotnet, data-access, performance]
 excerpt: WHERE Id IN (@p0, @p1, … @p1224) works fine in the test with ten IDs and times out in production with twelve hundred. Hard parameter limits per database, why large IN lists get slow long before that, and the better options, from batching to table-valued parameters, JSON and arrays.
 ---
 
-:::note[Series]
-Part of the series [*.NET pitfalls*](/series/dotnet-pitfalls/).
-:::
 
 Almost every data-access layer has a method like this somewhere:
 

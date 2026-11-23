@@ -6,9 +6,6 @@ tags: [testing, observability, dotnet]
 excerpt: The API answers 202 Accepted and the real work happens later in a background worker. Task.Delay makes those tests slow and flaky, test-only events pollute production code. Polling through the public API and listening to the telemetry the app already emits are the two patterns that work.
 ---
 
-:::note[Series]
-Part of the series [*Testing in practice*](/series/testing-in-practice/).
-:::
 
 The request-response tests from the earlier posts in this series have one comfortable property: when
 the response arrives, the work is done. A lot of real systems don't work that way. You place an order,

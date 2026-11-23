@@ -6,9 +6,6 @@ tags: [scrum, code-quality]
 excerpt: Half of the "bugs" that reach a team are missing features, user setup problems or changed minds. Our rule — it's only a bug if it deviates from an implemented user story — plus three cases for handling real bugs and a report template that makes them reproducible.
 ---
 
-:::note[Series]
-Part of the series [*Scrum in the real world*](/series/scrum-in-the-real-world/).
-:::
 
 "It's a bug." Few sentences carry more weight in a software project. A bug jumps the queue, it implies
 the team made a mistake, and it usually doesn't go through refinement. So everybody has an incentive
