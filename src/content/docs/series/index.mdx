@@ -1,0 +1,24 @@
+---
+title: Blog series
+description: All blog series at a glance — .NET, architecture, testing, tooling, cloud and Scrum in practice.
+draft: true
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+The blog is organized in series. Each series collects posts on one topic and can be read in order or
+by picking single posts.
+
+<CardGrid>
+  <LinkCard title="1 · ASP.NET Core from the ground up" description="Hosting, DI, configuration, security, errors, OpenAPI" href="/series/aspnetcore-from-the-ground-up/" />
+  <LinkCard title="2 · Architecture in practice" description="Vertical slices, CQRS, context objects, contracts" href="/series/architecture-in-practice/" />
+  <LinkCard title="3 · .NET pitfalls" description="HttpClient, async, nullability and other traps" href="/series/dotnet-pitfalls/" />
+  <LinkCard title="4 · Validation & error handling" description="Exceptions, logging, validation strategies" href="/series/validation-and-error-handling/" />
+  <LinkCard title="5 · REST & OpenAPI design" description="Soft delete, PATCH, polymorphism, breaking changes" href="/series/rest-and-openapi-design/" />
+  <LinkCard title="6 · Testing in practice" description="Integration tests, snapshots, AI-friendly tests" href="/series/testing-in-practice/" />
+  <LinkCard title="7 · Code quality & tooling" description="Central packages, analyzers, NuGet, CI" href="/series/code-quality-and-tooling/" />
+  <LinkCard title="8 · Caching & data" description="Redis, caching abstractions, Dapper" href="/series/caching-and-data/" />
+  <LinkCard title="9 · Cloud, DevOps & observability" description="Terraform, KQL, pipelines, containers" href="/series/cloud-devops-observability/" />
+  <LinkCard title="10 · Scrum in the real world" description="What worked with six teams — and what we dropped" href="/series/scrum-in-the-real-world/" />
+  <LinkCard title="From VB6 to self-defending codebases" description="Almost two decades of engineering, one thread" href="/series/from-vb6-to-self-defending-codebases/" />
+</CardGrid>

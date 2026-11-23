@@ -3,6 +3,47 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightBlog from 'starlight-blog';
 import mermaid from 'astro-mermaid';
+import { readFileSync } from 'node:fs';
+
+// Draft pages only exist in `astro dev`; linking them in a production build would fail.
+const isDev = process.argv.includes('dev');
+
+// The draft sidebar is built from the series pages: every <LinkCard href="/blog/..."> becomes an
+// entry, in the order the series page lists it. A new post only needs a LinkCard on its series page.
+const draftSeries = [
+	['aspnetcore-from-the-ground-up', '1 · ASP.NET Core from the ground up'],
+	['architecture-in-practice', '2 · Architecture in practice'],
+	['dotnet-pitfalls', '3 · .NET pitfalls'],
+	['validation-and-error-handling', '4 · Validation & error handling'],
+	['rest-and-openapi-design', '5 · REST & OpenAPI design'],
+	['testing-in-practice', '6 · Testing in practice'],
+	['code-quality-and-tooling', '7 · Code quality & tooling'],
+	['caching-and-data', '8 · Caching & data'],
+	['cloud-devops-observability', '9 · Cloud, DevOps & observability'],
+	['scrum-in-the-real-world', '10 · Scrum in the real world'],
+];
+const linkCard = /<LinkCard\s+title=(["'])(.*?)\1\s+href="(\/blog\/[^"]+)"/g;
+/** @param {string} slug */
+const seriesPosts = (slug) => {
+	const source = readFileSync(new URL(`./src/content/docs/series/${slug}.mdx`, import.meta.url), 'utf8');
+	return [...source.matchAll(linkCard)].map((m) => ({ label: m[2], link: m[3] }));
+};
+const draftSidebar = isDev
+	? [
+			{
+				label: 'Drafts (local only)',
+				badge: { text: 'draft', variant: 'caution' },
+				items: [
+					{ label: 'All series (overview)', slug: 'series' },
+					...draftSeries.map(([slug, label]) => ({
+						label,
+						collapsed: true,
+						items: [{ label: 'Series overview', slug: `series/${slug}` }, ...seriesPosts(slug)],
+					})),
+				],
+			},
+		]
+	: [];
 
 // https://astro.build/config
 export default defineConfig({
@@ -40,6 +81,7 @@ export default defineConfig({
 				{ icon: 'rss', label: 'RSS', href: 'https://renepeuser.github.io/blog/rss.xml' },
 			],
 			sidebar: [
+				...draftSidebar,
 				{
 					label: 'Blog series',
 					items: [{ label: 'From VB6 to self-defending codebases', slug: 'series/from-vb6-to-self-defending-codebases' }],
