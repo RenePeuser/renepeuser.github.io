@@ -20,3 +20,22 @@
 .hero .tagline {
 	max-width: 42ch;
 }
+
+/* Round portrait with an accent ring in the hero. */
+.hero img {
+	width: min(16rem, 60vw);
+	aspect-ratio: 1;
+	object-fit: cover;
+	border-radius: 50%;
+	border: 4px solid var(--sl-color-accent);
+	box-shadow: 0 0 0 10px var(--sl-color-accent-low), 0 20px 50px -20px rgb(0 0 0 / 0.5);
+}
+
+/* Mermaid diagrams: center and give some breathing room. */
+pre.mermaid,
+.mermaid {
+	display: flex;
+	justify-content: center;
+	background: transparent;
+	margin-block: 1.5rem;
+}

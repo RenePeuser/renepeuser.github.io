@@ -1,0 +1,24 @@
+---
+// Shows the most recent blog posts (data provided by starlight-blog).
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+interface Props {
+	count?: number;
+}
+
+const { count = 4 } = Astro.props;
+const posts = (Astro.locals.starlightBlog?.posts ?? []).filter((p) => !p.draft).slice(0, count);
+const fmt = new Intl.DateTimeFormat('en', { dateStyle: 'medium' });
+---
+
+<CardGrid>
+	{
+		posts.map((post) => (
+			<LinkCard
+				title={post.title}
+				href={post.href}
+				description={`${fmt.format(post.entry.data.date)} · ${post.entry.data.excerpt ?? ''}`}
+			/>
+		))
+	}
+</CardGrid>

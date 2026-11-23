@@ -1,6 +1,6 @@
 ---
-title: Engineering philosophy
-description: Build once. Reuse everywhere. Automate everything.
+title: "Engineering philosophy"
+description: "Repeated infrastructure code is not merely an inconvenience. It creates inconsistent behavior, fragmented maintenance, and uneven quality across teams."
 ---
 
 ## Build once

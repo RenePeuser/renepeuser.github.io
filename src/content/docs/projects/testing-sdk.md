@@ -1,6 +1,6 @@
 ---
-title: AspNetCore.Simple.MsTest.Sdk
-description: A test SDK that makes ASP.NET Core request/response tests concise and maintainable.
+title: "AspNetCore.Simple.MsTest.Sdk"
+description: "AspNetCore.Simple.MsTest.Sdk reduces boilerplate in ASP.NET Core API tests and makes request/response regression tests readable, repeatable, and maintainable."
 ---
 
 ## Purpose

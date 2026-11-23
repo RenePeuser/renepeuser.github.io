@@ -1,6 +1,6 @@
 ---
-title: Profile
-description: Software architect, consultant, framework engineer and open-source maintainer with 20+ years of experience.
+title: "Executive profile"
+description: "I am a software architect, consultant, framework engineer, and open-source maintainer with more than 20 years of professional experience."
 ---
 
 I am a software architect, consultant, framework engineer, and open-source maintainer with more than 20 years of professional experience.

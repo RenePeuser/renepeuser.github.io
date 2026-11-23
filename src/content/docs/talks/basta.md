@@ -1,6 +1,6 @@
 ---
-title: BASTA! speaker
-description: Talks and training topics at the BASTA! developer conference.
+title: "BASTA! speaker"
+description: "I have participated in the BASTA! developer conference across multiple years and have a public BASTA! speaker profile."
 ---
 
 I have participated in the BASTA! developer conference across multiple years and have a public BASTA! speaker profile.

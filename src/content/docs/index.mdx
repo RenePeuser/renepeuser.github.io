@@ -5,6 +5,9 @@ template: splash
 hero:
   title: Build once. Reuse everywhere. Automate everything.
   tagline: I build the tools behind the tools — reusable .NET platforms, frameworks, SDKs and developer tooling that let product teams focus on their domain.
+  image:
+    file: ../../assets/avatar.jpg
+    alt: Portrait of Rene Peuser
   actions:
     - text: Read the blog
       link: /blog/
@@ -15,6 +18,7 @@ hero:
 ---
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import LatestPosts from '../../components/LatestPosts.astro';
 
 <div class="whoami">
 
@@ -50,11 +54,48 @@ Passion............ Testing · OpenAPI · Developer Experience · Automation
 	</Card>
 </CardGrid>
 
-## Start here
+## Latest posts
+
+<LatestPosts count={4} />
+
+## I build engineering multipliers
+
+A well-designed framework does more than remove duplicate code. It creates consistent APIs,
+centralizes cross-cutting concerns, raises the quality floor, and turns architectural knowledge into
+executable software.
+
+```mermaid
+flowchart LR
+    Domain[Product domain] --> Platform[Reusable engineering platform]
+    Platform --> API[Minimal APIs]
+    Platform --> Validation[Validation]
+    Platform --> OpenAPI[OpenAPI]
+    Platform --> Testing[Testing SDK]
+    Platform --> Observability[Observability]
+    Platform --> Deploy[Deployment]
+```
+
+## Featured work
 
 <CardGrid>
-	<LinkCard title="Blog" description="Experiences, lessons learned and deep dives." href="/blog/" />
-	<LinkCard title="AspNetCore.Simple.MsTest.Sdk" description="A test SDK with 700k+ downloads." href="/projects/testing-sdk/" />
-	<LinkCard title="Engineering philosophy" description="How I think about platforms and reuse." href="/about/engineering-philosophy/" />
-	<LinkCard title="Speaking" description="BASTA! talks and training topics." href="/talks/basta/" />
+	<LinkCard
+		title="Capability meta-framework"
+		description="A metadata-driven engine exposing heterogeneous cloud capabilities through consistent contracts, validation and OpenAPI schemas."
+		href="/projects/capability-meta-framework/"
+	/>
+	<LinkCard
+		title="Enterprise Minimal API platform"
+		description="Designing, validating, documenting, testing and operating a large API surface without repeating infrastructure."
+		href="/projects/minimal-api-platform/"
+	/>
+	<LinkCard
+		title="AspNetCore.Simple.MsTest.Sdk"
+		description="A public test SDK for concise request/response API tests — 700k+ downloads."
+		href="/projects/testing-sdk/"
+	/>
+	<LinkCard
+		title="Engineering journey"
+		description="From VB6 HMIs and PLCs in the 1990s to cloud platform engineering today."
+		href="/career/timeline/"
+	/>
 </CardGrid>
