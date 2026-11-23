@@ -1,0 +1,60 @@
+---
+title: Rene Peuser
+description: Principal Software Architect, framework engineer, SDK author and speaker.
+template: splash
+hero:
+  title: Build once. Reuse everywhere. Automate everything.
+  tagline: I build the tools behind the tools — reusable .NET platforms, frameworks, SDKs and developer tooling that let product teams focus on their domain.
+  actions:
+    - text: Read the blog
+      link: /blog/
+      icon: right-arrow
+    - text: About me
+      link: /about/profile/
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<div class="whoami">
+
+```text
+$ whoami
+
+Name............... Rene Peuser
+Role............... Principal Software Architect
+Speciality......... Framework and platform engineering
+Mission............ Make product teams faster through reusable foundations
+Primary stack...... C# · .NET · ASP.NET Core · Minimal APIs
+Passion............ Testing · OpenAPI · Developer Experience · Automation
+```
+
+</div>
+
+## What I do
+
+<CardGrid stagger>
+	<Card title="Principal Software Architect" icon="laptop">
+		More than two decades of software engineering, from industrial automation and HMIs to
+		enterprise cloud platforms and framework engineering.
+	</Card>
+	<Card title="Framework & SDK Engineer" icon="setting">
+		Reusable .NET foundations, Minimal API platforms, validation engines, OpenAPI tooling, test
+		SDKs and developer automation.
+	</Card>
+	<Card title="Open-Source Maintainer" icon="open-book">
+		Nine packages and more than 4.1 million cumulative downloads on NuGet (as of July 2026).
+	</Card>
+	<Card title="Conference Speaker" icon="star">
+		Speaker at BASTA! and trainer for architecture, testing, WPF, MVVM, clean code and modern .NET.
+	</Card>
+</CardGrid>
+
+## Start here
+
+<CardGrid>
+	<LinkCard title="Blog" description="Experiences, lessons learned and deep dives." href="/blog/" />
+	<LinkCard title="AspNetCore.Simple.MsTest.Sdk" description="A test SDK with 700k+ downloads." href="/projects/testing-sdk/" />
+	<LinkCard title="Engineering philosophy" description="How I think about platforms and reuse." href="/about/engineering-philosophy/" />
+	<LinkCard title="Speaking" description="BASTA! talks and training topics." href="/talks/basta/" />
+</CardGrid>

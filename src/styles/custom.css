@@ -1,0 +1,22 @@
+/* Brand accent: cool blue/cyan, matching the existing portfolio palette. */
+:root {
+	--sl-color-accent-low: #0b2a3d;
+	--sl-color-accent: #1f8fd6;
+	--sl-color-accent-high: #bfe6ff;
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: #d6eeff;
+	--sl-color-accent: #0a6ab3;
+	--sl-color-accent-high: #063a61;
+}
+
+/* Terminal-style intro block on the home page. */
+.whoami pre {
+	font-size: 0.95rem;
+	line-height: 1.6;
+}
+
+.hero .tagline {
+	max-width: 42ch;
+}
