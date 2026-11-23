@@ -41,6 +41,10 @@ export default defineConfig({
 			],
 			sidebar: [
 				{
+					label: 'Blog series',
+					items: [{ label: 'From VB6 to self-defending codebases', slug: 'series/from-vb6-to-self-defending-codebases' }],
+				},
+				{
 					label: 'About',
 					items: [
 						{ label: 'Executive profile', slug: 'about/profile' },
