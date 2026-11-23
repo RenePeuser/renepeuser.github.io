@@ -1,0 +1,17 @@
+---
+// Inline total download figure, e.g. "4.5 million" (live-updated in the browser).
+import { getNuGetStats, formatMillions } from '../lib/nuget';
+import NuGetLive from './NuGetLive.astro';
+
+interface Props {
+	format?: 'millions' | 'full';
+	/** Text used when NuGet was unreachable at build time. */
+	fallback?: string;
+}
+
+const { format = 'millions', fallback = '4.5 million' } = Astro.props;
+const { total } = await getNuGetStats();
+const text = total ? (format === 'full' ? new Intl.NumberFormat('en-US').format(total) : formatMillions(total)) : fallback;
+---
+
+<span data-nuget-total={format}>{text}</span><NuGetLive />

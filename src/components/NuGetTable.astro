@@ -1,0 +1,72 @@
+---
+// Live table of all NuGet packages with download counts.
+import { getNuGetStats, formatMillions, NUGET_OWNER } from '../lib/nuget';
+import NuGetLive from './NuGetLive.astro';
+
+// Short human descriptions; packages not listed here fall back to their NuGet description.
+const focus: Record<string, string> = {
+	'Argument.Check': 'Fluent guard and argument validation',
+	'Extensions.Pack': 'General-purpose extension methods',
+	'AspNetCore.Simple.MsTest.Sdk': 'ASP.NET Core integration and regression testing',
+	'AspNetCore.Simple.Sdk': 'ASP.NET Core application foundation',
+	'Solution.Parser': 'Roslyn-based solution and syntax abstraction',
+	'FileSystem.Abstraction': 'File and directory abstractions',
+	'DotNetTool.Service': 'Programmatic use of `dotnet tool` workflows',
+	'DotNetTool.Builder': 'Building .NET global tools',
+	'CSharp.Parser.Abstraction': 'Earlier C# parsing abstraction',
+};
+
+const { packages, total, fetchedAt } = await getNuGetStats();
+const full = new Intl.NumberFormat('en-US');
+const date = fetchedAt ? new Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(fetchedAt) : null;
+---
+
+{
+	packages.length > 0 ? (
+		<>
+			<p>
+				The public <code>{NUGET_OWNER}</code> NuGet profile lists <strong data-nuget-package-count>{packages.length}</strong>{' '}
+				packages with <strong data-nuget-total="full">{full.format(total)}</strong> cumulative downloads (more than{' '}
+				<span data-nuget-total>{formatMillions(total)}</span>).
+			</p>
+			<table>
+				<thead>
+					<tr>
+						<th>Package</th>
+						<th>Focus</th>
+						<th style="text-align:right">Downloads</th>
+					</tr>
+				</thead>
+				<tbody>
+					{packages.map((p) => (
+						<tr>
+							<td>
+								<a href={`https://www.nuget.org/packages/${p.id}`}>{p.id}</a>
+							</td>
+							<td>{(focus[p.id] ?? p.description).replace(/`/g, '')}</td>
+							<td style="text-align:right; font-variant-numeric: tabular-nums" data-nuget-count={p.id} data-format="full">
+								{full.format(p.downloads)}
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+			<p class="nuget-note">
+				Live figures from the NuGet API, refreshed every time you open this page{date && ` (built ${date})`}.
+			</p>
+			<NuGetLive />
+		</>
+	) : (
+		<p>
+			Download statistics are currently unavailable — see the{' '}
+			<a href={`https://www.nuget.org/profiles/${NUGET_OWNER}`}>live NuGet profile</a>.
+		</p>
+	)
+}
+
+<style>
+	.nuget-note {
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+</style>

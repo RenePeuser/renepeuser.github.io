@@ -1,0 +1,38 @@
+---
+// Client-side refresh of NuGet figures. Updates every element marked with
+// data-nuget-total / data-nuget-count / data-nuget-package-count after page load.
+import { NUGET_OWNER, NUGET_QUERY_URL } from '../lib/nuget';
+---
+
+<script is:inline define:vars={{ url: NUGET_QUERY_URL, owner: NUGET_OWNER.toLowerCase() }}>
+	(async () => {
+		// The component may be included several times on one page; fetch only once.
+		if (window.__nugetLive) return;
+		window.__nugetLive = true;
+		if (!document.querySelector('[data-nuget-total],[data-nuget-count],[data-nuget-package-count]')) return;
+		try {
+			const res = await fetch(url);
+			if (!res.ok) return;
+			const { data } = await res.json();
+			const pkgs = data.filter((p) => p.owners.some((o) => o.toLowerCase() === owner));
+			const total = pkgs.reduce((s, p) => s + p.totalDownloads, 0);
+			const byId = Object.fromEntries(pkgs.map((p) => [p.id.toLowerCase(), p.totalDownloads]));
+			const full = new Intl.NumberFormat('en-US');
+			const millions = (n) => `${(Math.floor(n / 100000) / 10).toFixed(1)} million`;
+			const compact = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}K` : String(n));
+
+			document.querySelectorAll('[data-nuget-total]').forEach((el) => {
+				el.textContent = el.dataset.nugetTotal === 'full' ? full.format(total) : millions(total);
+			});
+			document.querySelectorAll('[data-nuget-package-count]').forEach((el) => {
+				el.textContent = String(pkgs.length);
+			});
+			document.querySelectorAll('[data-nuget-count]').forEach((el) => {
+				const n = byId[el.dataset.nugetCount.toLowerCase()];
+				if (n !== undefined) el.textContent = el.dataset.format === 'full' ? full.format(n) : compact(n);
+			});
+		} catch {
+			/* keep build-time values */
+		}
+	})();
+</script>

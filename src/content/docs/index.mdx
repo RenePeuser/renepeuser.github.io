@@ -19,6 +19,7 @@ hero:
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 import LatestPosts from '../../components/LatestPosts.astro';
+import NuGetTotal from '../../components/NuGetTotal.astro';
 
 <div class="whoami">
 
@@ -47,7 +48,7 @@ Passion............ Testing · OpenAPI · Developer Experience · Automation
 		SDKs and developer automation.
 	</Card>
 	<Card title="Open-Source Maintainer" icon="open-book">
-		Nine packages and more than 4.1 million cumulative downloads on [NuGet](https://www.nuget.org/profiles/Rene.Peuser) (as of July 2026).
+		Nine packages and more than <NuGetTotal /> cumulative downloads on [NuGet](/open-source/nuget/) (live figures).
 	</Card>
 	<Card title="Conference Speaker" icon="star">
 		Speaker at [BASTA!](https://basta.net/speaker/rene-peuser/) and [My Coding Zone](/talks/my-coding-zone/), and trainer for architecture,
@@ -97,7 +98,7 @@ flowchart LR
 	/>
 	<LinkCard
 		title="AspNetCore.Simple.MsTest.Sdk"
-		description="A public test SDK for concise request/response API tests — 700k+ downloads."
+		description="A public test SDK for concise, file-backed request/response API tests."
 		href="/projects/testing-sdk/"
 	/>
 	<LinkCard

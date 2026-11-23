@@ -7,7 +7,7 @@ description: "AspNetCore.Simple.MsTest.Sdk reduces boilerplate in ASP.NET Core A
 
 `AspNetCore.Simple.MsTest.Sdk` reduces boilerplate in ASP.NET Core API tests and makes request/response regression tests readable, repeatable, and maintainable.
 
-[View on NuGet](https://www.nuget.org/packages/AspNetCore.Simple.MsTest.Sdk)
+[![NuGet downloads](https://img.shields.io/nuget/dt/AspNetCore.Simple.MsTest.Sdk?label=downloads&color=0a6ab3)](https://www.nuget.org/packages/AspNetCore.Simple.MsTest.Sdk) [![NuGet version](https://img.shields.io/nuget/v/AspNetCore.Simple.MsTest.Sdk?color=0a6ab3)](https://www.nuget.org/packages/AspNetCore.Simple.MsTest.Sdk)
 
 ## Core capabilities
 
@@ -52,4 +52,4 @@ Centralizing this flow improves consistency, readability, and failure analysis.
 
 ## Public impact
 
-As of July 2026, the NuGet package has exceeded 700,000 cumulative downloads. Package statistics change continuously; use the live NuGet page for current figures.
+The download badge above shows the live figure from NuGet (more than 780,000 as of November 2026).
