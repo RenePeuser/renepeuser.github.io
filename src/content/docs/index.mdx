@@ -12,6 +12,10 @@ hero:
     - text: Read the blog
       link: /blog/
       icon: right-arrow
+    - text: Browse the series
+      link: /series/
+      icon: open-book
+      variant: secondary
     - text: About me
       link: /about/profile/
       variant: minimal
@@ -60,11 +64,24 @@ Passion............ Testing · OpenAPI · Developer Experience · Automation
 
 <LatestPosts count={4} />
 
-<LinkCard
-	title="Series: From VB6 to self-defending codebases"
-	description="Almost two decades in twelve chapters — VB6 interop, WPF, Roslyn, test SDKs and codebases that enforce their own rules."
-	href="/series/from-vb6-to-self-defending-codebases/"
-/>
+## Blog series
+
+More than a hundred posts, organized in series. Read one series front to back or pick single posts.
+[All series at a glance →](/series/)
+
+<CardGrid>
+	<LinkCard title="ASP.NET Core from the ground up" description="A production-ready API step by step: hosting, DI, configuration, security, errors, OpenAPI." href="/series/aspnetcore-from-the-ground-up/" />
+	<LinkCard title="Architecture in practice" description="Vertical slices, CQRS, context objects, contracts and lightweight ADRs." href="/series/architecture-in-practice/" />
+	<LinkCard title=".NET pitfalls" description="HttpClient, async/await, nullability and other traps that pass code review." href="/series/dotnet-pitfalls/" />
+	<LinkCard title="REST & OpenAPI design" description="Soft delete, PATCH, polymorphism, extensible enums and breaking-change checks." href="/series/rest-and-openapi-design/" />
+	<LinkCard title="Testing in practice" description="Integration tests, snapshot tests, Testcontainers and AI-friendly tests." href="/series/testing-in-practice/" />
+	<LinkCard title="Code quality & tooling" description="Central Package Management, analyzers, NuGet, formatting and CodeQL." href="/series/code-quality-and-tooling/" />
+	<LinkCard title="Caching & data" description="Redis, caching abstractions, HybridCache, query providers and Dapper." href="/series/caching-and-data/" />
+	<LinkCard title="Cloud, DevOps & observability" description="Terraform, KQL, Grafana, OpenTelemetry, pipelines and containers." href="/series/cloud-devops-observability/" />
+	<LinkCard title="Validation & error handling" description="Exception handling and logging exceptions the right way." href="/series/validation-and-error-handling/" />
+	<LinkCard title="Scrum in the real world" description="What worked with six teams over several years, and what we dropped." href="/series/scrum-in-the-real-world/" />
+	<LinkCard title="From VB6 to self-defending codebases" description="Almost two decades in twelve chapters: VB6 interop, WPF, Roslyn, test SDKs and codebases that enforce their own rules." href="/series/from-vb6-to-self-defending-codebases/" />
+</CardGrid>
 
 ## I build engineering multipliers
 
