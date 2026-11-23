@@ -1,4 +1,5 @@
 ---
+draft: true
 title: GitHub Actions on self-hosted runners, and why AWS CodeBuild was the one that worked
 date: 2026-11-23
 authors: rene

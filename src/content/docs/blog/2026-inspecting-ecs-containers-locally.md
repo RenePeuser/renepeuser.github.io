@@ -1,4 +1,5 @@
 ---
+draft: true
 title: "Is my code really deployed? Inspecting ECS container images locally"
 date: 2026-11-23
 authors: rene

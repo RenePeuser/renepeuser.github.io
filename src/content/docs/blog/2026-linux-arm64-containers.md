@@ -1,4 +1,5 @@
 ---
+draft: true
 title: Moving .NET containers to Linux ARM64, and the Dockerfile line that silently keeps you on x64
 date: 2026-11-23
 authors: rene
