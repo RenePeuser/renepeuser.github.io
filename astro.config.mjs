@@ -114,6 +114,7 @@ export default defineConfig({
 					collapsed: true,
 					items: [
 						{ label: 'BASTA!', slug: 'talks/basta' },
+						{ label: 'My Coding Zone', slug: 'talks/my-coding-zone' },
 						{ label: 'Speaker kit', slug: 'talks/speaker-kit' },
 					],
 				},
