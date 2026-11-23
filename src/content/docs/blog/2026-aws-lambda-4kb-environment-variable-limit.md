@@ -1,4 +1,5 @@
 ---
+draft: true
 title: AWS Lambda's 4 KB environment variable limit, and where your configuration belongs instead
 date: 2026-11-23
 authors: rene
