@@ -1,7 +1,6 @@
 ---
 title: Service registration and DI lifetimes — without the startup of hell
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, dependency-injection, architecture]
 excerpt: Singleton, scoped, transient, captive dependencies, and a Program.cs with 150 AddScoped lines nobody understands. How I structure registrations per feature, and how to let the container catch lifetime bugs before production does.

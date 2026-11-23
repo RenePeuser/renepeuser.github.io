@@ -1,7 +1,6 @@
 ---
 title: A three-column board and a strict Definition of Done
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum, code-quality]
 excerpt: Open, In Progress, Done. That's all our Scrum board had. The simplicity only worked because "Done" was strict — tested, deployed to the target machines without manual workarounds, and accepted by the stakeholder. Why fewer columns and a harder Done beat a ten-column board.

@@ -1,7 +1,6 @@
 ---
 title: Central Package Management — one version per package, one place to change it
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, nuget, tooling]
 excerpt: Forty projects, three versions of the same logging package and a downgrade warning nobody can explain. How Central Package Management with Directory.Packages.props fixes version drift, how to migrate, and which tools quietly break when you do.

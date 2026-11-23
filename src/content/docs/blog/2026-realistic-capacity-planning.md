@@ -1,7 +1,6 @@
 ---
 title: Realistic capacity planning — nobody works at 100 %
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum]
 excerpt: Experienced developers reach roughly 65–75 % of their hours on sprint work, new team members start below 10 %. How we planned sprints with honest capacity numbers, two developers per story, and the Product Owner deciding what moves out.

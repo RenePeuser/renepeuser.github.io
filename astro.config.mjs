@@ -5,12 +5,10 @@ import starlightBlog from 'starlight-blog';
 import mermaid from 'astro-mermaid';
 import { readFileSync } from 'node:fs';
 
-// Draft pages only exist in `astro dev`; linking them in a production build would fail.
-const isDev = process.argv.includes('dev');
-
-// The draft sidebar is built from the series pages: every <LinkCard href="/blog/..."> becomes an
-// entry, in the order the series page lists it. A new post only needs a LinkCard on its series page.
-const draftSeries = [
+// The "Blog series" sidebar is built from the series pages: every <LinkCard href="/blog/..."> becomes
+// an entry, in the order the series page lists it. A new post only needs a LinkCard on its series page.
+// Keep every series page linked here published (no `draft: true`), or the production build fails.
+const blogSeries = [
 	['aspnetcore-from-the-ground-up', '1 · ASP.NET Core from the ground up'],
 	['architecture-in-practice', '2 · Architecture in practice'],
 	['dotnet-pitfalls', '3 · .NET pitfalls'],
@@ -28,22 +26,18 @@ const seriesPosts = (slug) => {
 	const source = readFileSync(new URL(`./src/content/docs/series/${slug}.mdx`, import.meta.url), 'utf8');
 	return [...source.matchAll(linkCard)].map((m) => ({ label: m[2], link: m[3] }));
 };
-const draftSidebar = isDev
-	? [
-			{
-				label: 'Drafts (local only)',
-				badge: { text: 'draft', variant: 'caution' },
-				items: [
-					{ label: 'All series (overview)', slug: 'series' },
-					...draftSeries.map(([slug, label]) => ({
-						label,
-						collapsed: true,
-						items: [{ label: 'Series overview', slug: `series/${slug}` }, ...seriesPosts(slug)],
-					})),
-				],
-			},
-		]
-	: [];
+const seriesSidebar = {
+	label: 'Blog series',
+	items: [
+		{ label: 'All series', slug: 'series' },
+		...blogSeries.map(([slug, label]) => ({
+			label,
+			collapsed: true,
+			items: [{ label: 'Series overview', slug: `series/${slug}` }, ...seriesPosts(slug)],
+		})),
+		{ label: 'From VB6 to self-defending codebases', slug: 'series/from-vb6-to-self-defending-codebases' },
+	],
+};
 
 // https://astro.build/config
 export default defineConfig({
@@ -81,11 +75,7 @@ export default defineConfig({
 				{ icon: 'rss', label: 'RSS', href: 'https://renepeuser.github.io/blog/rss.xml' },
 			],
 			sidebar: [
-				...draftSidebar,
-				{
-					label: 'Blog series',
-					items: [{ label: 'From VB6 to self-defending codebases', slug: 'series/from-vb6-to-self-defending-codebases' }],
-				},
+				seriesSidebar,
 				{
 					label: 'About',
 					items: [

@@ -1,7 +1,6 @@
 ---
 title: Reading the request body twice in minimal APIs
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [aspnetcore, minimal-apis, json, dotnet]
 excerpt: You bound the body to a typed DTO and now you need the raw JSON too, for merge patch presence checks, signature validation or auditing. But the stream is already consumed. How request buffering works, how to switch it on only where needed, and why an endpoint filter is too late.

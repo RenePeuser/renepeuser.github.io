@@ -1,7 +1,6 @@
 ---
 title: Test patterns for GET, POST and DELETE
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [testing, aspnetcore, api-design]
 excerpt: Most API test suites test the happy path of GET and call it a day. A repeatable checklist per HTTP verb, from the 401 to the "deleted means gone" check, plus the setup and cleanup rules that keep those tests independent of each other and of the system state.

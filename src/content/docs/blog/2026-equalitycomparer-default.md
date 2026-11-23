@@ -1,7 +1,6 @@
 ---
 title: Equality in generic code — why EqualityComparer<T>.Default exists
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, csharp, performance, pitfalls]
 excerpt: The == operator doesn't compile for an unconstrained T, object.Equals boxes, a.Equals(b) throws on null, and NaN isn't equal to itself. What EqualityComparer<T>.Default does better, where it belongs, and where a plain == is still the clearer choice.

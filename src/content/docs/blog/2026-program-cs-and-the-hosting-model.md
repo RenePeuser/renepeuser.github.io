@@ -1,7 +1,6 @@
 ---
 title: Program.cs and the hosting model — what those ten lines actually do
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, architecture]
 excerpt: WebApplication.CreateBuilder sets up configuration, logging, DI and Kestrel before your first line of code runs. What it does for you, what changed since Startup.cs, and how to keep Program.cs readable when the API grows.

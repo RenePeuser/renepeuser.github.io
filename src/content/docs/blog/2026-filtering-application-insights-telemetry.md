@@ -1,7 +1,6 @@
 ---
 title: Filtering Application Insights telemetry without losing the signal
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [observability, aspnetcore]
 excerpt: An API with no users produced thousands of telemetry items in a few days, all health checks and Always On pings. How to filter that noise with telemetry processors or OpenTelemetry, why "Contains" is the wrong match, and how to test that your filter drops only what it should.

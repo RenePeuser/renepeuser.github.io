@@ -1,7 +1,6 @@
 ---
 title: A code review checklist — goals, non-goals and what humans should actually look at
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [code-quality, scrum, dotnet]
 excerpt: Most review checklists are a list of twenty generic questions nobody reads. Mine starts with why we review and what reviews are not for, hands everything mechanical to tooling, and keeps a short list of things only a human can judge, with the .NET-specific traps that slip through most often.

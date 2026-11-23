@@ -1,7 +1,6 @@
 ---
 title: Error logging — log once, in one place, at the right level
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, error-handling, observability]
 excerpt: The same exception logged four times on its way up, a 404 at Error level waking someone at night, and the one real failure buried in the noise. How to separate error logging from error handling, pick log levels by exception category and test that it works.

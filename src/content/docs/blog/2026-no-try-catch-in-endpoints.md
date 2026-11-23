@@ -1,7 +1,6 @@
 ---
 title: Why there is no try/catch in my endpoints
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, error-handling, code-quality]
 excerpt: Every endpoint wrapped in try/catch, every catch returning BadRequest with a different body. Why that pattern hurts, what replaces it, the few places where try/catch is still right, and how to make the rule something the build checks.

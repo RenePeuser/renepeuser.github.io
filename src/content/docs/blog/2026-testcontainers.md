@@ -1,7 +1,6 @@
 ---
 title: Real dependencies in tests with Testcontainers
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [testing, containers]
 excerpt: The in-memory database that happily accepts what PostgreSQL would reject, and the shared dev database that three test runs fight over. How Testcontainers gives every test run its own real database and cache, wired into a WebApplicationFactory, and what it costs.

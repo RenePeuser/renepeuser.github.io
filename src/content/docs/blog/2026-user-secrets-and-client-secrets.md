@@ -1,7 +1,6 @@
 ---
 title: User secrets and client secrets — and why neither belongs in your repo
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, security, configuration]
 excerpt: User secrets are not encrypted, client secrets expire on a Friday, and the appsettings.json in your Git history still contains last year's password. Where secrets should live during development and in production, and how to stop needing most of them.

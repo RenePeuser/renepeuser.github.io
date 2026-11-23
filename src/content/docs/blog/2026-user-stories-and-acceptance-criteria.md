@@ -1,7 +1,6 @@
 ---
 title: User stories and acceptance criteria that developers can actually build
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum]
 excerpt: A story that asks for a search field describes a solution, not a problem. How we wrote user stories that describe the problem, an extended template for performance and deadlines, and acceptance criteria that are testable, scoped and free of implementation details.

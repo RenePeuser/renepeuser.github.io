@@ -1,7 +1,6 @@
 ---
 title: The KQL features I actually use every week
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [observability, azure]
 excerpt: KQL has hundreds of operators and functions. A dozen of them cover almost every incident. The operators, functions and let tricks I reach for most, plus a complete health-check query and the integer-division bug hiding in it.

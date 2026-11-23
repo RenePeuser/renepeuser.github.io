@@ -1,7 +1,6 @@
 ---
 title: git reflog, the undo button nobody shows you
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [devops, tooling]
 excerpt: A rebase that went wrong, a hard reset on the wrong branch, a deleted branch with a week of work. In almost every case the commits are still there, and git reflog tells you where. How to read it, how to recover safely, and the few cases where even the reflog can't help.

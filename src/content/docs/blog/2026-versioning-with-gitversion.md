@@ -1,7 +1,6 @@
 ---
 title: Versioning with GitVersion — let the history decide the number
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, nuget, tooling]
 excerpt: A NuGet package whose version is 1.0.0 forever, or one that jumps whenever somebody remembers to edit the csproj, tells consumers nothing. How GitVersion derives semantic versions from your git history, how to configure it, and how to keep developers from forgetting the one thing it depends on.

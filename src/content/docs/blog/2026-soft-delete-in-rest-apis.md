@@ -1,7 +1,6 @@
 ---
 title: Soft delete in REST APIs — it's still a DELETE
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [api-design, aspnetcore, data-access]
 excerpt: "\"We only set a flag, so it's not really a delete, so it should be a POST.\" A common line of reasoning that leaks a storage detail into the public contract. Why soft delete belongs behind DELETE, how to model hard delete and restore, and how to implement it cleanly with EF Core."

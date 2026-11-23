@@ -1,7 +1,6 @@
 ---
 title: Anatomy of a minimal endpoint
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [aspnetcore, minimal-apis, architecture, dotnet]
 excerpt: Request, response, validator, mapper, command, endpoint and documentation. A walk through every part of a single Minimal API endpoint in a feature-sliced backend, what each part is responsible for, and why I split them even though everything would fit into one lambda.

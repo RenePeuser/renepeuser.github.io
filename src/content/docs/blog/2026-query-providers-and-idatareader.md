@@ -1,7 +1,6 @@
 ---
 title: Query providers and IDataReader — one data access API for many databases
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, data-access, performance, architecture]
 excerpt: When every tenant can live on a different database engine, provider-specific "if" statements spread through the whole codebase. A query provider hides connections, parameters, transactions and dialect differences behind one API, and going back to plain IDataReader can be faster than any micro-ORM.

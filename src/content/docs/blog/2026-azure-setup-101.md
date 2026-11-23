@@ -1,7 +1,6 @@
 ---
 title: "Azure setup 101: Key Vault, App Configuration and Storage for a new .NET service"
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [azure, terraform, configuration, security, aspnetcore]
 excerpt: The checklist I wish every new service started with. A separate storage account for Terraform state, Key Vault with RBAC and managed identities, App Configuration with Key Vault references, and an "infra first" walking skeleton, all without a single secret in a pipeline variable.

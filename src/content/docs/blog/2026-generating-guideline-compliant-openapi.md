@@ -1,7 +1,6 @@
 ---
 title: Generate the OpenAPI document your API guidelines want — from code, not by hand
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [openapi, aspnetcore, api-design, security]
 excerpt: Your organization's API guidelines want an API ID in the info block, camelCase operation IDs, OAuth2 scopes per operation, extensible enums and proper date formats. Editing the generated JSON by hand doesn't scale. How to make ASP.NET Core produce a compliant document, with one attribute that both enforces a scope and documents it.

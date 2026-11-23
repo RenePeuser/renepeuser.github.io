@@ -1,7 +1,6 @@
 ---
 title: "Is my code really deployed? Inspecting ECS container images locally"
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [aws, containers, devops, tooling]
 excerpt: The pipeline is green, the fix doesn't work, and everyone suspects the deployment. How to find out which image an ECS service is actually running, pull it from ECR, look inside without starting it, and make the answer a one-liner next time.

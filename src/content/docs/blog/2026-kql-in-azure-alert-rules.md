@@ -1,7 +1,6 @@
 ---
 title: From KQL query to Azure alert rule, with Terraform
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [observability, azure, terraform]
 excerpt: A query that works in the portal is not yet an alert. How to turn a KQL query into a log search alert rule with Terraform, route it to the right people from your C# code, and avoid the trailing semicolon that breaks everything without a useful error.

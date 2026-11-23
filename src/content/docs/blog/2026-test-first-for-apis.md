@@ -1,7 +1,6 @@
 ---
 title: Test-first for APIs — start with the 401
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [testing, aspnetcore, api-design]
 excerpt: Test-first for APIs isn't about red-green ceremony. It forces you to be the first consumer of your own endpoint, to think about security before data, and to build the endpoints your tests need. A step-by-step walk-through with a minimal API.

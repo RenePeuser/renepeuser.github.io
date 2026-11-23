@@ -1,7 +1,6 @@
 ---
 title: IAsyncEnumerable done right
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, async, aspnetcore, performance]
 excerpt: Async streams are one of the nicest features in modern C#, and one of the easiest to use half-right. The cancellation token that never arrives, the stream that gets enumerated twice, the DbContext that's gone mid-stream, and when a plain Task<List<T>> is the better choice.

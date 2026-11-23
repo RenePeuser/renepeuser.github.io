@@ -1,7 +1,6 @@
 ---
 title: Mapping as an anti-corruption layer
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [architecture, aspnetcore, dotnet]
 excerpt: A renamed database column should never break an API client, and a field added by a third-party system should never leak into your domain. Why I treat every mapper as an anti-corruption layer, why I write them by hand (or generate them), and how to test that nothing gets lost.

@@ -1,7 +1,6 @@
 ---
 title: HttpClient — you are (still) using it wrong
-date: 2026-11-24
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, performance, pitfalls]
 excerpt: Socket exhaustion, DNS changes that never arrive and typed clients captured by singletons. Four HttpClient mistakes that still show up in code reviews, why they hurt, and the setup that avoids them in web apps and CLI tools.

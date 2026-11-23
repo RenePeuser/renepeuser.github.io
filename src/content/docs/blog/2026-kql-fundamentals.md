@@ -1,7 +1,6 @@
 ---
 title: KQL fundamentals for .NET developers
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [observability, azure]
 excerpt: Kusto looks like SQL, reads like LINQ and has a handful of rules that trip up everyone in the first week. The mental model, the syntax rules and the data model of Application Insights you need before writing your first useful query.

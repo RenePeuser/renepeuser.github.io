@@ -1,7 +1,6 @@
 ---
 title: AWS Lambda's 4 KB environment variable limit, and where your configuration belongs instead
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [aws, configuration, dotnet, aspnetcore]
 excerpt: Sixty environment variables with long names and ARNs, and the Lambda deployment fails because all of them together exceed 4 KB. Why the limit hits .NET apps early, how to move configuration to SSM Parameter Store without changing a single IOptions class, and how to keep the budget in check.

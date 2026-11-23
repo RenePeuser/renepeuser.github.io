@@ -1,7 +1,6 @@
 ---
 title: Moving .NET containers to Linux ARM64, and the Dockerfile line that silently keeps you on x64
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [containers, dotnet, aws]
 excerpt: ARM64 instances are cheaper and .NET runs great on them. The migration is mostly a Dockerfile change, but QEMU crashes, a misplaced --platform and credentials in build arguments make it harder than it should be. A Dockerfile that builds fast and actually produces an ARM64 image.

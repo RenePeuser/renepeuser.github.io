@@ -1,7 +1,6 @@
 ---
 title: One telemetry client instead of three APIs, an OpenTelemetry facade for ASP.NET Core
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [observability, aspnetcore, architecture, dotnet]
 excerpt: OpenTelemetry in .NET means ILogger for logs, ActivitySource for traces and Meter for metrics, each with its own rules. A thin, generic facade that keeps the standard APIs underneath, but gives developers one dependency, stable metric definitions and guard rails against cardinality explosions.

@@ -1,7 +1,6 @@
 ---
 title: Unit tests that explain themselves — structure and naming
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [testing, dotnet, code-quality]
 excerpt: A test called CalculateSomething with five asserts tells you one thing when it fails, and you have to run it five times to learn the rest. Naming conventions, test class structure and assertion habits that make a failing unit test explain itself.

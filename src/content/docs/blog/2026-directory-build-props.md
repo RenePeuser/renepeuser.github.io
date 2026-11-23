@@ -1,7 +1,6 @@
 ---
 title: Directory.Build.props — stop copying the same ten lines into every project
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, tooling, code-quality]
 excerpt: Thirty project files, each with its own idea of the target framework, nullable setting and warning level. How Directory.Build.props gives a solution one baseline, what belongs in it, what belongs in Directory.Build.targets, and the traps that make settings silently not apply.

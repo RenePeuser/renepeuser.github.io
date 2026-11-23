@@ -1,7 +1,6 @@
 ---
 title: "The cost of indirection: F12 debugging and benchmarking MediatR against direct calls"
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [cqrs, performance, dotnet]
 excerpt: Every abstraction has a price, paid in navigation, debugging and CPU time. What a mediator really costs you, why F12 suddenly lands on a record, the file convention that fixes most of it, and how to measure the runtime overhead yourself with BenchmarkDotNet instead of trusting anyone's numbers.

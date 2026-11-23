@@ -1,7 +1,6 @@
 ---
 title: Global error handling with ProblemDetails — one error format for the whole API
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, error-handling]
 excerpt: Five endpoints, five error formats, and a stack trace in production. How to set up IExceptionHandler and ProblemDetails so every error looks the same, exceptions map to the right status codes, and production responses don't help attackers.

@@ -1,7 +1,6 @@
 ---
 title: Why we abandoned burndown charts
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum, observability]
 excerpt: Our burndown charts slowly turned from a mirror of the sprint into a picture for management. Once a chart is adjusted to look right, it stops being useful, so we dropped it and made the sprint visible in other ways.

@@ -1,7 +1,6 @@
 ---
 title: When is a bug a bug?
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum, code-quality]
 excerpt: Half of the "bugs" that reach a team are missing features, user setup problems or changed minds. Our rule — it's only a bug if it deviates from an implemented user story — plus three cases for handling real bugs and a report template that makes them reproducible.

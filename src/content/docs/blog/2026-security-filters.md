@@ -1,7 +1,6 @@
 ---
 title: Security filters — rejecting what your API never asked for
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, security]
 excerpt: ASP.NET Core silently ignores query parameters your endpoint doesn't declare. A small filter that rejects them turns scanner noise into a visible security signal. Why it's defense in depth and not injection protection, and how to build it for controllers and minimal APIs.

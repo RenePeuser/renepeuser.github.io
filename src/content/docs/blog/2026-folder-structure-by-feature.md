@@ -1,7 +1,6 @@
 ---
 title: "Folder structure: by technology, by domain, by feature or by feature and action?"
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [architecture, aspnetcore, dotnet]
 excerpt: Four ways to lay out the folders of an ASP.NET Core API, what each one optimizes for and where each one breaks. Plus the structure I recommend today, the namespace trick that keeps it readable, and how registration flows from Program.cs down to a single endpoint.

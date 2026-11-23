@@ -1,7 +1,6 @@
 ---
 title: Setting up Swagger / OpenAPI — Microsoft.AspNetCore.OpenApi or Swashbuckle?
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, openapi, api-design]
 excerpt: Since .NET 9 the templates no longer ship Swashbuckle, and upgraded projects suddenly render "Unable to render this definition". What changed, how to set up the built-in OpenAPI generator with versioning, security and per-stage metadata, and when Swashbuckle is still the better fit.

@@ -1,7 +1,6 @@
 ---
 title: "MediatR pipeline behaviors: validation and caching without touching a handler"
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [cqrs, caching, validation]
 excerpt: Every query handler checks its input and every expensive query has the same five lines of cache code. Pipeline behaviors move both out of the handlers into one place. A validation behavior that reports all errors at once, a caching behavior built on HybridCache, and the ordering and key mistakes that will bite you.

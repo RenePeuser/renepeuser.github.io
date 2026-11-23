@@ -1,7 +1,6 @@
 ---
 title: .NET 9 and OpenAPI — what broke, and how to fix it
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, openapi]
 excerpt: Swashbuckle gone from the templates, "Unable to render this definition", "No operations defined in spec" and transformers that stop compiling after the next upgrade. A practical guide to the built-in OpenAPI support since .NET 9, the usual errors and their real causes.

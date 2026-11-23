@@ -1,7 +1,6 @@
 ---
 title: Slow Debug builds — it usually isn't Visual Studio
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, tooling, performance]
 excerpt: An incremental Debug build of six projects that takes 44 seconds isn't a hardware problem. How publish-time settings leak into the inner loop, why antivirus and Dev Drive matter, what Build Acceleration does, and how to get fast Debug builds without weakening a single quality gate.

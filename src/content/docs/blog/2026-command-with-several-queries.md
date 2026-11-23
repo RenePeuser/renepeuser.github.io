@@ -1,7 +1,6 @@
 ---
 title: A command that needs several queries
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [architecture, cqrs, performance]
 excerpt: Placing an order needs the customer, the prices and the stock before anything is written. Should the command handler send queries through the mediator, inject them, or load everything itself? The options, how to run the reads in parallel without breaking your DbContext, and when the "command" is really a query in disguise.

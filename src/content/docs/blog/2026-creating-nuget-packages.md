@@ -1,7 +1,6 @@
 ---
 title: Creating NuGet packages your teams actually want to consume
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, nuget, tooling]
 excerpt: A package with no description, no readme, version 1.0.0 and a dependency on your analyzers is just a zip file with extra steps. What a good internal NuGet package needs, how to set up feeds and pipelines so nobody pushes by hand, and how to make the build refuse a sloppy package.

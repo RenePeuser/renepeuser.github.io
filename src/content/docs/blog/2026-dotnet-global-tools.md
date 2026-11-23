@@ -1,7 +1,6 @@
 ---
 title: Building .NET tools — from a script in the wiki to dotnet tool install
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, tooling, nuget]
 excerpt: Every team has a folder of PowerShell scripts and a wiki page explaining which one to run when. .NET tools turn that into versioned, installable, testable CLIs distributed through NuGet. How to build one with System.CommandLine, global vs. local tools, and the details that make a tool pleasant instead of painful.

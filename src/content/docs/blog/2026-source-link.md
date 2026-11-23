@@ -1,7 +1,6 @@
 ---
 title: Source Link — step into your own NuGet packages like they were project references
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, nuget, tooling]
 excerpt: You press F11 on a call into your team's shared package and land in decompiled code, or nowhere at all. How Source Link maps packaged binaries back to the exact commit, what changed with .NET 8, how to choose between embedded PDBs and symbol packages, and how to verify a package before anyone needs it at 2 a.m.

@@ -1,7 +1,6 @@
 ---
 title: Re-forming teams with a competence matrix
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum]
 excerpt: When six Scrum teams had to be reshuffled for new challenges, we used a simple 0/1/2 competence matrix, explicitly for growth and not for blame, and took social dynamics as seriously as skills. A template and the rules that made it work.

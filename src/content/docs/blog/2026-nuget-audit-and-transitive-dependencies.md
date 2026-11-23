@@ -1,7 +1,6 @@
 ---
 title: NuGet audit — vulnerable packages you never referenced, and why publish finds what build doesn't
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, nuget, security, tooling]
 excerpt: dotnet build is green, dotnet publish fails with NU1903 for a package nobody in the team has ever heard of. How NuGet audit works, why the restore graph of publish differs from build, how to find out who pulls in a transitive dependency, and how to fix or suppress findings without switching the whole check off.

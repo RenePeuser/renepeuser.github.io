@@ -1,7 +1,6 @@
 ---
 title: Caching abstractions — memory, Redis, hybrid, and the stampede in between
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [caching, dotnet, aspnetcore, performance]
 excerpt: Four caching interfaces that grew over the years, copy-pasted cache-aside code and a cache stampede waiting to happen. Why IMemoryCache and IDistributedCache aren't enough on their own, what .NET 9's HybridCache fixes, and the thin abstraction I put on top.

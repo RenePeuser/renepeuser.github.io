@@ -1,7 +1,6 @@
 ---
 title: "Retrospectives: goods/bads vs. sailboat"
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum]
 excerpt: The sailboat retro looks great on a board, but in our team it produced less talking than the plain "what was good, what was bad" format. A side-by-side comparison of both, with step-by-step templates and the small rules that make a retro actually interactive.

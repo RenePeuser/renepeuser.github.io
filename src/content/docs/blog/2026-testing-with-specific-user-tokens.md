@@ -1,7 +1,6 @@
 ---
 title: Testing as a specific user — without pasting tokens into code
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [testing, security, aspnetcore]
 excerpt: A bug only happens for one kind of user, so someone pastes a bearer token into a test and swaps the header on the shared client. How to run API tests as specific users, in-process and against deployed environments, without leaking tokens or breaking unrelated tests.

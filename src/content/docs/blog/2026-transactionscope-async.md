@@ -1,7 +1,6 @@
 ---
 title: TransactionScope and async — "must be disposed on the same thread"
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, async, data-access, pitfalls]
 excerpt: A TransactionScope that worked for years suddenly throws after a driver upgrade, or the ambient transaction quietly vanishes after the first await. Why TransactionScope and async don't mix by default, the one option that fixes it, and the other defaults (Serializable, one minute, distributed transactions) worth knowing.

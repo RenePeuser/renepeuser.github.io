@@ -1,7 +1,6 @@
 ---
 title: Putting impediments in the manager's path
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum]
 excerpt: Some impediments a team can fix itself, others need someone with more authority. We split them strictly, turned the first kind into backlog items and pinned the second kind to a board right on the manager's daily path. Why visibility beats escalation e-mails.

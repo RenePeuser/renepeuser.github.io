@@ -1,7 +1,6 @@
 ---
 title: JSON polymorphism in ASP.NET Core — discriminators, OpenAPI and types you don't know yet
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [aspnetcore, openapi, json, api-design]
 excerpt: One endpoint, many request shapes. `[JsonPolymorphic]` handles three payment methods nicely and turns into a merge-conflict magnet at thirty. Static attributes, runtime contract customization and schema transformers compared, with the pitfalls of each.

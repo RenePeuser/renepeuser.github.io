@@ -1,7 +1,6 @@
 ---
 title: Configuration and the Options pattern — fail at startup, not at 3 a.m.
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, configuration]
 excerpt: Settings that are read with magic strings, validated nowhere and discovered missing on the first request that needs them. How configuration layering works, when to use IOptions, IOptionsSnapshot or IOptionsMonitor, and how ValidateOnStart turns typos into startup failures.

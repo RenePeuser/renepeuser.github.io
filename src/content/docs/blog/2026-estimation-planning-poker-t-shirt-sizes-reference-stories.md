@@ -1,7 +1,6 @@
 ---
 title: "Estimation: planning poker, T-shirt sizes and reference stories"
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum]
 excerpt: We started with planning poker and spent too much time arguing whether something was a 3 or a 5. T-shirt sizes with one developer presenting each story worked much better. Plus why a hello-world reference story is useless and what a realistic one looks like.

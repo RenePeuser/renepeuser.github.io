@@ -1,7 +1,6 @@
 ---
 title: Consistent formatting locally and in CI — when IDE0055 fails only on the build agent
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, code-quality, devops, tooling]
 excerpt: The build is clean on every Windows laptop and fails on the Linux agent with hundreds of IDE0055 "fix formatting" errors. Line endings, byte order marks and IDE formatters that don't agree with Roslyn. How .editorconfig, .gitattributes and dotnet format give you one formatting truth across machines.

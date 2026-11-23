@@ -1,7 +1,6 @@
 ---
 title: Logging exceptions properly — once, structured, with context
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, error-handling, observability]
 excerpt: The same exception logged three times, a message without a stack trace and no way to find the request it belonged to. How to log exceptions so the person on support duty can actually use the logs, with structured logging, scopes and correlation IDs.

@@ -1,7 +1,6 @@
 ---
 title: Roslynator and off-the-shelf analyzers — from IDE squiggles to a CI gate
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, code-quality, devops]
 excerpt: Analyzers that only live in someone's Visual Studio extension don't protect anything. How to pick and configure .NET analyzers and Roslynator via NuGet and .editorconfig, roll them out in a legacy codebase without a thousand-warning wall, and make the same rules fail the build in CI.

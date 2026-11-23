@@ -1,7 +1,6 @@
 ---
 title: Dapper in practice — when SQL is the source of truth
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, data-access]
 excerpt: When database experts hand you hand-tuned SQL, translating it to LINQ and back is pure overhead. Why some teams pick Dapper over EF Core, how to use it properly in modern C#, and the four mistakes that show up again and again (materialization errors, IN lists, TransactionScope and missing cancellation).

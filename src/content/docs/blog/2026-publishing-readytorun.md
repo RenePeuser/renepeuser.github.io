@@ -1,7 +1,6 @@
 ---
 title: Publishing ReadyToRun — faster startup without touching a line of code
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, performance, devops, tooling]
 excerpt: Cold starts in serverless functions, slow first requests after every deployment, containers that take ages to become healthy. ReadyToRun precompiles your code at publish time. What it actually does, when it helps, how it compares to Native AOT, and how to measure whether it's worth it for you.

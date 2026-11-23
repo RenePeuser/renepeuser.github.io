@@ -1,7 +1,6 @@
 ---
 title: Vertical slices — why I cut the code by feature, not by layer
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [architecture, aspnetcore, dotnet]
 excerpt: A bug report says "placing an order with a voucher fails", and you open five folders to find the code. Why I organize backends around use cases instead of technical layers, what it costs, and how to keep the slices from leaking into each other.

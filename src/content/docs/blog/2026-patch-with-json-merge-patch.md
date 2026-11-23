@@ -1,7 +1,6 @@
 ---
 title: PATCH done right — JSON Merge Patch (RFC 7386) in ASP.NET Core
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [api-design, aspnetcore, json]
 excerpt: A C# DTO can't tell you whether the client sent a description set to null or didn't send the description at all. That's the whole difficulty of PATCH. How JSON Merge Patch defines the semantics, how to detect property presence in minimal APIs, and how to get a usable OpenAPI schema out of it.

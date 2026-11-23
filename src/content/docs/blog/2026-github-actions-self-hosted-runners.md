@@ -1,7 +1,6 @@
 ---
 title: GitHub Actions on self-hosted runners, and why AWS CodeBuild was the one that worked
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [devops, aws, testing]
 excerpt: Integration tests that need a private database don't run well on GitHub-hosted runners behind a VPN. How we moved a .NET pipeline to ephemeral AWS CodeBuild runners inside the VPC, what the runs-on label does, the 403 that means "network", and what actually made the test suite faster.

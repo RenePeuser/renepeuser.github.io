@@ -1,7 +1,6 @@
 ---
 title: CQRS with MediatR, without the ceremony
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [architecture, cqrs, aspnetcore]
 excerpt: CQRS doesn't need two databases, event sourcing or a message bus. In most APIs it simply means "a request either reads or writes", and every request gets its own small handler. How I use MediatR for that, the conventions that keep it navigable, the licensing change since v13, and when I'd skip the library entirely.

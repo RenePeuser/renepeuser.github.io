@@ -1,7 +1,6 @@
 ---
 title: One job only — a base class for API integration tests
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [testing, aspnetcore, dotnet]
 excerpt: Most integration test base classes start as "host the API" and end as a 2,000-line junk drawer of test data helpers. A WebApplicationFactory-based base class that starts the API once, hands out clients and does nothing else.

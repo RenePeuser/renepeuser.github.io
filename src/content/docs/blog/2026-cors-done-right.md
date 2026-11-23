@@ -1,7 +1,6 @@
 ---
 title: CORS done right — including preflight requests
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, security]
 excerpt: 'A wildcard origin plus AllowCredentials, a hand-written OPTIONS middleware and a platform CORS setting that silently overrides the app. What CORS actually protects, how preflight works, and the setup that avoids the usual traps.'

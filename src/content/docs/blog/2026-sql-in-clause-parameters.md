@@ -1,7 +1,6 @@
 ---
 title: SQL IN clauses with thousands of parameters
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, data-access, performance]
 excerpt: WHERE Id IN (@p0, @p1, … @p1224) works fine in the test with ten IDs and times out in production with twelve hundred. Hard parameter limits per database, why large IN lists get slow long before that, and the better options, from batching to table-valued parameters, JSON and arrays.

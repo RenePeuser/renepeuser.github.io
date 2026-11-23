@@ -1,7 +1,6 @@
 ---
 title: AI-friendly tests — failures built for humans and agents
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [testing, ai, tooling, dotnet]
 excerpt: A bare Assert.IsTrue failure was always a bad failure message. Now that AI agents read test output and try to fix what broke, it's an expensive one. How to design failures that say what broke, why, where and how to fix it, and why one diagnostic model should render for both humans and machines.

@@ -1,7 +1,6 @@
 ---
 title: Authentication basics with JWT bearer tokens — secure by default
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, security]
 excerpt: One forgotten [Authorize] attribute and an endpoint is public. How JWT bearer validation works in ASP.NET Core, why I make authentication the fallback policy, how to check scopes properly, and how to test it all without a real identity provider.

@@ -1,7 +1,6 @@
 ---
 title: ConfigureAwait(false) in 2026 — when it still matters
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, async, aspnetcore, nuget]
 excerpt: Half the codebases I see sprinkle ConfigureAwait(false) everywhere, the other half never use it, and both are sure they're right. What it actually does, why ASP.NET Core apps mostly don't need it, why libraries still do, and how to stop arguing about it in code reviews.

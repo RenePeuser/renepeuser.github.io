@@ -1,7 +1,6 @@
 ---
 title: Grafana dashboards on top of Application Insights, with KQL
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [observability, azure]
 excerpt: Grafana can query Azure Monitor Logs directly, so your KQL becomes a dashboard that support and product people can use without portal access. Macros, variables, filters that stay fast, and why the dashboard JSON and the queries belong in git.

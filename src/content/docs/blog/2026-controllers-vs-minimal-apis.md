@@ -1,7 +1,6 @@
 ---
 title: Controllers vs. minimal APIs — it's about structure, not syntax
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, minimal-apis, architecture]
 excerpt: Minimal APIs were rejected as "unmaintainable for large projects", and later a similar team built their whole endpoint structure on them. What actually differs between controllers and minimal APIs in 2026, and the per-feature structure that makes either one scale.

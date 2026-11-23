@@ -1,7 +1,6 @@
 ---
 title: A Definition of Ready that stops half-baked features
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum]
 excerpt: Too many backend features started with a ticket that had a title and not much else. A concrete Definition of Ready checklist (route, request, realistic payloads, response, working SQL against staging, test data) and the one rule that hurts the most and helps the most.

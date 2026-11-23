@@ -1,7 +1,6 @@
 ---
 title: The limits of OData clients — when the LINQ abstraction leaks
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [data-access, dotnet, performance, architecture]
 excerpt: A fluent OData client makes a remote API feel like a DbContext, right up to the first query the server doesn't support. Lessons from integrating a CRM's OData API — server-side limits, client library bugs, a 10× performance gap and why plain HttpClient won.

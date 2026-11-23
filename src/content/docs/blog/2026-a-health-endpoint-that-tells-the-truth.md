@@ -1,7 +1,6 @@
 ---
 title: A health endpoint that tells the truth
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, observability, devops]
 excerpt: A /health endpoint that always returns Healthy is worse than none, and one that checks every dependency can restart your whole fleet when one database hiccups. Liveness vs. readiness, the built-in health checks, and what to check where.

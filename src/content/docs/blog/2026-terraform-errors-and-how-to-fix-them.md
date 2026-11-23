@@ -1,7 +1,6 @@
 ---
 title: Terraform errors I keep seeing, and how to fix them
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [terraform, azure, devops]
 excerpt: A missing state container, a stuck state lock, a provider update that broke a pipeline nobody touched, and a date setting that changes on every run. Eight Terraform problems from real Azure pipelines, what causes them and how to get out.

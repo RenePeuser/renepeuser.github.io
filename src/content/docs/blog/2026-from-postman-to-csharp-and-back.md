@@ -1,7 +1,6 @@
 ---
 title: From Postman to C# and back
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [testing, aspnetcore]
 excerpt: A bug report arrives as a Postman request, a consuming team asks how to call your API, and your tests are written in object initializers nobody else can use. How to keep test data in the format that travels, turn every test call into a curl command, and turn real requests into tests.

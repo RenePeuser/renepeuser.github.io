@@ -1,7 +1,6 @@
 ---
 title: Exception handling in C# — fewer try/catch blocks, better errors
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, error-handling]
 excerpt: Swallowed exceptions, `throw ex`, catch blocks that only rethrow and a try/catch around every method. The habits that make failures hard to find, and a setup where you throw a meaningful exception and one central handler does the rest.

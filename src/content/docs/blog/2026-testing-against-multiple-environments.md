@@ -1,7 +1,6 @@
 ---
 title: One test suite, many environments
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [testing, devops, dotnet]
 excerpt: The production pipeline that runs its tests against staging, the tenant-specific tests that are commented out before every commit, and three developers deleting each other's test data on QA. How to run the same integration tests against several environments without copying them.

@@ -1,7 +1,6 @@
 ---
 title: PATCH the status or POST an action? Property updates vs. action endpoints
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [api-design, aspnetcore, architecture]
 excerpt: "\"`PATCH /orders/42 { status: Shipped }` is RESTful, so it must be right.\" Until shipping has to reserve a carrier, send an e-mail and is only allowed for paid orders. A simple rule for when a state change is a property update and when it's a business operation that deserves its own endpoint."

@@ -1,7 +1,6 @@
 ---
 title: Stop fetching the same data five times — the Request Context Builder
 date: 2026-11-23
-draft: true
 authors: rene
 tags: [architecture, performance, dotnet, aspnetcore]
 excerpt: Every service in a flow loads the customer "just to be safe", and a single request ends up asking the same question four times. A pattern for gathering data once, validating it once and passing it along, plus the lesson of a codebase that had the pattern and still fetched everything twice.

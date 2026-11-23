@@ -1,7 +1,6 @@
 ---
 title: Startup time — lazy registrations and the Lazy<T> that isn't
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, aspnetcore, performance, dependency-injection]
 excerpt: A large ASP.NET Core monolith needed five to seven seconds to start, and registering only the endpoints a request needs made it three to four times faster. Where startup time really goes, why the endpoint isn't the real target, and the Lazy<T> registration that looks lazy but resolves everything eagerly.

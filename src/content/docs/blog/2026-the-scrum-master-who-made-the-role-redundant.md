@@ -1,7 +1,6 @@
 ---
 title: The Scrum Master who made the role redundant
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [scrum]
 excerpt: Our Scrum Master started as an active facilitator who built tools and ran every meeting, then stepped back sprint by sprint until the team ran itself and the team architect guided the daily. Why that's the best outcome the role can have, and how to get there without a collapse.

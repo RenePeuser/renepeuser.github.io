@@ -1,7 +1,6 @@
 ---
 title: Take nullability warnings seriously
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, csharp, code-quality, pitfalls]
 excerpt: Nullable reference types only help if the warnings mean something. How a codebase ends up with hundreds of CS8602 warnings and a "!" on every other line, the design decision that removes most null checks, and how to get from warnings to a build that refuses nulls where they don't belong.

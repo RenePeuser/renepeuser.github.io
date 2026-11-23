@@ -1,7 +1,6 @@
 ---
 title: CodeQL for .NET teams — a security gate that actually gates
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [security, devops, dotnet]
 excerpt: A CodeQL workflow that nobody looks at, findings nobody triages, and a scan that silently stopped working on self-hosted Windows runners. How to set up CodeQL for C# so it's fast, consistent across repositories, blocks merges on real findings, and keeps running.

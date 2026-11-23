@@ -1,7 +1,6 @@
 ---
 title: "Lightweight ADRs: write down why, not just what"
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [architecture, api-design, scrum]
 excerpt: Two years after a decision, nobody remembers why the team chose it, so the discussion starts again from zero. Architecture decision records fix that with one short Markdown file per decision. The format I use, when a decision deserves one, where to keep them, and a complete example.

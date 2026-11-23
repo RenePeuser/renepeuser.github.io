@@ -1,7 +1,6 @@
 ---
 title: Immutable collections and serialization — what really round-trips
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [dotnet, csharp, pitfalls]
 excerpt: System.Text.Json supports immutable collections, until it suddenly says it doesn't. The default ImmutableArray that crashes, the object values that come back as JsonElement, the frozen collections nobody tested, and how to choose read-only types for your contracts.

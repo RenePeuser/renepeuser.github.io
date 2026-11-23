@@ -1,7 +1,6 @@
 ---
 title: Snapshot testing for graph logic
-date: 2026-11-25
-draft: true
+date: 2026-11-23
 authors: rene
 tags: [testing, architecture, dotnet]
 excerpt: When deleting one entity cascades through a graph of relations, classic assertions miss exactly the bugs that hurt most — the relation that wasn't deleted and the neighbour that was. Why snapshotting the whole graph, plus a generated visual diff, works better.
