@@ -21,7 +21,7 @@ snippet in a wiki. Each copy drifts in its own way.
 [Part one](/blog/2026-minimalapi-sdk-a-blueprint-for-minimal-apis/) made the endpoint metadata
 (`Produces`, `WithName`, `WithTags`, `MapToApiVersion`) the contract. This part shows what you get
 for that discipline in the blueprint: a **typed .NET client** and a **dotnet CLI**, both generated
-from the same metadata by my [RunJit](/blog/2024-clientgenerator-runjit-rulejit/) tooling and checked
+from the same metadata by my [ClientGenerator](/blog/2024-clientgenerator-runjit-rulejit/) and checked
 into the repository so you can read every line.
 
 ## The "before": three hand-written copies
@@ -298,7 +298,7 @@ myapi todo v1 gettodobyid '{"id": 1}' --format JsonIndented
 myapi todo v1 addtodo '{"todo": {"id": 2, "title": "Buy milk"}}' --token $TOKEN --output created.json
 ```
 
-The [2024 RunJit post](/blog/2024-clientgenerator-runjit-rulejit/) explains the decision behind that
+The [2024 ClientGenerator post](/blog/2024-clientgenerator-runjit-rulejit/) explains the decision behind that
 shape: the version is a subcommand, and everything else goes into one JSON argument. That keeps the
 help output short at every level, and new parameters don't change the command signature.
 
