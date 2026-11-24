@@ -96,8 +96,8 @@ restrictions. The team confirmed it as a full workaround for the two-level filte
 ## Lesson 3: the client library has its own bugs
 
 On top of the server's dialect, the library adds its own edge cases. The team documented several in
-[Simple.OData.Client](https://github.com/simple-odata-client/Simple.OData.Client), all of them open
-issues upstream for years:
+[Simple.OData.Client](https://github.com/simple-odata-client/Simple.OData.Client), each with a GitHub
+issue and a workaround:
 
 - **Filtering by a GUID with the typed syntax** (`Filter(x => x.Id == id)`) threw an
   `UnresolvableObjectException`

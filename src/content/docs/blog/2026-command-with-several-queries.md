@@ -194,8 +194,8 @@ One more thing I noticed in the same guidelines: a "command" that built statisti
 `POST`, that ran two SQL queries in parallel, combined the results and returned them. It didn't write
 anything.
 
-That's a **query**. It used `POST` because the filter was too large for a query string, and somebody
-concluded "POST means command". The distinction matters in practice: queries can be cached, retried safely
+That's a **query**. It used `POST` because the filter was too large for a query string, and from there
+"POST means command" is an easy step to take. The distinction matters in practice: queries can be cached, retried safely
 and run against a read replica. Commands can't. Name and type it by what it does:
 
 ```csharp

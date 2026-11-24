@@ -368,7 +368,7 @@ Multiple checks on the same argument made the closure lookup ambiguous. So a lat
 `ILMethodToFieldRebuilder`, reconstructs which compiler-generated lambda belongs to which captured
 field. That's quite deep into implementation details of the C# compiler.
 
-Then the language caught up. A commit from December 2020 reads *"prepare all to use the new caller
+Then the language gave me a real feature for it. A commit from December 2020 reads *"prepare all to use the new caller
 argument expression attribute, hopefully it works soon"*. With C# 10, `CallerArgumentExpression`
 made all the closure reflection unnecessary:
 

@@ -7,10 +7,10 @@ excerpt: Analyzers that only live in someone's Visual Studio extension don't pro
 ---
 
 
-Ask a team whether they use analyzers, and you often get "yes, I have Roslynator installed". In Visual Studio.
-On their machine. With their own settings. The colleague next to them has a different set of extensions,
-the build agent has none, and the rules never fail anything. That's not code analysis. It's a personal
-preference with squiggly lines.
+Ask me a few years ago whether I use analyzers, and I'd have said "yes, I have Roslynator installed". In
+Visual Studio. On my machine. With my settings. The colleague next to me had a different set of extensions,
+the build agent had none, and the rules never failed anything. Nice squiggly lines, but not yet code
+analysis.
 
 This post is about the analyzers you **don't** write yourself: the .NET SDK analyzers and Roslynator, and how
 to turn them into something that's the same for every developer, every IDE and every CI run. Writing your own

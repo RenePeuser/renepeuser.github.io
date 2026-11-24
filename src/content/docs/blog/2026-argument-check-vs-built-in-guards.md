@@ -199,7 +199,7 @@ I'd be a poor advocate if I left these out:
 - **Everybody knows them.** A new team member doesn't have to look up what `Throw.IfNullOrAny`
   does.
 
-## Microsoft wrote one too, and kept it internal
+## Microsoft had the same idea, as shared source
 
 Here is the part I enjoyed most while researching this post. Open Microsoft's own
 [Agent Framework](https://github.com/microsoft/agent-framework) and look at `ChatClientAgent`:
@@ -249,31 +249,17 @@ repository behind `Microsoft.Extensions.AI` and friends.
 
 Look at what that class does: it **returns the checked value**, takes the name from
 `CallerArgumentExpression`, adds `[NotNull]` for flow analysis, covers strings *and* collections and
-has a one-call `IfOutOfRange`. Those are exactly the three gaps listed above. The team that ships
-`ThrowIfNull` in the BCL reaches for a `Throw.IfNull` that returns the value as soon as it writes a
-larger codebase. I'll take that as a compliment for the design. 😄
+has a one-call `IfOutOfRange`. Apparently, once a codebase gets big enough, everyone ends up wanting
+the checked value back. Nice to be in good company. 😄
 
-Out of curiosity I also compared the dates, from the public git histories:
+I like this a lot, because it shows **the same way of thinking**, arrived at independently: a guard
+should be one line, name the parameter by itself, return the checked value and stay out of the way.
+Argument.Check has looked like that since 2019, and the same shape shows up in dotnet/extensions
+(2023) and the Agent Framework (2025). When different teams land on the same API shape on their own,
+that's a good sign the shape is right. Guards apparently just want to look like this.
 
-| When | What |
-| --- | --- |
-| June 2017 | My `SuperFastArgumentCheck` experiment: `Expect.NotNull(() => arg)` returns the checked value. |
-| December 2019 | Argument.Check starts. From 26 Dec 2019: `_service = Throw.IfNull(() => arg);` |
-| December 2020 | Argument.Check moves to `CallerArgumentExpression`, a year before the compiler supports it (commit message: *"hopefully it works soon"*). |
-| November 2021 | C# 10 ships `CallerArgumentExpression`, .NET 6 ships `ArgumentNullException.ThrowIfNull`. |
-| May 2023 | Microsoft's `Throw.cs` appears in the initial commit of the new dotnet/extensions repository. |
-| June 2025 | The same file is added to the Agent Framework. |
-
-What I like about this timeline is not who was first. It's that two teams, years apart and without
-knowing of each other, ended up with **the same way of thinking**: a guard should be one line, name
-the parameter by itself, return the checked value and stay out of the way. Microsoft's file comes
-from an internal codebase whose earlier history isn't public, and "a guard that returns its
-argument" is an idea many developers have had on their own. When engineers at Microsoft arrive at
-the same API shape you chose years ago, that's the best confirmation a design can get. Great minds,
-and so on. 😄
-
-**So why is it internal?** Microsoft doesn't say so in the repo, but the setup makes the reasons
-fairly clear:
+**Why shared source and not a package?** The repo doesn't spell it out, but the setup suggests
+some very sensible reasons:
 
 - **It's shared source, not a package.** A project opts in with `<InjectSharedThrow>true</InjectSharedThrow>`,
   and MSBuild compiles `Throw.cs` into that assembly. Every assembly gets its own private copy.

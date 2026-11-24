@@ -10,7 +10,8 @@ excerpt: Since .NET 9 the templates no longer ship Swashbuckle, and upgraded pro
 For years, "add Swagger" meant three lines: `AddSwaggerGen()`, `UseSwagger()`, `UseSwaggerUI()`.
 Then .NET 9 removed Swashbuckle from the Web API template, and a lot of teams found out during an
 upgrade. Swagger UI showed "Unable to render this definition" or "No operations defined in spec",
-and the wiki fixes that circulated were mostly hacks that patched the document version by hand.
+and the quick fixes that circulated patched the document version by hand, which makes the UI happy
+and the tooling sad.
 
 This post explains what changed, how I set up OpenAPI on .NET 9 and 10 today, and when Swashbuckle
 is still the right tool.

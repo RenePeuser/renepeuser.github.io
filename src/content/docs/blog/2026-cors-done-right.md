@@ -10,8 +10,8 @@ excerpt: 'A wildcard origin plus AllowCredentials, a hand-written OPTIONS middle
 CORS is the topic where I've seen the most code written to solve a problem that the framework already
 solves. In one codebase, the team had built a custom middleware that answered every `OPTIONS` request
 by reflecting over the target controller, plus an `[HttpOptions]` attribute on every action. It
-worked. It was also completely unnecessary, and the configuration next to it contained the single
-most common CORS mistake there is.
+worked, and it was a lot of careful effort for something the framework does for free. Right next to
+it sat the CORS mistake almost all of us make once.
 
 Let's start with what CORS actually is, because most confusion comes from there.
 

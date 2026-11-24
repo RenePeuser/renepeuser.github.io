@@ -10,7 +10,7 @@ excerpt: A bare Assert.IsTrue failure was always a bad failure message. Now that
 Watch a coding agent work on a codebase for an hour and you'll notice where it loses time. It's not
 writing code. It's the loop after a red test: read the output, guess what it means, open five files
 to find context, try a fix, run again. If the failure message says `Assert.IsTrue failed.`, the
-agent does exactly what a junior developer does with that message: it guesses.
+agent does exactly what any of us does with that message: it guesses.
 
 That made me look at failure messages differently. For years, a test answered one question: *did
 something break?* Today, the person (or agent) reading the failure needs answers to five:

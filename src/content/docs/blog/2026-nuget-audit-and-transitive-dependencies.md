@@ -20,8 +20,8 @@ Nobody in the team had ever referenced `System.Private.Uri`. It's not in any pro
 with `TreatWarningsAsErrors` on, the release is blocked.
 
 This post covers how NuGet audit works, why publish sees things build doesn't, how to track down who pulls
-in a transitive package, and how to deal with findings properly. Spoiler: the first explanation that got
-written down for this case was wrong, and the real fix was simpler.
+in a transitive package, and how to deal with findings properly. Spoiler: the obvious explanation turned
+out to be a red herring, and the real fix was simpler.
 
 ## How NuGet audit works
 
@@ -127,8 +127,8 @@ If you need more detail, `obj/project.assets.json` is the ground truth. Search f
 which entries in the `targets` section list it as a dependency.
 
 :::caution[A wrong turn worth knowing about]
-The first analysis of this case concluded that `System.Private.Uri` is part of the .NET runtime pack, can't be
-changed by the application, and should simply be suppressed with `NoWarn NU1903`. That's not right.
+The tempting conclusion is that `System.Private.Uri` is part of the .NET runtime pack, can't be changed by the
+application, and should simply be suppressed with `NoWarn NU1903`. Easy trap, and not quite right.
 `System.Private.Uri 4.3.0` is a real NuGet package from the old .NET Core 1.x package graph, brought in by an
 outdated library, and it can be fixed like any other transitive dependency. The runtime pack ships its own,
 current `System.Private.Uri.dll`. The telltale sign is the version: **4.3.0** has nothing to do with a .NET 9
