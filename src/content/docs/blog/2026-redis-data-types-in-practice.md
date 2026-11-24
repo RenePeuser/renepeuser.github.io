@@ -153,8 +153,7 @@ Keeping both directions in sync is your job. Write them in a transaction (`Creat
 you never end up with one side updated and the other not.
 
 **Use sets for:** relationships, tags, "has this user already voted / seen / received X",
-permission lookups like "is user 42 a member of tenant 9", and as **secondary indexes** of other keys
-(more on that in the [key conventions](/blog/2026-redis-key-conventions/) post).
+permission lookups like "is user 42 a member of tenant 9", and as **secondary indexes** of other keys.
 
 **Don't use them for:** anything where order matters, or where you need a value per member.
 

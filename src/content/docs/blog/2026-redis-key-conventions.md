@@ -1,6 +1,7 @@
 ---
 title: Redis key conventions — naming, hierarchy and invalidation that scales
 date: 2026-11-23
+draft: true
 authors: rene
 tags: [caching, code-quality, dotnet]
 excerpt: A Redis key is the only schema Redis has. Hierarchical names, deterministic parameter hashing, secondary index sets and generation counters make keys readable, collision-free and cheap to invalidate, without ever calling KEYS in production.

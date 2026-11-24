@@ -151,9 +151,8 @@ What you get:
 - **Concurrent misses for the same key** on one instance run the factory once.
 - **Serialization** is handled (System.Text.Json by default; plug in your own with
   `.AddSerializer<T, TSerializer>()`).
-- **Tags** let you invalidate groups of entries without tracking keys yourself, which replaces the
-  hand-written index sets from the [key conventions](/blog/2026-redis-key-conventions/) post for
-  many cases.
+- **Tags** let you invalidate groups of entries without tracking keys yourself, which replaces
+  hand-written index sets for many cases.
 - **Oversized payloads** above `MaximumPayloadBytes` simply aren't cached, instead of blowing up
   Redis.
 
@@ -283,7 +282,7 @@ Denied results are still cached, so a flood of requests for a resource someone c
 hit the database every time, but a newly granted permission shows up quickly.
 
 **Keys that miss an input.** Tenant, user, role, language, paging. If it changes the result, it
-belongs in the key. See the [key conventions](/blog/2026-redis-key-conventions/) post.
+belongs in the key.
 
 **A public "bypass the cache" switch.** `useCache=false` as a query parameter is handy for debugging.
 Exposed to everyone, it's an invitation to hit your database as hard as anyone likes. Restrict it to
