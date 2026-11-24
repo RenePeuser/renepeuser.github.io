@@ -1,21 +1,21 @@
 ---
-title: Architecture rules for the whole solution — the NetArchTest idea, taken further with Solution.Parser
+title: Code rules for everyone, architecture rules included — and when a Roslyn analyzer is the better home
 date: 2026-11-24
 authors: rene
 tags: [dotnet, solution-parser, architecture-tests, roslyn, code-rules]
-excerpt: "Architecture rules as plain unit tests are a great idea, and NetArchTest made it popular in .NET. Solution.Parser applies the same idea to everything in a solution: layering, logging calls, project references and XAML. Plus where a Roslyn analyzer is the better home for a rule."
+excerpt: "Solution.Parser started as a way to make Roslyn-analyzer-style rules something every developer can write. Along the way it became just as useful for architecture validation: layering, project references, packages and XAML. How the pieces fit, and when a rule should graduate to a real analyzer."
 ---
 
 
-If you've used [NetArchTest](https://github.com/BenMorris/NetArchTest), you know the idea: write
-your architecture rules as ordinary unit tests, and let the build tell you when someone breaks them.
-"The domain doesn't depend on infrastructure" stops being a sentence on a wiki page and becomes a test
-that fails. I love that idea, and it's the same way of thinking that got me started on
-[Solution.Parser](https://github.com/RenePeuser/Solution.Parser).
+[Solution.Parser](https://github.com/RenePeuser/Solution.Parser) started with one question: why do
+so few team rules ever become Roslyn analyzers? Analyzers are wonderful, but the ceremony around them
+means only a few people ever write one. I wanted rules for the code that **anyone on the team can
+write**, as a few lines of LINQ in a unit test.
 
-This post shows how far that idea goes when the rules can see the **whole solution**: not only
-types and namespaces, but how code is written, project files, packages and XAML. And, to be fair,
-where a rule is better off as a Roslyn analyzer.
+Once the whole solution is a queryable model, a second use case comes almost for free:
+**architecture validation**. Layers, project references, packages and XAML are just more things to
+query. This post brings both together, and shows when a rule has earned a promotion to a real
+analyzer.
 
 This is the last post of the series. The earlier ones covered
 [getting started](/blog/2026-solution-parser-your-solution-as-a-queryable-model/),
@@ -48,11 +48,11 @@ var findings = from reference in Solution.Project("Shop.Domain").ProjectReferenc
 findings.ShouldBeEmpty("The domain must not depend on infrastructure");
 ```
 
-Same idea as a NetArchTest rule, one level up: it looks at the project graph instead of the compiled
-types. The [previous post](/blog/2026-solution-parser-architecture-tests-for-projects-and-xaml/)
-takes this further with transitive references and namespace layering. If type-to-type dependencies
-are all you need, a NetArchTest rule over the compiled assembly is a perfectly good fit too, and it
-combines nicely with the rules below.
+If you know [NetArchTest](https://github.com/BenMorris/NetArchTest), this will feel familiar:
+architecture rules as plain unit tests. Here the rule looks at the project graph, and the
+[previous post](/blog/2026-solution-parser-architecture-tests-for-projects-and-xaml/) takes it further
+with transitive references and namespace layering. The nice part is that architecture rules and code
+rules live side by side in the same test project, written the same way.
 
 ## Rules about how code is written
 
@@ -119,7 +119,7 @@ never get written that way.
 
 | The rule… | Pick |
 |---|---|
-| is about dependencies between projects, namespaces or types | Solution.Parser (NetArchTest works nicely for type-level rules too) |
+| is about dependencies between projects, namespaces or types | Solution.Parser architecture test |
 | is about how code is written: statements, expressions, patterns, logging, async | Solution.Parser |
 | involves project or package references, test projects, target frameworks | Solution.Parser |
 | involves XAML, or checks markup against C# | Solution.Parser |
@@ -171,10 +171,10 @@ suites into many repositories started.
 
 ## Summary
 
-- Architecture rules as unit tests, the idea NetArchTest made popular, work for far more than
-  layering.
-- Solution.Parser applies that idea to the whole solution: how code is written, projects, packages
-  and XAML.
+- Solution.Parser makes **code rules something everyone can write**: a few lines of LINQ in a unit
+  test instead of a full analyzer project.
+- The same model gives you **architecture validation** for free: layering, project references,
+  packages and XAML, right next to the code rules.
 - Roslyn analyzers give the best feedback, at the highest cost per rule. Reserve them for rules that
   fire often and have an automatic fix.
 - Start a new rule as a Solution.Parser test, find out if it's right, and promote it to an analyzer

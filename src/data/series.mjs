@@ -315,7 +315,7 @@ export const series = [
 		"title": "Solution.Parser",
 		"group": "oss",
 		"icon": "github",
-		"description": "Your solution as a queryable model: solutions, projects, C#, XAML and NuGet packages for architecture tests and tooling.",
+		"description": "Code rules everyone can write, as LINQ in a unit test, plus architecture validation for projects, packages and XAML.",
 		"posts": [
 			"2026-solution-parser-your-solution-as-a-queryable-model",
 			"2026-solution-parser-reading-code-like-code",

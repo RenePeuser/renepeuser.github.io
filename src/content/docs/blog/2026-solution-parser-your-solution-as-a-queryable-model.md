@@ -17,8 +17,16 @@ AI-generated code the problem gets worse, because an agent doesn't read wiki pag
 
 This series is about [Solution.Parser](https://github.com/RenePeuser/Solution.Parser) (on
 [NuGet](https://www.nuget.org/packages/Solution.Parser/)), the library I've been building since 2016
-to make that kind of rule executable. This first post shows the core idea and how to get a first rule
-running in a test project.
+to make that kind of rule executable.
+
+The idea behind it came from Roslyn analyzers. They're the gold standard for code rules, but writing
+one means a `netstandard2.0` project, syntax node callbacks, packaging and a test harness of its own.
+So in practice only a handful of people on a team ever write one, and most rules stay on the wiki.
+Solution.Parser makes those rules **tangible**: anyone on the team can write a rule for the code as a
+few lines of LINQ in an ordinary unit test. And because it reads the whole solution, the same approach
+works for **architecture validation** too: layers, project references, packages and XAML.
+
+This first post shows the core idea and how to get a first rule running in a test project.
 
 ## The idea: a rule is a query plus an assertion
 
