@@ -55,7 +55,7 @@ export const seriesGroups = [
 		"accent": "#94a3b8",
 		"title": "Retrospective",
 		"icon": "clock",
-		"description": "A personal journey through almost two decades of engineering."
+		"description": "A personal journey through more than two decades of engineering."
 	}
 ];
 
@@ -328,7 +328,7 @@ export const series = [
 		"title": "From VB6 to self-defending codebases",
 		"group": "journey",
 		"icon": "clock",
-		"description": "A blog series tracing almost two decades of engineering — from VB6 operator interfaces to Roslyn rules, test SDKs and codebases that enforce their own conventions.",
+		"description": "A blog series tracing more than two decades of engineering — from VB6 operator interfaces to Roslyn rules, test SDKs and codebases that enforce their own conventions.",
 		"posts": [
 			"2007-vb6-hmi-roots",
 			"2007-first-steps-with-wpf-and-mvvm",
