@@ -146,6 +146,27 @@ export const series = [
 		]
 	},
 	{
+		"slug": "code-smells-and-their-fixes",
+		"title": "Code smells & their fixes",
+		"group": "design",
+		"icon": "magnifier",
+		"description": "Classic C# code smells from real codebases — events, simulation flags, out parameters, null checks, global state — and the modern patterns that replace them.",
+		"posts": [
+			"2026-code-smells-overview",
+			"2026-event-based-apis-to-tasks",
+			"2026-producer-consumer-with-channels",
+			"2026-taming-high-frequency-events",
+			"2026-no-simulation-flags-in-production-code",
+			"2026-out-parameters-vs-result-types",
+			"2026-null-object-pattern-and-nullable-reference-types",
+			"2026-replace-switch-chains-with-strategies",
+			"2026-repository-vs-query-object",
+			"2026-lazy-and-singletons-done-right",
+			"2026-state-is-the-enemy",
+			"2026-code-noise"
+		]
+	},
+	{
 		"slug": "testing-in-practice",
 		"title": "Testing in practice",
 		"group": "quality",
