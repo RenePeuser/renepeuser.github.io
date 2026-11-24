@@ -20,7 +20,7 @@ programming, servo drives, process control, machine commissioning, troubleshooti
 training. Somewhere in that mix, user interfaces became part of the job, and at that time, in that
 environment, user interfaces meant **Visual Basic 6**.
 
-From 2003 on, at Bosch, I built process visualizations with VB6 and **VisiWin**: operator screens that
+From 2003 on, I built process visualizations with VB6 and **VisiWin**: operator screens that
 showed what the machine and the process were doing, let people set parameters, and raised alarms when
 something went wrong. VisiWin brought the HMI building blocks (tags connected to the PLC, alarms,
 recipes, user levels), and VB6 glued them into screens an operator could use with one hand while the
