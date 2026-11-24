@@ -43,6 +43,13 @@ export const seriesGroups = [
 		"description": "How teams actually work: Scrum, planning and collaboration."
 	},
 	{
+		"id": "oss",
+		"accent": "#22d3ee",
+		"title": "Open source",
+		"icon": "github",
+		"description": "My open-source .NET libraries: what they solve, how to use them and why they beat the hand-written alternative."
+	},
+	{
 		"id": "journey",
 		"accent": "#94a3b8",
 		"title": "Retrospective",
@@ -260,6 +267,32 @@ export const series = [
 			"2026-user-stories-and-acceptance-criteria",
 			"2026-estimation-planning-poker-t-shirt-sizes-reference-stories",
 			"2026-definition-of-ready"
+		]
+	},
+	{
+		"slug": "aspnetcore-simple-mstest-sdk",
+		"title": "AspNetCore.Simple.MsTest.Sdk",
+		"group": "oss",
+		"icon": "github",
+		"description": "API integration tests in one line: test data in files, whole-response comparison and analyzers that guide you.",
+		"posts": [
+			"2026-mstest-sdk-api-tests-in-one-line",
+			"2026-mstest-sdk-failures-that-explain-themselves",
+			"2026-mstest-sdk-fluent-api-and-analyzers",
+			"2026-mstest-sdk-vs-hand-written-tests"
+		]
+	},
+	{
+		"slug": "solution-parser",
+		"title": "Solution.Parser",
+		"group": "oss",
+		"icon": "github",
+		"description": "Your solution as a queryable model: solutions, projects, C#, XAML and NuGet packages for architecture tests and tooling.",
+		"posts": [
+			"2026-solution-parser-your-solution-as-a-queryable-model",
+			"2026-solution-parser-reading-code-like-code",
+			"2026-solution-parser-architecture-tests-for-projects-and-xaml",
+			"2026-solution-parser-vs-netarchtest-archunit-and-analyzers"
 		]
 	},
 	{

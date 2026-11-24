@@ -75,6 +75,33 @@ if (e.OnScreenKey.Key.DisplayName == "OK")
 
 `UpdateSourceTrigger=Explicit` is a small detail that matters on a machine. If the operator closes the dialog any other way, the original value stays. A half-typed number never reaches the machine.
 
+### How a screen used it
+
+The project targets .NET 2.0 and sets `RegisterForComInterop` to `true`, so a build registers the class under its default ProgID, `OnScreenKeyboard_VB6.OnScreenKeyboard_Vb6`. To check the dialog without a VB6 machine, the repository has a small WPF test window that calls it through the same interface a COM client sees:
+
+```csharp
+void _textbox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+{
+    OnScreenKeyboard_VB6.IOnScreenKeyboard_VB6 test = new OnScreenKeyboard_Vb6();
+    _textbox.Text = test.ShowKeyboardDetail("", "", _textbox.Text, 1);
+}
+```
+
+On the VB6 side, it took one late-bound call per input field. The archive doesn't contain the VB6 screens, so this is a reconstruction of the pattern, not original code:
+
+```vb
+' Reconstruction: double-tap a text box to edit it on the numeric pad
+Private Sub txtFeedRate_DblClick()
+    Dim keyboard As Object
+    Set keyboard = CreateObject("OnScreenKeyboard_VB6.OnScreenKeyboard_Vb6")
+
+    txtFeedRate.Text = keyboard.ShowKeyboardDetail( _
+        "txtFeedRate", "Feed rate (mm/min)", txtFeedRate.Text, 1)
+End Sub
+```
+
+Because the dialog returns the original text on cancel, the VB6 code needs no special case. It always writes back whatever comes out.
+
 ## Moving shapes: a naive first step
 
 [MVVM_Drawing](https://github.com/RenePeuser/MVVM_Drawing) shows where I started on the canvas itself. The name says MVVM, but the code is honest about being day one: a `ShapeLine` model with `Start` and `End` points, and a code-behind experiment that moves a `Polyline` across a `Canvas` from a background thread:
@@ -100,6 +127,32 @@ For zooming I studied a published ZoomableCanvas tutorial, and that sample is in
 
 First, **spatial virtualization**. The items source implements a `Query(Rect)` method, so the panel only creates containers for items that intersect the visible area. A slider pushes the count up to a million items, and the UI stays responsive.
 
+The XAML in my copy of the sample ([ZoomableApplication2](https://github.com/RenePeuser/ZoomableApplication2)) shows how little the view has to know. A plain `ListBox` gets the canvas as its items panel, and each item container is positioned by binding:
+
+```xml
+<ListBox x:Name="MyListBox">
+    <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+            <ZoomableCanvas Loaded="ZoomableCanvas_Loaded"
+                            RealizationLimit="1000"
+                            RealizationRate="10"
+                            RealizationPriority="Background"/>
+        </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+
+    <ListBox.ItemContainerStyle>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Canvas.Top" Value="{Binding top}"/>
+            <Setter Property="Canvas.Left" Value="{Binding left}"/>
+            <Setter Property="Width" Value="{Binding width}"/>
+            <Setter Property="Height" Value="{Binding height}"/>
+        </Style>
+    </ListBox.ItemContainerStyle>
+</ListBox>
+```
+
+`RealizationLimit` caps how many containers exist at once, and `RealizationRate` with `RealizationPriority="Background"` creates them in small batches at low priority. While you scroll quickly, the UI keeps responding to input and fills in items as it catches up. Selection, keyboard navigation and styling still come from the `ListBox` for free.
+
 Second, **zooming around the cursor**. Scaling alone makes the content jump away from where you're pointing. The fix is to adjust the offset so the point under the mouse stays put:
 
 ```csharp
@@ -115,6 +168,13 @@ That one line of vector maths is the difference between a zoom that feels right 
 ## Drag & drop that scrolls
 
 Another reference sample in the archive solves a classic touch and mouse annoyance: dragging an item to a spot that's currently scrolled out of view. It's an attached property, `ScrollOnDragDrop="True"`, that hooks `PreviewDragOver`, finds the first `ScrollViewer` inside the control, and scrolls when the pointer gets near the top or bottom edge. The sensitive zone is `Math.Min(40, ActualHeight * 0.25)`, and the scroll speed increases the closer you get to the edge.
+
+Using it is one attribute on any drop target that contains a `ScrollViewer`, from the demo window in [Wpf_Drag_Drop_Scroll](https://github.com/RenePeuser/Wpf_Drag_Drop_Scroll):
+
+```xml
+<ListBox AllowDrop="True"
+         dde:DragDropExtension.ScrollOnDragDrop="True" />
+```
 
 That isn't my code, but the *shape* of the solution influenced a lot of what I wrote afterwards: behaviour packaged as an attached property, switched on in XAML, with no code-behind in the view that uses it.
 
@@ -154,9 +214,78 @@ protected override Visual GetVisualChild(int index)
 
 Hit testing then goes through `VisualTreeHelper.HitTest` with a callback instead of per-element mouse events.
 
-:::caution[Reading my old benchmark critically]
-The timing used `stopwatch.Elapsed.Milliseconds`, which is only the millisecond *component* of the elapsed time, not `TotalMilliseconds`. And the measurement only covered building the drawing, not the render pass that WPF runs later. One pen was frozen, the other wasn't. The direction of the result was right. The numbers weren't trustworthy.
-:::
+### Reading my old benchmark critically
+
+Here is the measurement from 2013, unchanged:
+
+```csharp
+private void Button_Click(object sender, RoutedEventArgs e)
+{
+    stopwatch.Start();
+    this.drawingContainer1.CreateUIElements(1000, true);
+    this.drawingContainer2.CreateUIElements(1000, false);
+    this.drawingContainer3.CreateUIElements(1000, true);
+    stopwatch.Stop();
+    MessageBox.Show("Time elapsed in milisekonds: " + stopwatch.Elapsed.Milliseconds.ToString());
+    stopwatch.Reset();
+}
+```
+
+It has four problems:
+
+- `Elapsed.Milliseconds` is only the millisecond *component* of the elapsed time. At 1.2 seconds it would show 200. `TotalMilliseconds` is the value you want.
+- The first click includes JIT compilation and cold caches. There's no warm-up and only one run.
+- It stops the clock before WPF has done any layout or rendering. It measures how fast you can *record* drawing instructions, not how long the operator waits for pixels.
+- There's nothing to compare against. All three hosts use `DrawingVisual`, so the benchmark never measures the `Shape` version it was supposed to replace.
+
+Inside `CreateDrawingVisualRectangle` there's a fifth, smaller problem: `blackPen.Freeze()` is called on every loop iteration, and `redPen` is never frozen. An unfrozen `Freezable` has to be watched for changes, and that costs time.
+
+### Measuring it properly (2026 rewrite)
+
+To find out whether the conclusion still holds, I rewrote the benchmark for this post. This code is new and not part of the archive. It compares the same N rectangles as `Rectangle` shapes on a `Canvas` and as one `DrawingVisual`. It uses frozen brushes and pens, does three warm-up runs, takes the median of ten, and stops the clock only after the dispatcher has processed layout and the render pass:
+
+```csharp
+static readonly Brush Fill = Freeze(new SolidColorBrush(Colors.LightBlue));
+static readonly Pen Outline = Freeze(new Pen(Brushes.Black, 1));
+
+static async Task<(double build, double total)> Measure(Grid host, Func<int, FrameworkElement> build, int n)
+{
+    host.Children.Clear();
+    await Dispatcher.CurrentDispatcher.InvokeAsync(() => { }, DispatcherPriority.ContextIdle);
+    GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect();
+
+    var sw = Stopwatch.StartNew();
+    var element = build(n);                       // create shapes or record the drawing
+    var buildMs = sw.Elapsed.TotalMilliseconds;   // TotalMilliseconds, not Milliseconds
+    host.Children.Add(element);
+
+    // ContextIdle runs after Loaded and Render, so layout and the
+    // UI thread's render pass are included in the second number.
+    await Dispatcher.CurrentDispatcher.InvokeAsync(() => { }, DispatcherPriority.ContextIdle);
+    return (buildMs, sw.Elapsed.TotalMilliseconds);
+}
+
+static FrameworkElement BuildVisual(int n)
+{
+    var visual = new DrawingVisual();
+    using (var dc = visual.RenderOpen())
+        for (int i = 0; i < n; i++)
+            dc.DrawRectangle(Fill, Outline, new Rect(i % 100 * 11, i / 100 * 11 % 880, 10, 10));
+    return new VisualHost(visual);                // FrameworkElement with a VisualCollection
+}
+```
+
+`BuildShapes` creates the same rectangles as `Rectangle` elements with `Canvas.SetLeft` and `Canvas.SetTop`. On my machine (.NET 10, WPF, median of ten runs after three warm-ups), the result looked like this:
+
+| Rectangles | `Shape`s: build | `Shape`s: until rendered | `DrawingVisual`: build | `DrawingVisual`: until rendered |
+| ---: | ---: | ---: | ---: | ---: |
+| 1,000 | 3.6 ms | 13.5 ms | 0.4 ms | 1.2 ms |
+| 10,000 | 17–31 ms | 106–124 ms | 0.8–1.6 ms | 4.4–8.5 ms |
+| 50,000 | 75–79 ms | 379–390 ms | 3.1–3.3 ms | 13.7–14.4 ms |
+
+The ranges come from two separate runs. The 2013 conclusion holds, and the gap is bigger than the old numbers suggested. At 1,000 rectangles, `DrawingVisual` is about ten times faster until the frame is ready. At 50,000, it's more than 25 times faster. Most of the cost for shapes isn't creating them but layout and rendering, which is exactly the part the old benchmark didn't measure.
+
+One caveat: `ContextIdle` covers work on the UI thread. Composition on WPF's separate render thread and the GPU isn't in these numbers. For a canvas that is redrawn while the operator watches, the UI thread is the part that decides whether input feels sluggish, so that's the right thing to measure here.
 
 ## A grid to align against
 
@@ -192,6 +321,6 @@ The archive also holds an open-source WPF property grid I studied for editing th
 - **Never break a COM contract.** Add methods, don't change them. The VB6 client on the other side won't recompile itself.
 - **Pick the right weight of element.** Use `Shape`s for a handful of interactive things, `DrawingVisual`s or brushes for thousands of passive ones.
 - **Package behaviour as attached properties.** Auto-scroll, grids and zoom are things a view should switch on in XAML, not reimplement in code-behind.
-- **Measure properly or not at all.** `TotalMilliseconds`, warm-up runs, and including the render pass. My 2013 self skipped all three.
+- **Measure properly or not at all.** `TotalMilliseconds`, warm-up runs, a baseline to compare against, and including the render pass. My 2013 self skipped all four, and was still right only by luck.
 
 What I'd do today: keep the canvas model pure (shapes as plain view-model objects with geometry), render through a single custom element that draws them, and do zoom and pan with one `MatrixTransform` instead of moving each item. The interaction logic would sit in testable classes rather than in mouse event handlers.

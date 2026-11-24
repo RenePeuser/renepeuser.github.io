@@ -48,6 +48,34 @@ leaks from one test into the next.
 
 **The hand-rolled double-checked lock.**
 
+The textbook form: two checks, one lock.
+
+```csharp
+private static volatile PriceList? _instance;
+private static readonly object Sync = new();
+
+public static PriceList Instance
+{
+    get
+    {
+        if (_instance is null)              // 1st check: fast path, no lock once initialized
+        {
+            lock (Sync)
+            {
+                if (_instance is null)      // 2nd check: another thread may have won the race
+                {
+                    _instance = PriceList.Load();
+                }
+            }
+        }
+        return _instance;
+    }
+}
+```
+
+And the compact form you'll find in newer code. It's the same pattern: `??=` *is* the second check, it
+only assigns when the field is still `null`.
+
 ```csharp
 private static PriceList? _instance;
 private static readonly object Sync = new();
@@ -67,6 +95,11 @@ public static PriceList Instance
     }
 }
 ```
+
+Note that it's *one* lock, not two. The second check has to happen inside the lock, because two
+threads can pass the first check at the same time. The `volatile` in the first version is the portable
+way to make the published reference visible to other threads; the .NET memory model already guarantees
+that on current runtimes, which is why the second version works without it.
 
 This is a classic interview question, and in .NET it happens to work because of the memory model on
 current runtimes. It's also unnecessary. It re-implements what `Lazy<T>` and the static initializer already

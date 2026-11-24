@@ -74,7 +74,136 @@ public class TranslateExtension : MarkupExtension
 }
 ```
 
+### How the pieces fit together
+
+Five small classes make up the whole thing. Here they are in the order you'd wire them up.
+
+**1. The resource files.** One neutral file plus one per culture, all with the same keys. In the repo they live in a `Ressourcen` folder (yes, German spelling), so the base name becomes `TranslationByMarkupExtension.Ressourcen.strings`:
+
+```text
+Ressourcen/
+  strings.resx          <- neutral fallback
+  strings.de-DE.resx
+  strings.en-US.resx
+  strings.nl-BE.resx
+```
+
+```xml
+<!-- strings.de-DE.resx -->
+<data name="LocalizedByMarkupExtension" xml:space="preserve">
+  <value>Dieser Wert wurde mit einer MarkupExtension übersetzt</value>
+</data>
+```
+
+Each culture-specific file compiles into a satellite assembly in a folder named after the culture (`de-DE\`, `nl-BE\`, …). That folder layout matters later, because the provider uses it to find the available languages.
+
+**2. A provider behind an interface.** The rest of the code only knows `ITranslationProvider`. The RESX version is a thin wrapper around `ResourceManager`:
+
+```csharp
+public interface ITranslationProvider
+{
+    object Translate(string key);
+    IEnumerable<CultureInfo> Languages { get; }
+}
+
+public class ResxTranslationProvider : ITranslationProvider
+{
+    private readonly ResourceManager _resourceManager;
+
+    public ResxTranslationProvider(string baseName, Assembly assembly)
+    {
+        _resourceManager = new ResourceManager(baseName, assembly);
+    }
+
+    public object Translate(string key) => _resourceManager.GetString(key);
+
+    // Languages: see the folder scan below
+}
+```
+
+`ResourceManager.GetString` uses `CurrentUICulture` by default, so the provider doesn't need to know which language is active. Setting the thread culture is enough.
+
+**3. Registering it at startup.** `App.OnStartup` plugs the provider into the `TranslationManager` singleton before the first window is created: `TranslationManager.Instance.TranslationProvider = new ResxTranslationProvider("TranslationByMarkupExtension.Ressourcen.strings", Assembly.GetExecutingAssembly());`.
+
+**4. Using it in XAML.** Map the CLR namespace and pass the key as the constructor argument. It works on any dependency property, not just `Text`:
+
+```xml
+<Window xmlns:translationExtension="clr-namespace:TranslationByMarkupExtension.TranslationExtension">
+    <StackPanel>
+        <ComboBox ItemsSource="{Binding Languages}" IsSynchronizedWithCurrentItem="True" />
+        <TextBlock Text="{translationExtension:Translate LocalizedByMarkupExtension}" />
+        <Button Content="{translationExtension:Translate LocalizedByMarkupExtension}" />
+    </StackPanel>
+</Window>
+```
+
+**5. Switching language.** The view model wraps the available cultures in an `ICollectionView`. When the combo box moves the current item, it sets the new culture:
+
+```csharp
+public class MainWindowViewModel
+{
+    public ICollectionView Languages { get; private set; }
+
+    public MainWindowViewModel()
+    {
+        Languages = CollectionViewSource.GetDefaultView(TranslationManager.Instance.Languages);
+        Languages.CurrentChanged += (s, e) =>
+            TranslationManager.Instance.CurrentLanguage = (CultureInfo)Languages.CurrentItem;
+    }
+}
+```
+
+The test app opens a second window from a button, so you can watch texts in *both* windows switch at the same moment.
+
+### Why every text updates
+
 `TranslationData` listens for a `LanguageChanged` event through a `WeakEventManager` and raises `PropertyChanged("Value")`. Change the culture, and every bound text in every open window updates. No restart, and no strong references holding views alive:
+
+```mermaid
+sequenceDiagram
+    participant UI as ComboBox
+    participant TM as TranslationManager
+    participant WEM as LanguageChangedEventManager
+    participant TD as TranslationData (one per text)
+    participant B as Binding
+    UI->>TM: CurrentLanguage = de-DE
+    TM->>TM: set CurrentUICulture
+    TM->>WEM: LanguageChanged
+    WEM->>TD: ReceiveWeakEvent
+    TD->>B: PropertyChanged("Value")
+    B->>TD: get Value
+    TD->>TM: Translate(key)
+```
+
+The data object itself is tiny. It holds a key, registers with the weak event manager, and asks the manager for the text whenever the binding reads `Value`:
+
+```csharp
+public class TranslationData : IWeakEventListener, INotifyPropertyChanged
+{
+    private readonly string _key;
+
+    public TranslationData(string key)
+    {
+        _key = key;
+        LanguageChangedEventManager.AddListener(TranslationManager.Instance, this);
+    }
+
+    public object Value => TranslationManager.Instance.Translate(_key);
+
+    public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+    {
+        if (managerType != typeof(LanguageChangedEventManager)) return false;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
+        return true;
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+}
+```
+
+The weak event manager is the part people skip, and it's what keeps closed windows from leaking. A plain `TranslationManager.Instance.LanguageChanged += ...` would make the singleton hold every `TranslationData`, and with it every binding and every view that ever showed a translated text.
+
+The manager sets the culture and raises the event:
 
 ```csharp
 public CultureInfo CurrentLanguage
@@ -167,7 +296,74 @@ switch (currentTextSelection.Document.Language)
 }
 ```
 
-In C# the selection became a `TranslatableText` field holding key and developer text. In XAML it became a `{TranslateByKey ...}` markup extension. The command also wrote the new entry into the resource file and added a property to a generated wrapper class. The runtime side was recognisably the 2013 design: a markup extension that binds to a notifying `TranslationData`, a weak `LanguageChangedEventManager`, and an `ITranslationProvider`, which was now backed by per-culture XML files instead of RESX. One improvement: in the designer it simply returns the key, so views stay readable at design time.
+In C# the selection became a `TranslatableText` field holding key and developer text. In XAML the formatter emitted a `{TranslateByKey ...}` markup extension. The command also wrote the new entry into the resource file and added a property to a generated wrapper class. The runtime side was recognisably the 2013 design: a markup extension that binds to a notifying `TranslationData`, a weak `LanguageChangedEventManager`, and an `ITranslationProvider`, which was now backed by per-culture XML files instead of RESX.
+
+The resource files became deliberately boring, one file per culture in a `Resources` folder next to the executable:
+
+```xml
+<!-- Resources/de-de.xml -->
+<Texte>
+  <Text Key="Hallo" Value="Hallo" />
+  <Text Key="Next_Generation_Of_Localization" Value="Test" />
+</Texte>
+```
+
+The provider loads all of them once and keeps one dictionary per culture. Switching language is just swapping which dictionary is active:
+
+```csharp
+public XMLTranslationProvider(Assembly assembly)
+{
+    var currentDirectory = new FileInfo(assembly.Location).Directory;
+    var resourceDirectory = new DirectoryInfo(Path.Combine(currentDirectory.FullName, "Resources"));
+    _resourceDictionary = GetLanguageResources(resourceDirectory.EnumerateFiles("*.xml"))
+        .ToDictionary(item => item.Key, item => item.Value);   // culture -> (key -> text)
+
+    Languages = _resourceDictionary.Keys.ToList();
+}
+
+public CultureInfo CurrentLanguage
+{
+    get { return Get<CultureInfo>(); }
+    set { if (Set(value)) _activeTextDictionary = _resourceDictionary[value]; }
+}
+```
+
+The markup extension gained two things compared with 2013: a named `Key` property instead of a constructor argument, and a design-time shortcut, so views stay readable in the designer instead of showing `!Key!` everywhere:
+
+```csharp
+public class TranslateTextByExtension : MarkupExtension
+{
+    public string Key { get; set; }
+
+    public override object ProvideValue(IServiceProvider serviceProvider)
+    {
+        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            return Key;
+
+        var binding = new Binding("Value") { Source = new TranslationData(Key), Mode = BindingMode.OneWay };
+        return binding.ProvideValue(serviceProvider);
+    }
+}
+```
+
+In XAML that reads `Text="{localization:TranslateTextBy Key='Hallo'}"`. The language switch became a plain two-way `SelectedItem` binding to `CurrentLanguage` on an injected `ITranslationService`, with no more `ICollectionView` plumbing and no more static singleton in the view model. And the generated wrapper class gave C# code strongly typed keys with a small `[CallerMemberName]` trick, where every property simply returns its own name:
+
+```csharp
+public static class TextResource
+{
+    public static string Hallo { get; } = Get();
+    public static string Next_Generation_Of_Localization { get; } = Get();
+    // public static string $Property$ { get; } = Get();   <- insertion point for the VS command
+
+    private static string Get([CallerMemberName] string callerMemberName = null) => callerMemberName;
+}
+```
+
+A typo in `TextResource.Hallo` is a compile error. A typo in `"Hallo"` is a `!Hallo!` on a machine panel somewhere.
+
+:::caution[What the 2018 code still got wrong]
+The finalizer had its tilde back, so the 2013 bug was fixed. But two new gaps are visible. The sample `de-de.xml` contains the key `Test` twice, and `ToDictionary` throws on duplicate keys, so one copy-paste in a resource file takes down the whole application at startup. And the IDE formatter writes `{TranslateByKey DeveloperValue=..., TranslationKey=...}`, while the runtime extension is called `TranslateTextBy` and has a single `Key` property. The tool and the runtime had drifted apart. Both are exactly the kind of mismatch a single automated check would catch.
+:::
 
 ## Lessons that stuck
 
@@ -177,3 +373,24 @@ In C# the selection became a `TranslatableText` field holding key and developer 
 - **Resource files need tooling, not discipline.** Unused keys and hard-coded strings don't go away through code review. They go away when a tool finds them, or better, when the IDE makes doing it right the easiest option.
 
 What I'd do today is push that last point further: generate strongly typed accessors from the resource files and add a build-time or Roslyn check that fails on unused keys and on new string literals in view code. That's the same instinct as `ResxCheckAndReplace`, moved from a tool you remember to run into a rule the build enforces.
+
+The cheapest version of that check is a plain unit test. This one is a 2026 sketch, not code from the archive. It compares every culture file against the neutral one and fails on duplicate or missing keys. Point it at `Descendants("Text")` and the `Key` attribute, and the same test covers the 2018 XML files and their duplicate `Test` key:
+
+```csharp
+[TestMethod]
+public void All_cultures_define_exactly_the_neutral_keys()
+{
+    static List<string> KeysOf(string file) =>
+        XDocument.Load(file).Descendants("data").Select(d => (string)d.Attribute("name")).ToList();
+
+    var neutral = KeysOf("Ressourcen/strings.resx");
+    foreach (var file in Directory.GetFiles("Ressourcen", "strings.*.resx"))
+    {
+        var keys = KeysOf(file);
+        CollectionAssert.AllItemsAreUnique(keys, $"Duplicate keys in {file}");
+        CollectionAssert.AreEquivalent(neutral, keys, $"{file} is out of sync with strings.resx");
+    }
+}
+```
+
+It's ten lines and runs in milliseconds, and it turns "please keep the resource files in sync" from a review comment into a red build.

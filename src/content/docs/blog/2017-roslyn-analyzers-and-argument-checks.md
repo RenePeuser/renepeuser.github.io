@@ -57,7 +57,36 @@ public class FindStringToLocalizeAnalyzer : DiagnosticAnalyzer
 (The original messages were in German. I've translated them here.)
 
 The **code fix provider** says which diagnostic IDs it can fix, finds the offending node and
-registers a `CodeAction`. The action builds a new syntax tree. This one wraps the literal in a
+registers a `CodeAction`:
+
+```csharp
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FindStringToLocalizeCodeFixProvider)), Shared]
+public class FindStringToLocalizeCodeFixProvider : CodeFixProvider
+{
+    private const string Title = "Localize string";
+
+    public sealed override ImmutableArray<string> FixableDiagnosticIds =>
+        ImmutableArray.Create(FindStringToLocalizeAnalyzer.DiagnosticId);
+
+    public sealed override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
+
+    public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+        var diagnostic = context.Diagnostics.First();
+
+        // Walk up from the reported position to the literal that caused it.
+        var literal = root.FindToken(diagnostic.Location.SourceSpan.Start).Parent
+            .AncestorsAndSelf().OfType<LiteralExpressionSyntax>().First();
+
+        context.RegisterCodeFix(
+            CodeAction.Create(Title, ct => LocalizeString(context.Document, literal, ct), equivalenceKey: Title),
+            diagnostic);
+    }
+}
+```
+
+The action itself builds a new syntax tree. This one wraps the literal in a
 `new TranslatableText("...")`:
 
 ```csharp
@@ -84,6 +113,157 @@ unit test project still contains the template's default test for upper-case type
 value for me was understanding the pipeline: syntax node, diagnostic, code action, new document.
 That later fed into architecture tests built on Roslyn syntax trees.
 :::
+
+## The test I should have written
+
+For this retrospective I put the analyzer and the code fix into a fresh test project, using today's
+[`Microsoft.CodeAnalysis.Testing`](https://github.com/dotnet/roslyn-sdk) packages
+(`Microsoft.CodeAnalysis.CSharp.CodeFix.Testing` with MSTest). This is 2026 code, not from the
+archive. The `{|Id:...|}` markup marks where a diagnostic is expected, and the verifier checks the
+diagnostic, applies the fix and compares the result:
+
+```csharp
+using Verify = Microsoft.CodeAnalysis.CSharp.Testing.CSharpCodeFixVerifier<
+    FindStringToLocalizeAnalyzer,
+    FindStringToLocalizeCodeFixProvider,
+    Microsoft.CodeAnalysis.Testing.DefaultVerifier>;
+
+[TestClass]
+public class FindStringToLocalizeTests
+{
+    private const string TranslatableText = """
+        namespace ConsoleApp1
+        {
+            public class TranslatableText
+            {
+                public TranslatableText(string text) { }
+            }
+        }
+
+        """;
+
+    [TestMethod]
+    public async Task Literal_is_reported_and_wrapped_in_TranslatableText()
+    {
+        var source = TranslatableText + """
+            class Greeter
+            {
+                object Greet() => {|FindStringToLocalize:"Hello"|};
+            }
+            """;
+
+        var fixedSource = TranslatableText + """
+            class Greeter
+            {
+                object Greet() => new ConsoleApp1.TranslatableText("Hello");
+            }
+            """;
+
+        await Verify.VerifyCodeFixAsync(source, fixedSource);
+    }
+
+    [TestMethod]
+    public async Task Literal_inside_TranslatableText_is_not_reported()
+    {
+        var source = TranslatableText + """
+            class Greeter
+            {
+                object Greet() => new ConsoleApp1.TranslatableText("Hello");
+            }
+            """;
+
+        await Verify.VerifyAnalyzerAsync(source);
+    }
+}
+```
+
+Running these tests against the 2017 code found three bugs within a few seconds:
+
+1. **The fixed code is flagged again.** After the fix, `"Hello"` is still a string literal, so the
+   analyzer reports it again and the fix wants to wrap it a second time. The second test fails.
+2. **The fix builds an invalid syntax tree.** `IdentifierName("ConsoleApp1.TranslatableText")`
+   creates *one* identifier token that contains a dot. It prints correctly, so I never noticed. But
+   the verifier re-parses the result, expects a `QualifiedName` and reports the difference.
+3. **`FindNode` picks the wrong node.** When a literal is the only thing inside an argument,
+   `root.FindNode(literal.Span)` returns the `ArgumentSyntax`, because it has the same span. The
+   2017 code then replaced an argument with an expression and crashed with an `InvalidCastException`.
+
+The fixes are small. The analyzer skips literals that are already wrapped:
+
+```csharp
+private static void AnalyzeNode(SyntaxNodeAnalysisContext context)
+{
+    var node = (LiteralExpressionSyntax)context.Node;
+    if (IsAlreadyTranslatable(node))
+    {
+        return;
+    }
+
+    context.ReportDiagnostic(Diagnostic.Create(Rule, node.GetLocation(), node.ToString()));
+}
+
+private static bool IsAlreadyTranslatable(LiteralExpressionSyntax node) =>
+    node.Parent is ArgumentSyntax { Parent: ArgumentListSyntax { Parent: ObjectCreationExpressionSyntax creation } }
+    && creation.Type.ToString().EndsWith("TranslatableText", StringComparison.Ordinal);
+```
+
+The code fix parses the type name and replaces the literal it already found, without a second
+lookup:
+
+```csharp
+var typeName = SyntaxFactory.ParseTypeName("ConsoleApp1.TranslatableText");   // a real QualifiedName
+var creation = generator.ObjectCreationExpression(typeName, SyntaxFactory.Argument(literal));
+var newRoot = generator.ReplaceNode(root, literal, creation);
+```
+
+After these changes, both tests pass. A comparison by type name is still a shortcut. A real rule
+would ask the `SemanticModel` for the symbol. But the lesson is clear: an analyzer without tests is
+a guess.
+
+## Shipping it: package and severity
+
+In 2017 the template's `.nuspec` already used the convention that still applies today. Analyzer
+DLLs go into `analyzers/dotnet/cs`, and the package is marked as a `developmentDependency`, so it
+does not become a runtime reference for consumers. Today the SDK project does the same thing without
+a `.nuspec` (again, 2026 code):
+
+```xml
+<PropertyGroup>
+  <TargetFramework>netstandard2.0</TargetFramework>
+  <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+  <IncludeBuildOutput>false</IncludeBuildOutput>
+  <DevelopmentDependency>true</DevelopmentDependency>
+</PropertyGroup>
+
+<ItemGroup>
+  <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+</ItemGroup>
+```
+
+Analyzers still target `netstandard2.0`, because they run inside the compiler, in Visual Studio and
+in `dotnet build`. Within a single solution you don't need a package at all. A project reference
+with `OutputItemType="Analyzer"` is enough:
+
+```xml
+<ProjectReference Include="..\FindStringToLocalize\FindStringToLocalize.csproj"
+                  OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+```
+
+Consumers decide how strict a rule is in `.editorconfig`. That gives the team control over the rule
+without changing the analyzer:
+
+```ini
+[*.cs]
+# breaks the build
+dotnet_diagnostic.FindStringToLocalize.severity = error
+
+[**/Logging/**.cs]
+# log messages are not UI text
+dotnet_diagnostic.FindStringToLocalize.severity = none
+```
+
+The second block answers the "honest footnote" above in a cheap way: if a rule is too broad, you
+can scope it by path before you invest in a smarter analyzer.
 
 ## The argument-check problem
 
@@ -206,7 +386,69 @@ public static T IfNull<T>([NotNull] T? argument,
 }
 ```
 
-No delegate, no allocation, no reflection, and the call site is just `Throw.IfNull(service)`. The
+No delegate, no allocation, no reflection, and the call site is just `Throw.IfNull(service)`.
+
+At the call site, a typical constructor shrinks from this:
+
+```csharp
+public OrderService(IOrderRepository repository, string region, int maxItems)
+{
+    if (repository == null)
+    {
+        throw new ArgumentNullException(nameof(repository));
+    }
+
+    if (string.IsNullOrWhiteSpace(region))
+    {
+        throw new ArgumentException("Region must not be empty.", nameof(region));
+    }
+
+    if (maxItems < 1 || maxItems > 100)
+    {
+        throw new ArgumentOutOfRangeException(nameof(maxItems));
+    }
+
+    _repository = repository;
+    _region = region;
+    _maxItems = maxItems;
+}
+```
+
+to this, because every helper returns the checked value:
+
+```csharp
+public OrderService(IOrderRepository repository, string region, int maxItems)
+{
+    _repository = Throw.IfNull(repository);
+    _region = Throw.IfNullOrWhiteSpace(region);
+    _maxItems = Throw.IfOutOfRange(maxItems, 1, 100);
+}
+```
+
+The exceptions are standard .NET exceptions, with the parameter name taken from the call site:
+
+```text
+ArgumentNullException:       Value cannot be null. (Parameter 'repository')
+ArgumentOutOfRangeException: Value: '150' is not in expected range from '1' to '100'. (Parameter 'maxItems')
+```
+
+`CallerArgumentExpression` captures the *expression*, not just a name. `Throw.IfNull(order.Customer)`
+reports `(Parameter 'order.Customer')`, which is often more useful in a log than the bare parameter.
+
+The tests assert exactly that. The `ExpectedArgumentException` idea from 2017 survived, now with
+plain MSTest:
+
+```csharp
+[TestMethod]
+public void Should_Throw_An_Exception_With_Correct_Exception_Message_If_Argument_Is_Null()
+{
+    var exception = Assert.ThrowsExactly<ArgumentNullException>(() => TestMethod(_nullString));
+
+    Assert.AreEqual("Value cannot be null. (Parameter 'argument')", exception.Message);
+}
+```
+
+The
 repository now has a BenchmarkDotNet project that compares each helper against a hand-written null
 check and a throw expression. The package is on
 [NuGet](https://www.nuget.org/packages/Argument.Check/) and had about 1.12 million downloads as of

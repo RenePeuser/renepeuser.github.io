@@ -161,11 +161,96 @@ Note `Orientation As Integer`: the WPF enum is flattened to a plain number, beca
 WPF's types. The whole wrapper is an exercise in translating a rich .NET API into the small vocabulary
 VB6 understands — numbers, strings, booleans, OLE colors and parameterless or simple-typed events.
 
-The project file sets `RegisterForComInterop` to `true`, so building also registers the control. The
-template's registration helper then writes the extra registry keys ActiveX hosts expect, such as the
-`Control` key and the `MiscStatus` flags. For deployment, the `WPFProgressbar` repo even contains a
-Visual Studio setup project ("WPFProgressbar for VB6") that installs the control, its WPF template
-assembly, the toolkit runtime and the type libraries, and marks them for COM registration.
+## Registration: how VB6 finds the control
+
+A COM-visible class is not yet something VB6 can drop on a form. It takes three more steps, and all
+of them are visible in the toolkit.
+
+First, the assembly opts into COM and gets a stable type library ID (`My Project/AssemblyInfo.vb`):
+
+```vb
+<Assembly: ComVisible(True)>
+'The following GUID is for the ID of the typelib if this project is exposed to COM
+<Assembly: Guid("b9924d24-b52c-445e-9301-88e095824463")>
+```
+
+Second, the project file switches the interop code on and lets every build register the control on
+the developer machine (`VB6_WPF_Toolkit.vbproj`, trimmed):
+
+```xml
+<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <DefineConstants>COM_INTEROP_ENABLED=True</DefineConstants>
+  <RegisterForComInterop>true</RegisterForComInterop>
+</PropertyGroup>
+```
+
+`COM_INTEROP_ENABLED` matters more than it looks: the whole generated interop region in every wrapper
+sits inside `#If COM_INTEROP_ENABLED Then`. Without the constant, the class compiles as a plain
+WinForms control.
+
+Third, a plain COM registration is not enough for an ActiveX *control*. VB6 only lists classes in its
+*Components* dialog that carry a `Control` key and the right `MiscStatus` flags. That is what the
+`<ComRegisterFunction>` from above calls into. From `ActiveXControlHelpers.vb`, trimmed:
+
+```vb
+Public Sub RegisterControl(ByVal t As Type)
+    Dim key As String = "CLSID\" & t.GUID.ToString("B")
+
+    Using subkey As RegistryKey = Registry.ClassesRoot.OpenSubKey(key, True)
+        ' VB6 loads the CLR shim, which then loads the .NET assembly
+        Dim inprocKey As RegistryKey = subkey.OpenSubKey("InprocServer32", True)
+        If inprocKey IsNot Nothing Then
+            inprocKey.SetValue(Nothing, Environment.SystemDirectory & "\mscoree.dll")
+        End If
+
+        ' "I am a control" - without this key, VB6's Components dialog ignores the class
+        Using controlKey As RegistryKey = subkey.CreateSubKey("Control")
+        End Using
+
+        Using miscKey As RegistryKey = subkey.CreateSubKey("MiscStatus")
+            Dim miscStatusValue As Integer = OLEMISC_RECOMPOSEONRESIZE + _
+                OLEMISC_CANTLINKINSIDE + OLEMISC_INSIDEOUT + _
+                OLEMISC_ACTIVATEWHENVISIBLE + OLEMISC_SETCLIENTSITEFIRST
+            miscKey.SetValue("", miscStatusValue.ToString, RegistryValueKind.String)
+        End Using
+
+        ' One toolbox icon per control, embedded as Win32 resources 101-109
+        Using bitmapKey As RegistryKey = subkey.CreateSubKey("ToolBoxBitmap32")
+            If t.Name.Equals("WpfSlider") Then
+                bitmapKey.SetValue("", Assembly.GetExecutingAssembly.Location & ", 103")
+            ' ... one branch per control ...
+            End If
+        End Using
+
+        Using typeLibKey As RegistryKey = subkey.CreateSubKey("TypeLib")
+            typeLibKey.SetValue("", Marshal.GetTypeLibGuidForAssembly(t.Assembly).ToString("B"))
+        End Using
+    End Using
+End Sub
+```
+
+The skeleton is template code. The `ToolBoxBitmap32` branch per control is mine: nine controls
+shouldn't all show up in the VB6 toolbox with the same generic icon.
+
+On a machine without Visual Studio, `RegisterForComInterop` doesn't help. There you register with
+`RegAsm`, which also runs the `<ComRegisterFunction>`. The archive doesn't contain a script for this
+(it relied on the setup project described below), so this is the command as I would write it today:
+
+```bat
+:: VB6 is a 32-bit process, so use the 32-bit RegAsm of the CLR the assembly targets
+%WINDIR%\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe VB6_WPF_Toolkit.dll /codebase /tlb:VB6_WPF_Toolkit.tlb
+
+:: and to remove it again
+%WINDIR%\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe VB6_WPF_Toolkit.dll /unregister /tlb:VB6_WPF_Toolkit.tlb
+```
+
+The classic mistake is running the `Framework64` RegAsm. The registration then lands in the 64-bit
+registry view, and the 32-bit VB6 IDE never sees it. For assemblies built against .NET 2.0–3.5, the
+`v2.0.50727` folder is the right one.
+
+For real deployment, the `WPFProgressbar` repo contains a Visual Studio setup project
+("WPFProgressbar for VB6") that installs the control, its WPF template assembly, the toolkit runtime
+and the type libraries, and marks them for COM registration.
 
 ## How VB6 sees it
 
@@ -190,6 +275,18 @@ End
 Those negative color values are OLE system colors, which is why the template converts colors with
 helpers like `GetOleColorFromColor` instead of exposing `System.Drawing.Color`.
 
+The project file (`Projekt1.vbp`) shows the other half of the registration story. VB6 references the
+control by the GUID of its type library, and right next to it sits an entry for `mscoree.dll`, the
+CLR shim that the registration helper put into `InprocServer32`:
+
+```ini
+Object={13170969-13B8-4CC4-A39D-4EEF015A697F}#1.0#0; mscoree.dll
+Object={7DC417DB-81C4-46F1-8B99-29EB92BF58D5}#1.0#0; WPFProgressbar.tlb
+```
+
+From VB6's point of view, it is loading a perfectly ordinary in-process ActiveX server. That the
+server happens to start the CLR, which then loads WPF inside a WinForms host, is invisible to it.
+
 The same VB6 project also tries a second, cruder approach: instead of an ActiveX control, it shows a
 complete .NET interop *form* and re-parents it into a `PictureBox` with the Win32 `SetParent` call.
 
@@ -208,6 +305,118 @@ End Sub
 
 It works for whole regions of a screen, like a ribbon, but it bypasses everything VB6 knows about
 child controls: focus, tab order, resizing and lifetime are all on you.
+
+## End to end: a WPF slider driving a WPF video on a VB6 form
+
+The fragments above are spread over several prototypes, so here is the full path for one control,
+the toolkit's slider, from XAML to a VB6 event handler.
+
+**1. WPF control.** The `WpfSliderControl` from Layer 1: a `Slider` in XAML, plus a
+`SliderValueChanged(ByVal value As Double)` event in the code-behind.
+
+**2. WinForms host.** The wrapper's designer file creates the `ElementHost` and docks the WPF control
+into it (`Controls/WpfSlider.Designer.vb`, trimmed):
+
+```vb
+Private _elementHost As ElementHost
+Private WithEvents _wpfSliderControl As WpfSliderControl
+
+Private Sub InitializeComponent()
+    _elementHost = New ElementHost
+    _wpfSliderControl = New WpfSliderControl
+
+    Me.SuspendLayout()
+    Me._elementHost.Dock = System.Windows.Forms.DockStyle.Fill
+    Me._elementHost.Margin = New System.Windows.Forms.Padding(0)
+    Me._elementHost.Child = _wpfSliderControl
+    Me.Controls.Add(Me._elementHost)
+    Me.ResumeLayout(False)
+End Sub
+```
+
+`WithEvents` is the link to the next layer: the wrapper handles `SliderValueChanged` from the WPF
+control and raises its own COM event.
+
+**3. COM wrapper.** `WpfSlider` from Layer 3, which exposes `Minimum`, `Maximum`, `Value`,
+`SmallChange`, `LargeChange` and `Orientation`, plus the `SliderValueChanged` event. Its sibling
+`WpfMediaElement` wraps a WPF `MediaElement` in the same way, with a deliberately VB6-shaped API:
+
+```vb
+Public Sub OpenMediaElement(ByVal sFile As String)
+    Dim uriElement As New Uri(sFile)
+    If (uriElement.IsFile) Then _wpfMediaElementControl.MediaElementControl.Source = uriElement
+End Sub
+
+Public Sub PlayMedia()
+    _wpfMediaElementControl.MediaElementControl.Play()
+End Sub
+
+Public Sub Pause()
+    If (_wpfMediaElementControl.MediaElementControl.CanPause) Then _wpfMediaElementControl.MediaElementControl.Pause()
+End Sub
+
+Public Property SpeedRatio As Double
+    Get
+        Return _wpfMediaElementControl.MediaElementControl.SpeedRatio
+    End Get
+    Set(value As Double)
+        _wpfMediaElementControl.MediaElementControl.SpeedRatio = value
+    End Set
+End Property
+```
+
+A file path instead of a `Uri`, and a `Pause` that quietly checks `CanPause` so the VB6 side cannot
+trigger an exception it has no way to understand.
+
+**4. Check it without VB6.** Before going anywhere near the VB6 IDE, the toolkit's C# WinForms test
+harness hosts the WPF controls directly (`VB6_WPF_ToolKit.Test/Form1.Designer.cs`, trimmed):
+
+```csharp
+this.elementHost3 = new System.Windows.Forms.Integration.ElementHost();
+this.wpfSliderControl1 = new VB6_WPF_Toolkit_ControlTemplates.Controls.WpfSliderControl();
+this.wpfRibbon1 = new VB6_WPF_Toolkit.Controls.WpfRibbon();
+// ...
+this.elementHost3.Child = this.wpfSliderControl1;
+```
+
+The first two lines test the WPF side in isolation. The third puts the finished COM wrapper on a
+WinForms form as an ordinary .NET control. If something breaks only in VB6, it is the COM boundary,
+not the control.
+
+**5. Use it in VB6.** After registration, *Project → Components* lists the toolkit, the controls
+show up in the toolbox, and the form code is plain VB6. The archive doesn't help here: its only VB6
+test form (`VB6-WPF-Ribbon/Form1.frm`) contains an empty `WPFButton1_MouseDown` handler and nothing
+else. So the following consumer code is written for this post, against the API above:
+
+```vb
+' Form1.frm - written for this post, not part of the archive
+Private Sub Form_Load()
+    WpfSlider1.Minimum = 10
+    WpfSlider1.Maximum = 200
+    WpfSlider1.SmallChange = 5
+    WpfSlider1.LargeChange = 25
+    WpfSlider1.Value = 100
+
+    WpfMediaElement1.OpenMediaElement App.Path & "\machine-intro.wmv"
+End Sub
+
+' The WPF event, translated twice, arrives as an ordinary VB6 event
+Private Sub WpfSlider1_SliderValueChanged(ByVal Value As Double)
+    lblSpeed.Caption = Format$(Value, "0") & " %"
+    WpfMediaElement1.SpeedRatio = Value / 100
+End Sub
+
+Private Sub cmdPlay_Click()
+    WpfMediaElement1.PlayMedia
+End Sub
+
+Private Sub cmdPause_Click()
+    WpfMediaElement1.Pause
+End Sub
+```
+
+That is the whole point of the exercise: the VB6 developer sets numbers and handles an event with a
+`Double`. Bindings, routed events and dependency properties stay on the .NET side of the wall.
 
 ## The experiments around it
 
@@ -291,5 +500,8 @@ into it.
   on architecture and solution tests grew out of.
 - **Keep the boundary vocabulary small and explicit.** The wrappers worked best where they translated
   WPF into a deliberately tiny API. That lesson applies to every integration boundary, COM or HTTP.
+- **Stay on .NET Framework for this boundary.** Modern .NET can still expose COM servers, but hosting
+  a WinForms control as an ActiveX control is a .NET Framework feature. A VB6 integration like this
+  one would target .NET Framework 4.8, pinned explicitly.
 - **Prefer one generic host over many wrappers.** The `UIElement` plug-in seam was the right instinct.
   One well-tested host with discoverable content scales better than an OCX per control.
