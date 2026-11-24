@@ -17,24 +17,82 @@ answers it as honestly as I can, including the cases where my answer is "no, use
 earlier posts cover [getting started](/blog/2026-argument-check-guard-clauses-in-one-line/), [the full
 catalogue](/blog/2026-argument-check-the-throw-catalogue/) and [the runtime cost](/blog/2026-argument-check-what-a-guard-costs/).
 
-## What .NET gives you today
+## What .NET gives you today, helper by helper
 
-| API | Since | Checks |
-| --- | --- | --- |
-| `ArgumentNullException.ThrowIfNull(x)` | .NET 6 | `x` is null |
-| `ArgumentException.ThrowIfNullOrEmpty(s)` | .NET 7 | string is null or `""` |
-| `ObjectDisposedException.ThrowIf(disposed, this)` | .NET 7 | object is disposed |
-| `ArgumentException.ThrowIfNullOrWhiteSpace(s)` | .NET 8 | string is null, `""` or whitespace |
-| `ArgumentOutOfRangeException.ThrowIfNegative(x)`, `ThrowIfZero`, `ThrowIfNegativeOrZero` | .NET 8 | numeric sign checks |
-| `ArgumentOutOfRangeException.ThrowIfGreaterThan(x, max)`, `ThrowIfLessThan`, `…OrEqual`, `ThrowIfEqual`, `ThrowIfNotEqual` | .NET 8 | comparisons against a limit |
+Here is every throw helper the BCL ships, next to its Argument.Check counterpart:
 
-That's a solid set, and the messages are good. These are real outputs on .NET 10:
+| Built-in .NET helper | Since | Argument.Check | Notes |
+| --- | --- | --- | --- |
+| `ArgumentNullException.ThrowIfNull(x)` | .NET 6 | `Throw.IfNull(x)` | Identical message. |
+| `ArgumentException.ThrowIfNullOrEmpty(s)` | .NET 7 | `Throw.IfNullOrEmpty(s)` | Argument.Check also has an overload for collections. |
+| `ArgumentException.ThrowIfNullOrWhiteSpace(s)` | .NET 8 | `Throw.IfNullOrWhiteSpace(s)` | |
+| `ArgumentOutOfRangeException.ThrowIfNegative(x)` | .NET 8 | `Throw.IfLessThan(x, 0)` | No dedicated sign helpers in Argument.Check. |
+| `ArgumentOutOfRangeException.ThrowIfNegativeOrZero(x)` | .NET 8 | `Throw.IfLessOrEqual(x, 0)` | |
+| `ArgumentOutOfRangeException.ThrowIfZero(x)` | .NET 8 | `Throw.IfEqualsTo(x, 0)` | Throws `ArgumentException`, not `ArgumentOutOfRangeException`. |
+| `ArgumentOutOfRangeException.ThrowIfGreaterThan(x, max)` | .NET 8 | `Throw.IfGreaterThan(x, max)` | |
+| `ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(x, max)` | .NET 8 | `Throw.IfGreaterOrEqual(x, max)` | |
+| `ArgumentOutOfRangeException.ThrowIfLessThan(x, min)` | .NET 8 | `Throw.IfLessThan(x, min)` | |
+| `ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(x, min)` | .NET 8 | `Throw.IfLessOrEqual(x, min)` | |
+| `ArgumentOutOfRangeException.ThrowIfEqual(x, v)` | .NET 8 | `Throw.IfEqualsTo(x, v)` | Throws `ArgumentException`. |
+| `ArgumentOutOfRangeException.ThrowIfNotEqual(x, v)` | .NET 8 | `Throw.IfNotEqualsTo(x, v)` | Throws `ArgumentException`. |
+| `ObjectDisposedException.ThrowIf(disposed, this)` | .NET 7 | — | No counterpart. Use the built-in. |
+| — (two calls) | | `Throw.IfOutOfRange(x, min, max)` | One call for a range, both bounds inclusive. |
+| — | | collections, items, files, directories, types, `If`/`IfNot` predicates | See [the catalogue](/blog/2026-argument-check-the-throw-catalogue/). |
+
+For everything the BCL covers, the two sides match almost one to one. The real differences are in
+the messages and the exception types.
+
+### The messages, side by side
+
+Same failing input, both libraries, real output on .NET 10:
 
 ```text
-ArgumentOutOfRangeException: maxRetries ('11') must be less than or equal to '10'. (Parameter 'maxRetries')
-                             Actual value was 11.
-ArgumentException:           The value cannot be an empty string or composed entirely of whitespace. (Parameter 'name')
+null           built-in   Value cannot be null. (Parameter 'name')
+               Arg.Check  Value cannot be null. (Parameter 'name')
+
+""             built-in   The value cannot be an empty string. (Parameter 'empty')
+               Arg.Check  The string must not be empty. (Parameter 'empty')
+
+"  "           built-in   The value cannot be an empty string or composed entirely of whitespace. (Parameter 'tenant')
+               Arg.Check  The string must not be only whitespace. (Parameter 'tenant')
+
+11 > 10        built-in   retries ('11') must be less than or equal to '10'. (Parameter 'retries')
+                          Actual value was 11.
+               Arg.Check  Value: '11' must not be greater than: '10'. (Parameter 'retries')
+
+0 not in 1–500 built-in   batch ('0') must be greater than or equal to '1'. (Parameter 'batch')
+                          Actual value was 0.
+               Arg.Check  Value: '0' is not in expected range from '1' to '500'. (Parameter 'batch')
+
+0 == 0         built-in   ArgumentOutOfRangeException: zero ('0') must not be equal to '0'. …
+               Arg.Check  ArgumentException: The argument value: '0' was equal to: '0'. (Parameter 'zero')
 ```
+
+To be fair to the built-ins:
+
+- **Their range messages are better.** They name the parameter *and* repeat the value, and they set
+  `ArgumentOutOfRangeException.ActualValue`, so logs and debuggers show the offending value without
+  parsing the message. Argument.Check puts the value only into the message text.
+- **Their exception types are more precise for equality checks.** `ThrowIfEqual` and `ThrowIfZero`
+  throw `ArgumentOutOfRangeException`. Argument.Check's `IfEqualsTo` throws the more general
+  `ArgumentException`. If callers catch `ArgumentOutOfRangeException`, that difference matters when
+  you migrate.
+- **Argument.Check's range message reads more naturally for a range.** One sentence with both bounds
+  instead of whichever single bound was violated.
+
+### What it costs, side by side
+
+From [the benchmark post](/blog/2026-argument-check-what-a-guard-costs/), happy path, .NET 10:
+
+| Check | Built-in .NET helper | Argument.Check |
+| --- | ---: | ---: |
+| Null | 1.19 ns | 1.25 ns |
+| String null or whitespace | 0.43 ns | 2.32 ns |
+| Range 1–100 | 0.88 ns (two calls) | 3.54 ns |
+| Range 1–100 on **.NET 9** | 1.08 ns | 36.83 ns, 96 B allocated |
+
+The null check is a tie. Everything else is a clear, if small, win for the built-ins, and on .NET 9
+the range check isn't small at all.
 
 ## The same constructor, three ways
 
@@ -141,6 +199,93 @@ I'd be a poor advocate if I left these out:
 - **Everybody knows them.** A new team member doesn't have to look up what `Throw.IfNullOrAny`
   does.
 
+## Microsoft wrote one too, and kept it internal
+
+Here is the part I enjoyed most while researching this post. Open Microsoft's own
+[Agent Framework](https://github.com/microsoft/agent-framework) and look at `ChatClientAgent`:
+
+```csharp
+// microsoft/agent-framework · dotnet/src/Microsoft.Agents.AI/ChatClient/ChatClientAgent.cs
+_ = Throw.IfNull(chatClient);
+// ...
+var inputMessages = Throw.IfNull(messages) as IReadOnlyCollection<ChatMessage> ?? messages.ToList();
+```
+
+`Throw.IfNull`. Not `ArgumentNullException.ThrowIfNull`. The class behind it lives in
+`dotnet/src/Shared/Throw/Throw.cs`:
+
+```csharp
+namespace Microsoft.Shared.Diagnostics;
+
+/// <remarks>
+/// The main purpose is to reduce code size, improve performance, and standardize exception
+/// messages.
+/// </remarks>
+[ExcludeFromCodeCoverage]
+internal static partial class Throw
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [return: NotNull]
+    public static T IfNull<T>([NotNull] T argument,
+        [CallerArgumentExpression(nameof(argument))] string paramName = "")
+    {
+        if (argument is null)
+        {
+            ArgumentNullException(paramName);
+        }
+
+        return argument;
+    }
+
+    // IfNullOrWhitespace, IfNullOrEmpty (strings and collections), IfOutOfRange,
+    // IfLessThan, IfGreaterThan, IfZero, IfNullOrMemberNull, ...
+}
+```
+
+In the snapshot I looked at (October 2025), the Agent Framework calls `Throw.IfNull` **337 times**,
+across more than a hundred files. The same class, same namespace, also ships in
+[dotnet/extensions](https://github.com/dotnet/extensions/blob/main/src/Shared/Throw/Throw.cs), the
+repository behind `Microsoft.Extensions.AI` and friends.
+
+Look at what that class does: it **returns the checked value**, takes the name from
+`CallerArgumentExpression`, adds `[NotNull]` for flow analysis, covers strings *and* collections and
+has a one-call `IfOutOfRange`. Those are exactly the three gaps listed above. The team that ships
+`ThrowIfNull` in the BCL reaches for a `Throw.IfNull` that returns the value as soon as it writes a
+larger codebase. I'll take that as a compliment for the design. 😄
+
+Out of curiosity I also compared the dates, from the public git histories:
+
+| When | What |
+| --- | --- |
+| June 2017 | My `SuperFastArgumentCheck` experiment: `Expect.NotNull(() => arg)` returns the checked value. |
+| December 2019 | Argument.Check starts. From 26 Dec 2019: `_service = Throw.IfNull(() => arg);` |
+| December 2020 | Argument.Check moves to `CallerArgumentExpression`, a year before the compiler supports it (commit message: *"hopefully it works soon"*). |
+| November 2021 | C# 10 ships `CallerArgumentExpression`, .NET 6 ships `ArgumentNullException.ThrowIfNull`. |
+| May 2023 | Microsoft's `Throw.cs` appears in the initial commit of the new dotnet/extensions repository. |
+| June 2025 | The same file is added to the Agent Framework. |
+
+So `Throw.IfNull` returning the value was public in my repository about three and a half years
+before Microsoft's version showed up in theirs. To be clear, that's not a claim that anybody copied
+anything. The dotnet/extensions file came from an internal codebase whose earlier history isn't public, and
+"a guard that returns its argument" is an idea several people arrived at independently. It's just a
+nice confirmation that the design holds up.
+
+**So why is it internal?** Microsoft doesn't say so in the repo, but the setup makes the reasons
+fairly clear:
+
+- **It's shared source, not a package.** A project opts in with `<InjectSharedThrow>true</InjectSharedThrow>`,
+  and MSBuild compiles `Throw.cs` into that assembly. Every assembly gets its own private copy.
+- **No public API to support forever.** Anything public in a Microsoft package goes through API review
+  and has to stay compatible for years. An internal helper can change in the next commit.
+- **No dependency diamond.** If ten Microsoft packages depended on a public `Throw` package, every app
+  would have to resolve one version of it for all ten. Internal copies can't conflict.
+- **It's tuned for their code.** `AggressiveInlining`, the BCL's own throw helpers on .NET 6+ and
+  `[ExcludeFromCodeCoverage]` are choices for library internals, not a general-purpose API.
+
+That's a perfectly good reason for Microsoft, and it's also the gap a library like Argument.Check
+fills: you get the same style **as a package**, so you don't have to copy a `Throw.cs` into every
+repository and keep the copies in sync.
+
 ## Other guard libraries
 
 Argument.Check isn't the only option. The two you'll meet most often:
@@ -196,8 +341,11 @@ only. That's the same idea as [self-defending codebases](/blog/2026-self-defendi
 - Argument.Check still adds three things: **returned values** (check = assignment), **coverage
   beyond null and numbers** (collections, files, types, predicates) and **`netstandard2.0`
   support**.
-- The built-ins win on **zero dependencies**, **JIT-friendly throw helpers** and **allocation-free
-  generic comparisons**. If they cover your checks, use them.
+- The built-ins win on **zero dependencies**, **JIT-friendly throw helpers**, **allocation-free
+  generic comparisons**, **`ActualValue` on range errors** and **more precise exception types**. If
+  they cover your checks, use them.
+- Microsoft's own Agent Framework and dotnet/extensions use an **internal `Throw.IfNull` that returns
+  the value**, shipped as shared source. Argument.Check offers the same style as a package.
 - Whatever you choose, choose **one style per codebase** and write the rule down.
 - The story of how Argument.Check went from `Func<T>` tricks to `CallerArgumentExpression` is in
   the retrospective [Roslyn analyzers and argument checks](/blog/2017-roslyn-analyzers-and-argument-checks/).
