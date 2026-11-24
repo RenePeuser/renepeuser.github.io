@@ -3,7 +3,7 @@ title: Argument.Check vs. ThrowIfNull and friends — when you still need a guar
 date: 2026-11-24
 authors: rene
 tags: [dotnet, csharp, open-source, argument-check, clean-code]
-excerpt: Since .NET 6, ArgumentNullException.ThrowIfNull is built in, and .NET 8 added range and whitespace guards. So why would anyone add a package for guard clauses? An honest comparison of hand-written checks, the built-in throw helpers, Argument.Check and other guard libraries, with a decision table at the end.
+excerpt: Since .NET 6, ArgumentNullException.ThrowIfNull is built in, and .NET 8 added range and whitespace guards. So why would anyone add a package for guard clauses? An honest comparison of hand-written checks, the built-in throw helpers and Argument.Check, with a decision table at the end.
 ---
 
 
@@ -93,6 +93,12 @@ From [the benchmark post](/blog/2026-argument-check-what-a-guard-costs/), happy 
 
 The null check is a tie. Everything else is a clear, if small, win for the built-ins, and on .NET 9
 the range check isn't small at all.
+
+That's not the end of the story, though. The measurements turned straight into a to-do list: no more
+boxing, no more closures, smaller checking methods. A **non-breaking performance update** is in the
+works, with the goal of matching the built-ins on the happy path. Same API, same messages, just
+faster. The plan is in [the benchmark post](/blog/2026-argument-check-what-a-guard-costs/#what-id-improve-in-the-library),
+and the numbers will follow here once it's released.
 
 ## The same constructor, three ways
 
@@ -195,7 +201,8 @@ I'd be a poor advocate if I left these out:
 - **Allocation-free generic comparisons.** `ThrowIfGreaterThan<T>` is constrained to
   `IComparable<T>`, so an `int` stays an `int`. Argument.Check's range helpers use the non-generic
   `IComparable`, which boxes value types: 96 B per range check on .NET 9. (The .NET 10 JIT removes
-  those boxes, but not every consumer runs on .NET 10.)
+  those boxes, but not every consumer runs on .NET 10. Removing the boxing is the first item of
+  the planned performance update.)
 - **Everybody knows them.** A new team member doesn't have to look up what `Throw.IfNullOrAny`
   does.
 
@@ -274,26 +281,15 @@ That's a perfectly good reason for Microsoft, and it's also the gap a library li
 fills: you get the same style **as a package**, so you don't have to copy a `Throw.cs` into every
 repository and keep the copies in sync.
 
-## Other guard libraries
+## One style per codebase
 
-Argument.Check isn't the only option. The two you'll meet most often:
-
-| | Argument.Check | Ardalis.GuardClauses | CommunityToolkit.Diagnostics |
-| --- | --- | --- | --- |
-| Style | `Throw.IfNull(x)` | `Guard.Against.Null(x)` | `Guard.IsNotNull(x)` |
-| Returns the value | Yes | Yes | No |
-| Name from `CallerArgumentExpression` | Yes | Yes (current versions) | Yes (current versions) |
-| Extending it | `Throw.If`/`IfNot` with a predicate, or your own wrapper | Extension methods on `IGuardClause` | Write your own helpers |
-| Files and directories | Yes | No | No |
-| Focus | Small, readable API for app and library code | Domain-driven style, very extensible | High-performance helpers, part of the .NET Community Toolkit |
-
-They're all reasonable choices. Pick the one whose naming your team reads most naturally, and then
-**use only that one**. Two guard styles in one codebase are worse than either alone.
+Whichever way you go, pick one style and **use only that one**. Two guard styles in one codebase are
+worse than either alone.
 
 :::caution
-Guard libraries don't agree on edge cases. Argument.Check's `IfOutOfRange(x, 1, 100)` treats both
-bounds as **inclusive**. Other libraries have range helpers where the upper bound is exclusive. When
-you migrate between libraries, check range semantics test by test, not by method name.
+Watch the edge cases when you switch. Argument.Check's `IfOutOfRange(x, 1, 100)` treats both bounds
+as **inclusive**, and the built-ins split a range into `ThrowIfLessThan` and `ThrowIfGreaterThan`.
+When you migrate, check range semantics test by test, not by method name.
 :::
 
 ## Mixing them is fine, inside one rule
@@ -319,8 +315,8 @@ only. That's the same idea as [self-defending codebases](/blog/2026-self-defendi
 | .NET 8+, only null and string checks | **Built-ins.** No package needed. |
 | .NET 8+, many collection, file or custom checks | **Argument.Check** for one consistent style that returns values. |
 | Library targeting `netstandard2.0` / .NET Framework | **Argument.Check.** The built-ins don't exist there. |
-| Domain model with many custom guard rules | Ardalis.GuardClauses or Argument.Check wrappers. Both extend well. |
-| Performance-critical code | Built-ins or CommunityToolkit.Diagnostics, and measure. |
+| Domain model with many custom guard rules | **Argument.Check** with `If`/`IfNot` or your own named wrappers. |
+| Performance-critical code | **Built-ins**, and measure. |
 | Validating user input in an API | **None of them.** Use a validation library and return a 400 with details. |
 
 ## Summary

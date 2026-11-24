@@ -244,10 +244,13 @@ loop trust its input. That beats any guard implementation.
 
 ## What I'd improve in the library
 
-The measurements point at concrete improvements. None of them are released yet; they're on my list:
+The measurements point at concrete improvements, and they're already in progress as a
+**non-breaking** update: same public API, same exception types and messages, just faster.
 
-- **Generic comparisons.** Constrain the range helpers to `IComparable<T>` (with the non-generic
-  version as a fallback), so value types don't box.
+- **Comparisons without boxing.** Keep the `IComparable` constraint, but compare through
+  `Comparer<T>.Default`. It uses `IComparable<T>` when a type implements it (every number,
+  `DateTime`, `decimal`…), so value types don't box, and it still falls back to `IComparable` for
+  everything else.
 - **Validate the bounds once.** `IsOutOfRange` and `IsInRange` both check `min <= max`. One of them
   is enough.
 - **Loops instead of LINQ** in the collection helpers. A `foreach` with an early exit doesn't need
