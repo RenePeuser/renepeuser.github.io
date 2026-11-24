@@ -320,7 +320,7 @@ export const series = [
 			"2026-solution-parser-your-solution-as-a-queryable-model",
 			"2026-solution-parser-reading-code-like-code",
 			"2026-solution-parser-architecture-tests-for-projects-and-xaml",
-			"2026-solution-parser-vs-netarchtest-archunit-and-analyzers"
+			"2026-solution-parser-architecture-rules-for-the-whole-solution"
 		]
 	},
 	{

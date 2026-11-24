@@ -94,7 +94,7 @@ public sealed class NoDateTimeNowAnalyzer : DiagnosticAnalyzer
 
 Plus a separate analyzer project targeting `netstandard2.0`, a package or analyzer reference, and its
 own test project. Analyzers are great when you need feedback while typing (more on that in
-[the comparison post](/blog/2026-solution-parser-vs-netarchtest-archunit-and-analyzers/)). But for the
+[the last post of this series](/blog/2026-solution-parser-architecture-rules-for-the-whole-solution/)). But for the
 long tail of team rules, that ceremony is why most of them never get written.
 
 ## Getting started

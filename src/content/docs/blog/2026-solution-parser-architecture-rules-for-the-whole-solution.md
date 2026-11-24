@@ -1,70 +1,44 @@
 ---
-title: Solution.Parser, NetArchTest, ArchUnitNET or a Roslyn analyzer — which one for which rule?
+title: Architecture rules for the whole solution — the NetArchTest idea, taken further with Solution.Parser
 date: 2026-11-24
 authors: rene
 tags: [dotnet, solution-parser, architecture-tests, roslyn, code-rules]
-excerpt: There's more than one way to make a team rule executable in .NET, and each tool sees a different part of the codebase. An honest comparison of Solution.Parser with NetArchTest, ArchUnitNET and Roslyn analyzers, the same rule written in each, and the mix I actually use.
+excerpt: "Architecture rules as plain unit tests are a great idea, and NetArchTest made it popular in .NET. Solution.Parser applies the same idea to everything in a solution: layering, logging calls, project references and XAML. Plus where a Roslyn analyzer is the better home for a rule."
 ---
 
 
-I wrote [Solution.Parser](https://github.com/RenePeuser/Solution.Parser), so take this post with the
-appropriate pinch of salt. But I also use the other tools, and I'd rather you pick the right one than
-mine for everything. The question isn't "which tool is best". It's **"what does this rule need to
-see, and when should it fail?"**
+If you've used [NetArchTest](https://github.com/BenMorris/NetArchTest), you know the idea: write
+your architecture rules as ordinary unit tests, and let the build tell you when someone breaks them.
+"The domain doesn't depend on infrastructure" stops being a sentence on a wiki page and becomes a test
+that fails. I love that idea, and it's the same way of thinking that got me started on
+[Solution.Parser](https://github.com/RenePeuser/Solution.Parser).
+
+This post shows how far that idea goes when the rules can see the **whole solution**: not only
+types and namespaces, but how code is written, project files, packages and XAML. And, to be fair,
+where a rule is better off as a Roslyn analyzer.
 
 This is the last post of the series. The earlier ones covered
 [getting started](/blog/2026-solution-parser-your-solution-as-a-queryable-model/),
 [the code model](/blog/2026-solution-parser-reading-code-like-code/) and
 [project and XAML rules](/blog/2026-solution-parser-architecture-tests-for-projects-and-xaml/).
 
-## Four tools, four views of the codebase
+## What a rule can see
 
-The tools differ less in syntax than in **what they read**:
+Where a rule looks decides which rules you can write:
 
 | | Reads | Sees | Fails |
 |---|---|---|---|
-| [NetArchTest](https://github.com/BenMorris/NetArchTest) | compiled assemblies (IL) | types, namespaces, dependencies between types | in a unit test |
-| [ArchUnitNET](https://github.com/TNG/ArchUnitNET) | compiled assemblies (IL) | types, members, dependencies, attributes, layers | in a unit test |
 | Roslyn analyzer | source, inside the compiler | everything the compiler sees, one compilation at a time | while typing and on build |
 | Solution.Parser | sln/slnx, csproj, C# source, XAML, nuspec | projects, packages, statements, expressions, markup; symbols on demand | in a unit test |
 
-That table explains most of the trade-offs below. A tool that reads IL can't see a `#pragma`, an
-`else` after a `return`, an interpolated string passed to a logger, or anything in a `.csproj` or a
-`.xaml` file. A tool that reads source one compilation at a time can't easily check a rule that spans
-projects. A tool that runs in a test can't put a squiggle under your code while you type.
+An analyzer runs one compilation at a time, so rules that span projects are hard. A test can't put a
+squiggle under your code while you type. And a rule about a `.csproj` or a `.xaml` file needs a tool
+that actually reads those files.
 
-## The same rule in each tool
+## The classic: layering
 
-The classic layering rule: *the domain doesn't depend on infrastructure.*
-
-**NetArchTest**, over the compiled domain assembly:
-
-```csharp
-var result = Types.InAssembly(typeof(Order).Assembly)
-                  .That().ResideInNamespace("Shop.Domain")
-                  .ShouldNot().HaveDependencyOn("Shop.Infrastructure")
-                  .GetResult();
-
-Assert.IsTrue(result.IsSuccessful, string.Join(", ", result.FailingTypeNames ?? []));
-```
-
-**ArchUnitNET**, with an architecture loaded once:
-
-```csharp
-private static readonly Architecture Architecture =
-    new ArchLoader().LoadAssemblies(typeof(Order).Assembly, typeof(OrderRepository).Assembly).Build();
-
-[TestMethod]
-public void Domain_Does_Not_Depend_On_Infrastructure()
-{
-    IArchRule rule = Types().That().ResideInNamespace("Shop.Domain")
-                            .Should().NotDependOnAny(Types().That().ResideInNamespace("Shop.Infrastructure"));
-
-    rule.Check(Architecture);
-}
-```
-
-**Solution.Parser**, on the project level:
+The rule everybody starts with: *the domain doesn't depend on infrastructure.* In Solution.Parser,
+on the project level:
 
 ```csharp
 var findings = from reference in Solution.Project("Shop.Domain").ProjectReferences
@@ -74,12 +48,13 @@ var findings = from reference in Solution.Project("Shop.Domain").ProjectReferenc
 findings.ShouldBeEmpty("The domain must not depend on infrastructure");
 ```
 
-For this particular rule, all three are fine, and the IL-based tools have an edge: they see the
-*actual* dependencies after compilation, including ones that come in through a fully qualified name
-with no `using` and no project reference in sight. If layering between types is all you need,
-NetArchTest is the smallest step and ArchUnitNET the most expressive one.
+Same idea as a NetArchTest rule, one level up: it looks at the project graph instead of the compiled
+types. The [previous post](/blog/2026-solution-parser-architecture-tests-for-projects-and-xaml/)
+takes this further with transitive references and namespace layering. If type-to-type dependencies
+are all you need, a NetArchTest rule over the compiled assembly is a perfectly good fit too, and it
+combines nicely with the rules below.
 
-## Where the IL-based tools stop
+## Rules about how code is written
 
 Now a rule from a real review checklist: *log with a message template, not an interpolated string.*
 
@@ -88,9 +63,8 @@ logger.LogInformation($"Order {order.Id} placed by {customer.Name}");   // what 
 logger.LogInformation("Order {OrderId} placed by {Customer}", order.Id, customer.Name);
 ```
 
-In IL, both are calls to `LogInformation` with a string. The interpolation has been compiled into a
-`DefaultInterpolatedStringHandler` or a `string.Format` call. An assembly-based tool has no reasonable
-way to tell the two apart. In Solution.Parser, it's the expression's kind:
+After compilation, both are just calls to `LogInformation` with a string. In the source, the
+difference is obvious, and in Solution.Parser it's the expression's kind:
 
 ```csharp
 from call in trees.Invocations
@@ -109,12 +83,12 @@ The same goes for most rules about **how code is written** rather than what it d
 - `== null` instead of `is null`.
 
 And everything that isn't C# at all: project references, package versions, test projects referenced
-from production, a binding path in XAML that doesn't exist on its view model. None of that is in an
-assembly.
+from production, a binding path in XAML that doesn't exist on its view model. All of that lives in
+files a solution-wide rule can read.
 
 ## Where Solution.Parser stops
 
-To be fair in the other direction:
+To be fair about its limits:
 
 - **No feedback while typing.** A Solution.Parser rule fails when the tests run. If a developer
   should see the problem the moment they type it, that's an analyzer's job.
@@ -145,7 +119,7 @@ never get written that way.
 
 | The rule… | Pick |
 |---|---|
-| is about dependencies between types or namespaces, nothing else | NetArchTest (simple) or ArchUnitNET (expressive) |
+| is about dependencies between projects, namespaces or types | Solution.Parser (NetArchTest works nicely for type-level rules too) |
 | is about how code is written: statements, expressions, patterns, logging, async | Solution.Parser |
 | involves project or package references, test projects, target frameworks | Solution.Parser |
 | involves XAML, or checks markup against C# | Solution.Parser |
@@ -186,10 +160,10 @@ suites into many repositories started.
 
 ## Pitfalls
 
-- **Picking one tool for everything.** An analyzer for a rule that fires once a quarter is wasted
+- **One mechanism for everything.** An analyzer for a rule that fires once a quarter is wasted
   effort. A test for a rule that fires ten times a day is slow feedback.
-- **Comparing tools on the layering rule only.** Every tool handles "domain doesn't reference
-  infrastructure". The differences show up in the second and third rule.
+- **Stopping at the layering rule.** "Domain doesn't reference infrastructure" is a great first
+  rule. The real value shows up in the second, third and twentieth rule.
 - **Duplicating a rule across tools.** If a rule moves from a test to an analyzer, delete the test.
   Two sources of truth drift.
 - **Rules without an owner.** Whatever the tool, a rule that nobody can explain gets suppressed. Every
@@ -197,10 +171,10 @@ suites into many repositories started.
 
 ## Summary
 
-- IL-based tools (NetArchTest, ArchUnitNET) are excellent for type and namespace dependencies, and
-  they see dependencies the source hides.
-- They can't see how code is written, nor projects, packages or XAML. That's where Solution.Parser
-  is strongest.
+- Architecture rules as unit tests, the idea NetArchTest made popular, work for far more than
+  layering.
+- Solution.Parser applies that idea to the whole solution: how code is written, projects, packages
+  and XAML.
 - Roslyn analyzers give the best feedback, at the highest cost per rule. Reserve them for rules that
   fire often and have an automatic fix.
 - Start a new rule as a Solution.Parser test, find out if it's right, and promote it to an analyzer

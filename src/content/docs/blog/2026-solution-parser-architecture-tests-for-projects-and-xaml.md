@@ -406,5 +406,6 @@ Rules that fit naturally on top of that: every `Button` has an `AutomationProper
   rule.
 - Every rule gets a second test against broken input. A rule that never fails proves nothing.
 
-The [last post of this series](/blog/2026-solution-parser-vs-netarchtest-archunit-and-analyzers/)
-compares this approach with NetArchTest, ArchUnitNET and Roslyn analyzers, and when I'd pick which.
+The [last post of this series](/blog/2026-solution-parser-architecture-rules-for-the-whole-solution/)
+takes the idea of architecture rules as tests to the whole solution, and shows when a rule is better
+off as a Roslyn analyzer.
