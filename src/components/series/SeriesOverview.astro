@@ -9,7 +9,7 @@ const groups = await Promise.all(
 		...group,
 		items: await Promise.all(
 			series
-				.filter((s) => s.group === group.id)
+				.filter((s) => s.group === group.id && !(import.meta.env.PROD && s.draft))
 				.map(async (s) => {
 					const posts = await getSeriesPosts(s);
 					return { ...s, count: posts.length, minutes: posts.reduce((sum, p) => sum + p.minutes, 0) };

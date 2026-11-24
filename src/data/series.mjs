@@ -3,7 +3,8 @@
 // in-post navigation). To add a post to a series, add its slug (file name without .md) to `posts`.
 
 /** @typedef {{ id: string, accent: string, title: string, icon: string, description: string }} SeriesGroup */
-/** @typedef {{ slug: string, title: string, group: string, icon: string, description: string, posts: string[] }} Series */
+/** @typedef {{ slug: string, title: string, group: string, icon: string, description: string, posts: string[], draft?: boolean }} Series */
+// A series with `draft: true` (and its page) only shows up in `astro dev`.
 
 /** @type {SeriesGroup[]} */
 export const seriesGroups = [
@@ -267,6 +268,33 @@ export const series = [
 			"2026-user-stories-and-acceptance-criteria",
 			"2026-estimation-planning-poker-t-shirt-sizes-reference-stories",
 			"2026-definition-of-ready"
+		]
+	},
+	{
+		"slug": "argument-check",
+		"title": "Argument.Check",
+		"group": "oss",
+		"icon": "github",
+		"description": "Guard clauses that cost nothing until they fail and explain themselves when they do.",
+		"posts": [
+			"2026-argument-check-guard-clauses-in-one-line",
+			"2026-argument-check-the-throw-catalogue",
+			"2026-argument-check-what-a-guard-costs",
+			"2026-argument-check-vs-built-in-guards"
+		]
+	},
+	{
+		"slug": "aspnetcore-minimalapi-sdk",
+		"draft": true,
+		"title": "AspNetCore.MinimalApi.Sdk",
+		"group": "oss",
+		"icon": "github",
+		"description": "A reference blueprint for minimal APIs: endpoint slices, a generated typed client and CLI, and 109 code rules that keep it consistent.",
+		"posts": [
+			"2026-minimalapi-sdk-a-blueprint-for-minimal-apis",
+			"2026-minimalapi-sdk-typed-client-and-cli",
+			"2026-minimalapi-sdk-code-rules",
+			"2026-minimalapi-sdk-vs-alternatives"
 		]
 	},
 	{

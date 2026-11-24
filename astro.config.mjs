@@ -11,13 +11,14 @@ const isDev = process.argv.includes('dev');
 
 // "Series" topic: the series, grouped by theme. The series pages list their posts as chapters, and every
 // post shows its own series navigation, so the sidebar only needs the series themselves.
-// Series and groups come from src/data/series.mjs. Keep every series page published (no `draft: true`).
+// Series and groups come from src/data/series.mjs. A series page may only be a draft if its series has
+// `draft: true` there, so the production sidebar never links it.
 const seriesSidebar = [
 	{ label: 'All series', slug: 'series' },
 	...seriesGroups.map((group) => ({
 		label: group.title,
 		items: series
-			.filter((s) => s.group === group.id)
+			.filter((s) => s.group === group.id && (isDev || !s.draft))
 			.map((s) => ({ label: s.title, slug: `series/${s.slug}` })),
 	})),
 ];
