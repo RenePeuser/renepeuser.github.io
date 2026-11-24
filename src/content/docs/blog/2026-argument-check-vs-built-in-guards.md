@@ -82,32 +82,30 @@ To be fair to the built-ins:
 
 ### What it costs, side by side
 
-From [the benchmark post](/blog/2026-argument-check-what-a-guard-costs/), happy path. The first
-measurement compared the built-ins with Argument.Check 5.0.7:
+Built-in helpers and Argument.Check 5.0.8, measured side by side in the same run, happy path. Each
+check sits in its own non-inlined method, BenchmarkDotNet 0.15.8, Intel Core i9-13980HX:
 
-| Check | Built-in .NET helper | Argument.Check 5.0.7 |
-| --- | ---: | ---: |
-| Null, .NET 10 | 1.19 ns | 1.25 ns |
-| String null or whitespace, .NET 10 | 0.43 ns | 2.32 ns |
-| Range 1–100, .NET 10 | 0.88 ns (two calls) | 3.54 ns |
-| Range 1–100, **.NET 9** | 1.08 ns | 36.83 ns, 96 B allocated |
+| Check | Built-in, .NET 10 | Argument.Check, .NET 10 | Built-in, .NET 9 | Argument.Check, .NET 9 |
+| --- | ---: | ---: | ---: | ---: |
+| Null | 1.49 ns | 1.26 ns | 1.47 ns | 1.25 ns |
+| String null or whitespace | 0.52 ns | 0.92 ns | 2.42 ns | 1.96 ns |
+| Greater than 100 | 1.06 ns | 1.13 ns | 0.35 ns | 0.77 ns |
+| Range 1–100 | 0.11 ns (two calls) | 1.32 ns | 0.46 ns (two calls) | 1.32 ns |
+| Allocated | 0 B | 0 B | 0 B | 0 B |
 
-The null check was a tie, everything else a win for the built-ins, and on .NET 9 not a small one.
+How to read this honestly:
 
-So I took the hint. **Argument.Check 5.0.8** removes the boxing, the closures and the extra helper
-layers, without changing a single public signature or message. Same benchmark, 5.0.7 vs. 5.0.8:
+- **Everything is below 2.5 ns, and nothing allocates.** At that scale the standard deviation is
+  0.3–0.9 ns, so most rows are a tie. Null and whitespace even flip between runtimes.
+- **The range check is the one clear win for the built-ins.** Two inlined comparisons against
+  constants are almost free for the JIT; Argument.Check's generic `IfOutOfRange` goes through
+  `Comparer<T>`. About one nanosecond per call, which matters in a tight loop and nowhere else.
+- **The allocations are gone.** Up to version 5.0.7, Argument.Check boxed value types and allocated
+  closures in some checks. The [benchmark post](/blog/2026-argument-check-what-a-guard-costs/) tells
+  that story and how 5.0.8 fixed it without changing a single public signature or message.
 
-| Check | 5.0.7 | 5.0.8 |
-| --- | ---: | ---: |
-| Null, .NET 10 | 1.93 ns | **0.78 ns** |
-| String null or whitespace, .NET 10 | 0.90 ns | **0.78 ns** |
-| Range 1–100, .NET 10 | 3.00 ns | **1.22 ns** |
-| String null or whitespace, **.NET 9** | 14.68 ns, 32 B | **1.34 ns, 0 B** |
-| Range 1–100, **.NET 9** | 39.83 ns, 96 B | **1.19 ns, 0 B** |
-
-(Separate runs, so compare within a table.) The scalar checks now sit in the same 0.4–1.3 ns range
-as the built-in helpers, with **zero allocations** on every runtime. On the happy path, the
-performance argument for the built-ins is gone; the other trade-offs below still apply.
+So on performance, the built-ins and Argument.Check are in the same league. Pick between them for
+the other reasons in this post.
 
 ## The same constructor, three ways
 
@@ -204,8 +202,8 @@ I'd be a poor advocate if I left these out:
   that only needs null and string checks on .NET 8+, the built-ins are enough. That's a lot of
   codebases.
 - **Built for the JIT from day one.** The runtime helpers always threw from a separate, non-inlined
-  method and never boxed. Argument.Check caught up in 5.0.8 (see above), so today this is a tie, but
-  credit where it's due: the BCL showed the pattern.
+  method and never boxed. Argument.Check adopted the same pattern in 5.0.8 (see above), and credit
+  where it's due: the BCL showed the way.
 - **Everybody knows them.** A new team member doesn't have to look up what `Throw.IfNullOrAny`
   does.
 
@@ -330,8 +328,8 @@ only. That's the same idea as [self-defending codebases](/blog/2026-self-defendi
   support**.
 - The built-ins win on **zero dependencies**, **`ActualValue` on range errors** and **more precise
   exception types**. If they cover your checks, use them.
-- Performance is a tie since **Argument.Check 5.0.8**: same 0.4–1.3 ns range on the happy path, zero
-  allocations.
+- Performance: **same league since Argument.Check 5.0.8**. Everything below 2.5 ns, zero allocations;
+  the built-ins keep a nanosecond lead on range checks.
 - Microsoft's own Agent Framework and dotnet/extensions use an **internal `Throw.IfNull` that returns
   the value**, shipped as shared source: the same way of thinking, arrived at independently.
   Argument.Check offers that style as a package.
