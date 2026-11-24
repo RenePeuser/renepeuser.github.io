@@ -263,8 +263,10 @@ as `<Main>b__0_24`. If you want a readable message, check with `Throw.IfNot(item
 "…")` instead and write the message yourself.
 
 **`IComparable`, not `IComparable<T>`.** The range helpers are constrained to the non-generic
-interface. That's what makes them work for every comparable type, but for value types like `int` it
-means boxing. Whether that matters is the subject of [the next post](/blog/2026-argument-check-what-a-guard-costs/).
+interface, so they work for every comparable type. Up to version 5.0.7 that meant boxing for value
+types like `int`. Since 5.0.8 the comparison goes through `Comparer<T>.Default`, which uses
+`IComparable<T>` when it's there, so an `int` stays an `int`. The numbers are in
+[the next post](/blog/2026-argument-check-what-a-guard-costs/).
 
 ## Summary
 

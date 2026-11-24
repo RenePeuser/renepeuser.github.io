@@ -3,7 +3,7 @@ title: What a guard clause costs — benchmarking Argument.Check against hand-wr
 date: 2026-11-24
 authors: rene
 tags: [dotnet, csharp, open-source, argument-check, performance, benchmarkdotnet]
-excerpt: A helper method for every check, isn't that slower than an if? I measured it with BenchmarkDotNet on .NET 10, comparing hand-written guards, the built-in ThrowIfNull family and Argument.Check. Most checks cost the same as an if. Two don't, and the reasons are worth knowing for any library you write.
+excerpt: A helper method for every check, isn't that slower than an if? I measured it with BenchmarkDotNet on .NET 10, comparing hand-written guards, the built-in ThrowIfNull family and Argument.Check. Most checks cost the same as an if. Two didn't, the reasons are worth knowing for any library you write, and version 5.0.8 fixed both without breaking anything.
 ---
 
 
@@ -242,24 +242,62 @@ style you choose. It starts to matter in two places:
 In both, the better fix is usually structural: **validate once at the boundary** and let the inner
 loop trust its input. That beats any guard implementation.
 
-## What I'd improve in the library
+## Version 5.0.8: as fast as the built-ins
 
-The measurements point at concrete improvements, and they're already in progress as a
-**non-breaking** update: same public API, same exception types and messages, just faster.
+The measurements above turned straight into a to-do list, and that list shipped as
+**Argument.Check 5.0.8**. It's a **non-breaking** release: the public API is identical on every
+target framework, and all exception types and messages are unchanged, checked with a reflection dump
+of the API and a probe that compares 380 exception messages before and after. Only the internals
+changed:
 
-- **Comparisons without boxing.** Keep the `IComparable` constraint, but compare through
+- **Comparisons without boxing.** The `IComparable` constraint stays, but comparisons go through
   `Comparer<T>.Default`. It uses `IComparable<T>` when a type implements it (every number,
   `DateTime`, `decimal`…), so value types don't box, and it still falls back to `IComparable` for
   everything else.
-- **Validate the bounds once.** `IsOutOfRange` and `IsInRange` both check `min <= max`. One of them
-  is enough.
-- **Loops instead of LINQ** in the collection helpers. A `foreach` with an early exit doesn't need
-  a delegate and doesn't allocate a closure.
-- **A separate throw helper.** Moving each `throw new …` into its own small, non-inlined method keeps
-  the checking method tiny and gives the JIT a better chance to inline it into the caller. That's
-  the pattern the runtime's own `ThrowIfNull` uses.
-- **A benchmark that can't rot silently.** Benchmarks that compare against a baseline in CI, so a
-  benchmark measuring the wrong thing stands out.
+- **The bounds are validated once.** No more double `min <= max` check.
+- **One check on the happy path.** `IfNullOrWhiteSpace` does a single `string.IsNullOrWhiteSpace` and
+  only works out which message to throw when the check fails.
+- **Cold-path throw helpers.** Every `throw new …`, including the message formatting, moved into small
+  `[DoesNotReturn]`, non-inlined methods. The checking methods stay tiny, the same pattern the runtime's
+  own `ThrowIfNull` uses.
+- **Loops instead of LINQ** in the collection helpers, with fast paths for lists and arrays. No
+  closure, no allocation.
+
+Same benchmark, before (5.0.7) and after (5.0.8), happy path. BenchmarkDotNet 0.15.8, in-process
+toolchain, Intel Core i9-13980HX, Windows 11. This is a separate run from the tables above, so compare
+within a table, not across tables.
+
+**.NET 9**, where the old version paid most:
+
+| Check | 5.0.7 | 5.0.8 | Allocated 5.0.7 → 5.0.8 |
+| --- | ---: | ---: | --- |
+| `IfNull` | 3.45 ns | **1.07 ns** | 0 → 0 |
+| `IfNullOrWhiteSpace` | 14.68 ns | **1.34 ns** | 32 B → **0 B** |
+| `IfOutOfRange` (int) | 39.83 ns | **1.19 ns** | 96 B → **0 B** |
+| `IfGreaterThan` (int) | 8.98 ns | **0.81 ns** | 24 B → **0 B** |
+| `IfLessThan` (int) | 5.58 ns | **0.35 ns** | 24 B → **0 B** |
+| `IfAnyItemIsNullOrWhitespace` (4 items) | 35.10 ns | **12.11 ns** | 88 B → **0 B** |
+| `IfNullOrAny` (4 items) | 16.80 ns | **10.17 ns** | 0 → 0 |
+
+**.NET 10**, where the JIT already removed most of the boxing:
+
+| Check | 5.0.7 | 5.0.8 | Allocated 5.0.7 → 5.0.8 |
+| --- | ---: | ---: | --- |
+| `IfNull` | 1.93 ns | **0.78 ns** | 0 → 0 |
+| `IfNullOrWhiteSpace` | 0.90 ns | **0.78 ns** | 0 → 0 |
+| `IfOutOfRange` (int) | 3.00 ns | **1.22 ns** | 0 → 0 |
+| `IfGreaterThan` (int) | 1.38 ns | **1.13 ns** | 0 → 0 |
+| `IfLessThan` (int) | 0.64 ns | **0.60 ns** | 0 → 0 |
+| `IfAnyItemIsNullOrWhitespace` (4 items) | 20.76 ns | **12.61 ns** | 24 B → **0 B** |
+| `IfNullOrAny` (4 items) | 16.85 ns | **7.30 ns** | 0 → 0 |
+
+The headline: **zero allocations in every check, on every runtime**, and the range check on .NET 9 is
+about **33 times faster**. The scalar checks now land in the same 0.4–1.3 ns range as the built-in
+helpers measured above. As before, anything below about 2 ns is at the edge of what the benchmark can
+resolve, so treat those rows as "as fast as an `if`", not as exact rankings.
+
+One item from my list is still open: **a benchmark that can't rot silently**, compared against a
+baseline in CI, so a benchmark measuring the wrong thing stands out.
 
 ## Summary
 
@@ -274,6 +312,9 @@ The measurements point at concrete improvements, and they're already in progress
   a capturing lambda.
 - Benchmarks rot silently. The repo's own `Throw.IfNull(() => arg)` benchmark now measures a null
   check on a delegate.
+- **Version 5.0.8 fixed all of it, non-breaking:** zero allocations in every check on every runtime,
+  the .NET 9 range check went from 40 ns to about 1 ns, and the scalar checks now match the
+  built-ins.
 - For constructors and API boundaries, the cost of **any** guard style is noise. In hot loops,
   validate once at the boundary instead.
 - The [comparison with the built-in guards](/blog/2026-argument-check-vs-built-in-guards/) puts these
