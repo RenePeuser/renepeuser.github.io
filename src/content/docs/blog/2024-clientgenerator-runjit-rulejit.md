@@ -138,6 +138,13 @@ Once the solution parsing and the template engine existed, other tasks fit the s
 solution, apply templates, write files, verify the result builds. The client generator turned into a
 general CLI, and in February 2024 it became `RunJit.Cli`.
 
+The name isn't mine, by the way. When I showed my little Christmas generator to
+[Philip Pregler](https://www.linkedin.com/in/philip-pregler/), who is a friend, a colleague and a
+customer all at once, we ended up discussing it for far longer than either of us had planned. Somewhere
+in that discussion he came up with the name: **RunJit, short for "Runs Just in Time"**. It stuck
+immediately, and every tool that came after it inherited the "Jit": RunJit.Api,
+RuleJIT. Good names are rare; when a friend hands you one, you take it. 😄
+
 The command tree reflects what I kept doing by hand on every project:
 
 | Area | Commands (excerpt) |
