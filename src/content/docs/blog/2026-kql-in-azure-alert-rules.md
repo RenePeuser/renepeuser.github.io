@@ -180,7 +180,7 @@ A few notes on the details:
   the HCL. The closing `QUERY` has to be on its own line.
 - **`custom_properties`** end up in the alert payload. A link to the runbook there is worth more than any
   description field.
-- **`email_subject`** existed on the old resource and was ignored by Azure for years. Don't rely on it.
+- **`email_subject`** exists on the old resource but has no effect. Don't rely on it.
   The subject is generated from the rule's name, which is one more reason to choose readable names.
 
 ## Let the code decide who gets told

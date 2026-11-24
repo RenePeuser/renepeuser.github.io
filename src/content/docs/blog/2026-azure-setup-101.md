@@ -15,9 +15,9 @@ deployment is a project of its own.
 In one Azure organization I worked with, the team kept a "Setup 101" wiki page: a numbered list of
 everything a new service needed before the first line of business code. It covered storage for
 Terraform, pipeline libraries, service connections, Key Vault, App Configuration, Application Insights
-and Redis. This post is my modernized version of the parts that matter most, because some of the
-original advice (access keys, access policies, instrumentation keys, secrets in token-replaced app
-settings) has aged.
+and Redis. This post is my modernized version of the parts that matter most. The advice was right for its time;
+Azure simply moved on (access keys, access policies, instrumentation keys and secrets in token-replaced
+app settings all have better successors today).
 
 ## The target picture
 
@@ -94,13 +94,13 @@ The rules for this account:
   into a separate storage account managed by Terraform. Then nothing the app does can damage the state,
   and nobody with access to app data automatically has access to the state (which contains secrets in
   plain text).
-- **No public blob access, no shared keys.** The original setup authenticated the backend with the
-  storage **access key** from a pipeline variable. Use Entra ID instead: `use_azuread_auth = true` in the
+- **No public blob access, no shared keys.** Authenticating the backend with the storage **access key**
+  from a pipeline variable was the usual way for a long time. Today, use Entra ID: `use_azuread_auth = true` in the
   backend and the *Storage Blob Data Contributor* role for the pipeline identity.
 - **Versioning and soft delete on.** If a state file is ever corrupted or deleted, you can restore the
   previous version in a minute.
 - **Naming.** Storage account names are 3 to 24 characters, lowercase letters and digits only, and
-  globally unique. The original convention filled spaces with `1` (`shop1orders1tf1dev`). That works, but
+  globally unique. One convention I like fills spaces with `1` (`shop1orders1tf1dev`). That works well, though
   I find plain concatenation easier to read (`stshopordtfdev`). Pick one and write it down.
 
 ```hcl
@@ -117,8 +117,7 @@ terraform {
 
 ## 2. Key Vault: RBAC, not access policies
 
-The original Terraform used Key Vault **access policies**. They still work, but Azure RBAC is the
-recommended model: the same role assignment mechanism as everything else, auditable, and manageable at
+Key Vault **access policies** still work, but Azure RBAC is the recommended model today: the same role assignment mechanism as everything else, auditable, and manageable at
 scale.
 
 ```hcl
@@ -153,7 +152,7 @@ Two notes:
 
 ## 3. App Configuration with Key Vault references
 
-The original setup had a long `app_settings` block in Terraform, with values like
+A common pattern is a long `app_settings` block in Terraform, with values like
 `"#{Auth__ClientSecret}#"` replaced from a pipeline library at deploy time. That means every secret is
 in the pipeline, in the Terraform state, and in the App Service configuration blade. Three copies, three
 places to leak.
@@ -236,7 +235,7 @@ What changes:
 
 ## 4. Application Insights: connection string, not instrumentation key
 
-The original setup passed `ApplicationInsights__InstrumentationKey` to the app. Instrumentation-key-only
+Many apps still pass `ApplicationInsights__InstrumentationKey`. Instrumentation-key-only
 ingestion has been retired. Use the **connection string**, which includes the regional ingestion
 endpoint, and make the resource workspace-based:
 
@@ -286,7 +285,7 @@ builder.Services.AddAzureClients(clients =>
 
 ## Before and after
 
-| Concern | Original setup | Modern setup |
+| Concern | Classic setup | Modern setup |
 |---|---|---|
 | State backend auth | storage access key in a pipeline variable | `use_azuread_auth`, RBAC |
 | State storage | dedicated account ✅ | dedicated account, versioning, no shared keys |

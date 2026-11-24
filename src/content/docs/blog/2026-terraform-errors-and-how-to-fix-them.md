@@ -7,8 +7,8 @@ excerpt: A missing state container, a stuck state lock, a provider update that b
 ---
 
 
-Terraform is great until the pipeline goes red on a Monday morning with an error message that reads
-like it was written for the provider authors, not for you. Most of those errors aren't really
+Terraform is great until the pipeline goes red on a Monday morning with an error message that makes
+perfect sense once you know what Terraform was trying to do, and not a minute earlier. Most of those errors aren't really
 Terraform's fault. They come from a mismatch between three things that are supposed to agree: your
 **configuration**, the **state file**, and the **real infrastructure**.
 

@@ -209,9 +209,9 @@ the same solution.** Either migrate, or keep the existing structure. Two competi
 worse than either one alone.
 
 :::caution[Watch the vocabulary]
-I've seen team documentation that called the per-feature structure "horizontal slicing" and the
-layered structure "vertical slicing", the exact opposite of the common terms. It doesn't matter much
-what you call it, as long as everyone uses the same words. Write it down once, with a folder tree.
+The two terms get swapped surprisingly often: "horizontal" for the per-feature structure, "vertical"
+for the layers. It took me a while to keep them straight too. It doesn't matter much what you call
+it, as long as everyone uses the same words. Write it down once, with a folder tree.
 :::
 
 ## Layers vs slices at a glance

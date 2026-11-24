@@ -14,7 +14,7 @@ didn't compile, and a few recommendations (wrap everything in `Task.Run`, retry 
 call) had turned from good intentions into bugs.
 
 This series is my attempt at a version that holds up in 2026: the same practical
-**problem → solution** format, but with modern C#, corrected advice and an explanation of *why*
+**problem → solution** format, but with modern C#, updated advice and an explanation of *why*
 each smell hurts. This post is the index. Every row links to a post that goes into the details.
 
 ## Why smells matter

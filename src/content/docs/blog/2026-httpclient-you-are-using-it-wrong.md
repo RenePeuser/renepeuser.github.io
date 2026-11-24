@@ -9,7 +9,7 @@ excerpt: Socket exhaustion, DNS changes that never arrive and typed clients capt
 
 `HttpClient` is probably the most misused class in .NET. It implements `IDisposable`, so everyone
 wraps it in `using`. It looks like a lightweight object, so everyone creates a new one per call. Both
-instincts are wrong, and the app doesn't break on your machine. It breaks in production, under load,
+instincts are reasonable, both are wrong, and the app doesn't break on your machine. It breaks in production, under load,
 with errors that point everywhere except at the actual cause.
 
 The famous article [*You're using HttpClient wrong and it is destabilizing your software*](https://www.aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/)

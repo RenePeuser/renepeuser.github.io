@@ -20,8 +20,8 @@ public sealed class HealthController : ControllerBase
 }
 ```
 
-In one of them, the handler behind it even had an honest comment: *we currently have no state-based
-information*. The platform's health check pointed at `/health`. Think about what that means: the
+In one of them, the handler behind it even said so openly in a comment: there was no real state
+behind it yet. The platform's health check pointed at `/health`. Think about what that means: the
 platform gets a green light every time, so it keeps routing traffic to an instance even if its
 database connection has been dead for an hour.
 

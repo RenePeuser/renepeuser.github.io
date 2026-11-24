@@ -3,13 +3,13 @@ title: Creating NuGet packages your teams actually want to consume
 date: 2026-11-23
 authors: rene
 tags: [dotnet, nuget, tooling]
-excerpt: A package with no description, no readme, version 1.0.0 and a dependency on your analyzers is just a zip file with extra steps. What a good internal NuGet package needs, how to set up feeds and pipelines so nobody pushes by hand, and how to make the build refuse a sloppy package.
+excerpt: A package with no description, no readme, version 1.0.0 and a dependency on your analyzers is just a zip file with extra steps. What a good internal NuGet package needs, how to set up feeds and pipelines so nobody pushes by hand, and how to make the build refuse a half-finished package.
 ---
 
 
 Sooner or later every organization with more than one .NET repository starts sharing code through NuGet
 packages. A common library, an HTTP client for an internal API, a test SDK. That's a good move. What I
-often see in internal feeds, though, are packages that feel like someone zipped a `bin` folder: the
+often see in internal feeds, though, are packages that never got their finishing touches: the
 description says "Package Description", there's no readme, the version never changes, and installing it
 drags a dozen build-time packages into your project.
 
@@ -237,7 +237,7 @@ in the [GitVersion post](/blog/2026-versioning-with-gitversion/)).
 package, that package's major version becomes part of your contract. Keep your public surface on your own
 types and the BCL where you can.
 
-## Make the build refuse a sloppy package
+## Make the build refuse a half-finished package
 
 Guidelines for package metadata are forgotten as soon as somebody creates a new project. A small target in
 `Directory.Build.targets` turns them into build errors:

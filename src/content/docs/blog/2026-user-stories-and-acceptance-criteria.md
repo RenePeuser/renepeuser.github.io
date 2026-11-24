@@ -144,7 +144,7 @@ removes most ambiguity. And it translates almost directly into a test case.
 
 ✅ *The shopping cart lets the user select which items to delete.*
 
-How the selection works is the team's decision, not the business's or a consultant's.
+How the selection works is the team's decision.
 
 ### 2. Going beyond the story
 

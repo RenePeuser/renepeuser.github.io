@@ -215,7 +215,8 @@ pattern cheap.
 
 This is the kind of query that ends up in an alert rule or a dashboard tile. It computes three CPU
 indicators over the last 90 minutes and returns one row per indicator, but only if at least one
-indicator is bad. It's based on a query from that team's guide, with one important bug fixed.
+indicator is bad. It's based on a query from that team's guide. While adapting it I tripped over a classic, more on
+that below.
 
 ```kusto
 let window = 90m;
@@ -245,7 +246,7 @@ union
 | project What, Value = strcat(Value, "%"), Threshold = strcat(Threshold, "%"), Flag = iif(IsBad, "!", "")
 ```
 
-The bug: the original computed the overload share as `countif(value >= 100) / count()`. Both
+The classic: computing the overload share as `countif(value >= 100) / count()`. Both
 functions return `long`, so that's **integer division**, and the result is `0` for every value below
 100%. The alert could never fire on that indicator. Multiplying by `100.0` first makes it a real
 number and an actual percentage. It's the same trap as `int / int` in C#, and just as easy to miss

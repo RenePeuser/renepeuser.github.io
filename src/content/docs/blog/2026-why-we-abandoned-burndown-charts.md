@@ -37,8 +37,8 @@ explain. And there's a very easy way to avoid explaining an imperfect chart: you
 imperfect. Remaining hours get "corrected", tasks get re-estimated mid-sprint, work moves around
 until the line looks plausible again.
 
-That's what happened to us. The charts were adjusted so they would please management instead of
-showing the real state of development. I want to be clear that I don't think this was anybody's evil
+That's what happened to us. The charts slowly started telling the story people hoped to see rather
+than the real state of development. I want to be clear that I don't think this was anybody's evil
 plan, and it doesn't belong to one role. It's the natural result of a setup in which a team-internal
 tool turns into a reporting instrument. Everyone involved did what the system rewarded.
 

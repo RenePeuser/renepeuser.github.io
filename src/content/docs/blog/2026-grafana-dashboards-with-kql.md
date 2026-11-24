@@ -7,8 +7,8 @@ excerpt: Grafana can query Azure Monitor Logs directly, so your KQL becomes a da
 ---
 
 
-The Azure portal is a fine place for developers to investigate an incident. It's a terrible place for
-everyone else. Product owners, support engineers and the on-call person from another team don't want
+The Azure portal is a fine place for developers to investigate an incident. For everyone else, it's a
+maze of blades they never signed up to learn. Product owners, support engineers and the on-call person from another team don't want
 to learn the portal's blade navigation, and often they shouldn't have access to the subscription
 anyway.
 
