@@ -21,7 +21,7 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 import LatestPosts from '../../components/LatestPosts.astro';
 import NuGetTotal from '../../components/NuGetTotal.astro';
 
@@ -39,6 +39,24 @@ Passion............ Testing · OpenAPI · Developer Experience · Automation
 ```
 
 </div>
+
+## From VB6 to self-defending codebases
+
+Almost two decades in one thread: turning knowledge that lives in people's heads into software that
+enforces it. It started with VB6 screens next to industrial machines and, for now, ends with codebases
+that explain their own rules to humans and AI agents.
+
+<Steps>
+
+1. **2007 · Roots.** [VB6 user interfaces next to the machine](/blog/2007-vb6-hmi-roots/), then first steps with WPF and MVVM.
+2. **2012–2013 · Modernizing UIs.** [Hosting WPF controls in VB6 via COM interop](/blog/2012-hosting-wpf-controls-in-vb6/), localization and interactive canvases.
+3. **2016–2017 · Framework thinking.** Reusable building blocks, generated test data and [Roslyn analyzers](/blog/2017-roslyn-analyzers-and-argument-checks/).
+4. **2019–2024 · Automating the codebase.** [Architecture tests](/blog/2019-testing-the-solution-itself/), a public test SDK, client generators and RunJit.
+5. **2026 · Self-defending codebases.** [Team rules that enforce themselves](/blog/2026-self-defending-codebases/).
+
+</Steps>
+
+<LinkCard title="Read the whole journey" description="Twelve chapters, written as retrospectives from the original source code." href="/series/from-vb6-to-self-defending-codebases/" />
 
 ## What I do
 
@@ -66,7 +84,7 @@ Passion............ Testing · OpenAPI · Developer Experience · Automation
 
 ## Blog series
 
-More than a hundred posts, organized in series. Read one series front to back or pick single posts.
+More than 110 posts, organized in series. Read one series front to back or pick single posts.
 [All series at a glance →](/series/)
 
 <CardGrid>
@@ -80,7 +98,7 @@ More than a hundred posts, organized in series. Read one series front to back or
 	<LinkCard title="Cloud, DevOps & observability" description="Terraform, KQL, Grafana, OpenTelemetry and Azure basics." href="/series/cloud-devops-observability/" />
 	<LinkCard title="Validation & error handling" description="Exception handling and logging exceptions the right way." href="/series/validation-and-error-handling/" />
 	<LinkCard title="Scrum in the real world" description="What worked with six teams over several years, and what we dropped." href="/series/scrum-in-the-real-world/" />
-	<LinkCard title="From VB6 to self-defending codebases" description="Almost two decades in twelve chapters: VB6 interop, WPF, Roslyn, test SDKs and codebases that enforce their own rules." href="/series/from-vb6-to-self-defending-codebases/" />
+	<LinkCard title="Code smells & their fixes" description="Events, simulation flags, out parameters, null checks, global state and the patterns that replace them." href="/series/code-smells-and-their-fixes/" />
 </CardGrid>
 
 ## I build engineering multipliers
