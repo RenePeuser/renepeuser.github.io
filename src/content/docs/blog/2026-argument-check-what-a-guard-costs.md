@@ -291,6 +291,22 @@ within a table, not across tables.
 | `IfAnyItemIsNullOrWhitespace` (4 items) | 20.76 ns | **12.61 ns** | 24 B → **0 B** |
 | `IfNullOrAny` (4 items) | 16.85 ns | **7.30 ns** | 0 → 0 |
 
+**.NET Framework 4.8**, through the `netstandard2.0` build. This run was a 32-bit process with the
+legacy JIT, so don't compare it with the 64-bit tables above:
+
+| Check | 5.0.7 | 5.0.8 | Allocated 5.0.7 → 5.0.8 |
+| --- | ---: | ---: | --- |
+| `IfNull` | 1.66 ns | **1.14 ns** | 0 → 0 |
+| `IfNullOrWhiteSpace` | 31.49 ns | **3.39 ns** | 20 B → **0 B** |
+| `IfOutOfRange` (int) | 25.11 ns | **10.30 ns** | 48 B → **0 B** |
+| `IfGreaterThan` (int) | 5.53 ns | **2.62 ns** | 12 B → **0 B** |
+| `IfLessThan` (int) | 3.93 ns | **2.33 ns** | 12 B → **0 B** |
+| `IfAnyItemIsNullOrWhitespace` (4 items) | 85.74 ns | **48.30 ns** | 68 B → **0 B** |
+| `IfNullOrAny` (4 items) | 70.73 ns | **61.20 ns** | 24 B → **0 B** |
+
+That's the runtime where a guard library on `netstandard2.0` matters most, because the built-in
+helpers don't exist there. `IfNullOrWhiteSpace` is now **about 9 times faster**.
+
 The headline: **zero allocations in every check, on every runtime**, and the range check on .NET 9 is
 about **33 times faster**. The scalar checks now land in the same 0.4–1.3 ns range as the built-in
 helpers measured above. As before, anything below about 2 ns is at the edge of what the benchmark can
