@@ -264,11 +264,13 @@ Out of curiosity I also compared the dates, from the public git histories:
 | May 2023 | Microsoft's `Throw.cs` appears in the initial commit of the new dotnet/extensions repository. |
 | June 2025 | The same file is added to the Agent Framework. |
 
-So `Throw.IfNull` returning the value was public in my repository about three and a half years
-before Microsoft's version showed up in theirs. To be clear, that's not a claim that anybody copied
-anything. The dotnet/extensions file came from an internal codebase whose earlier history isn't public, and
-"a guard that returns its argument" is an idea several people arrived at independently. It's just a
-nice confirmation that the design holds up.
+What I like about this timeline is not who was first. It's that two teams, years apart and without
+knowing of each other, ended up with **the same way of thinking**: a guard should be one line, name
+the parameter by itself, return the checked value and stay out of the way. Microsoft's file comes
+from an internal codebase whose earlier history isn't public, and "a guard that returns its
+argument" is an idea many developers have had on their own. When engineers at Microsoft arrive at
+the same API shape you chose years ago, that's the best confirmation a design can get. Great minds,
+and so on. 😄
 
 **So why is it internal?** Microsoft doesn't say so in the repo, but the setup makes the reasons
 fairly clear:
@@ -345,7 +347,8 @@ only. That's the same idea as [self-defending codebases](/blog/2026-self-defendi
   generic comparisons**, **`ActualValue` on range errors** and **more precise exception types**. If
   they cover your checks, use them.
 - Microsoft's own Agent Framework and dotnet/extensions use an **internal `Throw.IfNull` that returns
-  the value**, shipped as shared source. Argument.Check offers the same style as a package.
+  the value**, shipped as shared source: the same way of thinking, arrived at independently.
+  Argument.Check offers that style as a package.
 - Whatever you choose, choose **one style per codebase** and write the rule down.
 - The story of how Argument.Check went from `Func<T>` tricks to `CallerArgumentExpression` is in
   the retrospective [Roslyn analyzers and argument checks](/blog/2017-roslyn-analyzers-and-argument-checks/).
